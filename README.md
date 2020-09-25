@@ -9,6 +9,8 @@
 
 # Libraries / Dependencies
 > See requirements.txt
+- [ChordDroid](https://github.com/trungdq88/ChordDroid)
+
 ## Python
 - CUDA
 - tensorflow
@@ -33,3 +35,17 @@
 ## KNOWN ISSUE (Ale only System)
 - Must run music_analyzer in sudo without virtualenv due to permission problems
   > ghoul@Tokyo:~/Documents/GitHub/MusicAnalysis/Music_Analysis$ sudo python3 music_parser.py
+  
+- Chord Droid isn't up to date with Gradle
+> Change instruction from their ReadMe to:
+
+> In dependencies (gradle for the module):
+`api fileTree(dir: 'libs', include: ['*.aar'])`
+
+> In repopsitories (gradle for the module): 
+
+`repositories{
+    flatDir {
+        dirs 'libs'
+    }
+}`
