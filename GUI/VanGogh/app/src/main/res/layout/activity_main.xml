@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<!--        <ImageView-->
+<!--            android:id="@+id/chord_image"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:contentDescription="@string/my_image_description"-->
+<!--            />-->
+
+<!--        <com.dqt.libs.chorddroid.components.ChordTextureView-->
+<!--            android:id="@+id/chord_texture_view"-->
+<!--            android:layout_width="216dp"-->
+<!--            android:layout_height="210dp"-->
+
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_marginEnd="107dp"-->
+<!--            android:layout_marginBottom="254dp" />-->
+        <fragment android:name="com.example.vangogh.ChordFragment"
+            android:id="@+id/chord_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/chord_fragment" />
+    </RelativeLayout>
+
+
+</LinearLayout>
