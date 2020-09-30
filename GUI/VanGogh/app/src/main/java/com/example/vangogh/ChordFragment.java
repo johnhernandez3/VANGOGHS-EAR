@@ -17,7 +17,7 @@ import com.dqt.libs.chorddroid.helper.DrawHelper;
 
 public class ChordFragment extends Fragment {
     int fret_position = 0; // from 0 to 12
-    private final String TAG = "Chord Fragment";
+    private final String TAG = "CHORD FRAG";
     Button update_btn;
     View view;
     ImageView chord_view;
