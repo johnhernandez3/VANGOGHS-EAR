@@ -20,6 +20,7 @@ import com.dqt.libs.chorddroid.*;
 
 public class MainActivity extends FragmentActivity {
 
+    AudioRecorder audio_fragment;
     ChordFragment chord_fragment;
     private final String TAG = "MAIN";
     private final int REQUEST_READ_STORAGE = 0;
@@ -38,6 +39,7 @@ public class MainActivity extends FragmentActivity {
         FragmentTransaction transaction = man.beginTransaction();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        audio_fragment = (AudioRecorder) man.findFragmentById(R.id.audio_fragment);
         chord_fragment = (ChordFragment) man.findFragmentById(R.id.chord_fragment) ;
         Button find_file = (Button) findViewById(R.id.find_button);
         find_file.setOnClickListener(new View.OnClickListener(){

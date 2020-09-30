@@ -9,8 +9,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="166dp"
-        android:layout_marginBottom="365dp"
         android:text="@+id/file_name" />
+<!--        android:layout_marginEnd="166dp"-->
+<!--        android:layout_marginBottom="365dp"-->
+
+
 
 </LinearLayout>
