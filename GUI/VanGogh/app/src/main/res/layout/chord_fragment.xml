@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.vangogh.ChordFragment">
+
+
+    <ImageView
+        android:id="@+id/chord_view"
+        android:layout_width="440dp"
+        android:layout_height="440dp"
+        android:layout_above="@+id/chord_input"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="137dp"
+        android:layout_marginBottom="95dp" />
+
+    <EditText
+        android:id="@+id/chord_input"
+        android:layout_width="282dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="111dp"
+        android:layout_marginBottom="17dp"
+        android:hint="Enter Chord" />
+
+    <Button
+        android:id="@+id/update_chord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="17dp"
+        android:text="Update" />
+
+
+</RelativeLayout>
