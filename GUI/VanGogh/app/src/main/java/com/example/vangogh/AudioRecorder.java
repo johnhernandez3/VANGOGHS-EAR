@@ -1,5 +1,8 @@
 package com.example.vangogh;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,10 +14,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 public class AudioRecorder extends Fragment {
 
+    private final int REQUEST_READ_STORAGE = 0;
+    private final int REQUEST_WRITE_STORAGE = 1;
+    private final int REQUEST_RECORD_AUDIO = 2;
     private static final String Output_File = "Sample_File";
     private static final String TAG = "AUDIO RECORDER FRAG";
     MediaRecorder recorder;
@@ -34,25 +41,42 @@ public class AudioRecorder extends Fragment {
     private void setupMediaRecorder(String file_path)
     {
         recorder = new MediaRecorder();
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        recorder.setOutputFile(file_path);
+        try{
+            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            recorder.setOutputFile(file_path);
+        }
+        catch(Exception e)
+        {
+            Log.e(TAG, "Could not setup Audio Recorder due to exception:"+ e);
+            e.printStackTrace();
+        }
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        setupMediaRecorder(this.OutputFilePath());
+        // Ask if Audio recording permission is granted
+        if (ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ) {
+            //If not ask the user for the permission
+            requestPermissions(
+                    new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO);
+        } else {
+            Log.e(TAG, "PERMISSION GRANTED");
 
-        try {
-            recorder.prepare();
-        } catch(Exception e)
-        {
-            Log.e(TAG, "Error preparing Mic:" + e);
-            e.printStackTrace();
+            try {
+                setupMediaRecorder(this.OutputFilePath());
+                recorder.prepare();
+            } catch(Exception e)
+            {
+                Log.e(TAG, "Error preparing Mic:" + e);
+                e.printStackTrace();
+            }
         }
+
 
         view = inflater.inflate(R.layout.audio_recorder, container , false);
 
@@ -78,8 +102,18 @@ public class AudioRecorder extends Fragment {
     public void onDestroyView()
     {
         super.onDestroyView();
-        recorder.release();
-        Log.d(TAG, "AudioRecorder.onDestroyView() was called.");
+        if(recorder != null)
+        {
+            try{
+                recorder.release();
+            }catch(Exception e)
+            {
+                Log.e(TAG, "Exception while releasing AudioRecorder object:"+  e);
+                e.printStackTrace();
+            }
+        }
+
+        Log.d(TAG, "AudioRecorder.onDestroyView method was called.");
     }
 
 

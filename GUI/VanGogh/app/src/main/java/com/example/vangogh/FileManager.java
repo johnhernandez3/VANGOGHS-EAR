@@ -1,7 +1,9 @@
 package com.example.vangogh;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.FileUtils;
@@ -9,13 +11,17 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+
 import java.util.ArrayList;
 
 public class FileManager extends Activity {
     private static final int FILE_SELECTED_CODE = 0;
-    private static final String TAG = "FILE MANAGER ACTIVITY";
+    private static final String TAG = "FILE MANAGER";
     private static final int REQUEST_CHOOSER = 1234;
 
+    private static final int REQUEST_EXTERNAL_STORAGE = 2;
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 3;
     private FileArrayAdapter files_adapter;
     private ArrayList<String> files = new ArrayList<>();
 
@@ -37,16 +43,54 @@ public class FileManager extends Activity {
         files_adapter = new FileArrayAdapter(this, files);
         ListView list_view = (ListView) findViewById(R.id.files_list) ;
         list_view.setAdapter(files_adapter);
-        //Create the ACTION_GET_CONTENT Intent
+
+        if (checkSelfPermission(
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+            //If not ask the user for the permission
+            requestPermissions(
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);
+        }
+        else {
+            Log.e(TAG, "PERMISSION GRANTED");
+
+            try {
+//                setupMediaRecorder(this.OutputFilePath());
+//                recorder.prepare();
+            } catch(Exception e)
+            {
+                Log.e(TAG, "Error preparing FileManager:" + e);
+                e.printStackTrace();
+            }
+        }
+
+        if (checkSelfPermission(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+            //If not ask the user for the permission
+             requestPermissions(
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
+        }
+        else {
+            Log.e(TAG, "PERMISSION GRANTED");
+
+            try {
+//                setupMediaRecorder(this.OutputFilePath());
+//                recorder.prepare();
+            } catch(Exception e)
+            {
+                Log.e(TAG, "Error preparing FileManager:" + e);
+                e.printStackTrace();
+            }
+        }
+//        Create the ACTION_GET_CONTENT Intent
 //        Intent getContentIntent = FileUtils.createGetContentIntent();
 
 //        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
 //        startActivityForResult(intent, REQUEST_CHOOSER);
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setType("*/*");
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//
-//        startActivityForResult(intent, REQUEST_CHOOSER);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        startActivityForResult(intent, REQUEST_CHOOSER);
     }
 
 
