@@ -1,5 +1,5 @@
 # MusicAnalysis
-> Simple project dedicated towards the visualization, analysis and feature extraction of Music
+> A project dedicated towards the visualization, analysis and feature extraction of Music using ML techniques.
 
 # Project Structure
 
@@ -15,9 +15,6 @@
 - CUDA
 - tensorflow
 - librosa
-
-## Rust
-- Azul
 
 # References
 
