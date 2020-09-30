@@ -3,11 +3,13 @@ package com.example.vangogh;
 import android.Manifest;
 import android.app.Activity;
 //import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 //import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -37,12 +39,30 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         chord_fragment = (ChordFragment) man.findFragmentById(R.id.chord_fragment) ;
+        Button find_file = (Button) findViewById(R.id.find_button);
+        find_file.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v)
+            {
+                searchForFile();
+            }
+
+        });
+
 //        fragment = (RecordFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
 //            transaction.add(R.id.chord_fragment, chord_fragment);
 //            transaction.commit();
 //        ChordTextureView chord = (ChordTextureView) findViewById(R.id.chord_texture_view);
 //        chord.drawChord("Am", 0);
     }
+
+    public void searchForFile()
+    {
+        Intent intent = new Intent(this, FileManager.class);
+
+        startActivity(intent);
+
+    }
+
 
     private void requestPermissions()
     {
