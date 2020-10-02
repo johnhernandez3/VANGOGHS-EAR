@@ -130,10 +130,6 @@ public class AudioRecorder extends Fragment {
 
                 }
                 mic_button_clicks = mic_button_clicks + 1 % 2;// to wrap around for the only two possible states
-//                recorder.start();
-//                Toast.makeText(getActivity(),  TAG, Toast.LENGTH_SHORT).show();
-//                recorder.stop();
-//                recorder.reset();
             }
 
         });
