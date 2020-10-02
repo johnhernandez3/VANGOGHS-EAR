@@ -19,8 +19,12 @@ import com.dqt.libs.chorddroid.components.ChordTextureView;
 import com.dqt.libs.chorddroid.*;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends FragmentActivity {
 
+    Map<String, Integer> permissions;
     AudioRecorder audio_fragment;
     ChordFragment chord_fragment;
     private View view;
@@ -35,10 +39,22 @@ public class MainActivity extends FragmentActivity {
             "ACCESS_MEDIA_LOCATION"
     };
 
+    private void prepare_permissions()
+    {
+        int  i = 0;
+        permissions = new HashMap<>();
+        for(String s : PERMISSIONS)
+        {
+            permissions.put(s ,i);
+            i+=3;
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
+        prepare_permissions();
         FragmentManager man = getSupportFragmentManager();
         FragmentTransaction transaction = man.beginTransaction();
         super.onCreate(savedInstanceState);
@@ -62,11 +78,6 @@ public class MainActivity extends FragmentActivity {
 
         });
 
-//        fragment = (RecordFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
-//            transaction.add(R.id.chord_fragment, chord_fragment);
-//            transaction.commit();
-//        ChordTextureView chord = (ChordTextureView) findViewById(R.id.chord_texture_view);
-//        chord.drawChord("Am", 0);
     }
 
     public void searchForFile()
@@ -80,39 +91,21 @@ public class MainActivity extends FragmentActivity {
 
     private void requestPermissions()
     {
-        for(final String perm : PERMISSIONS)
+        for(Map.Entry<String, Integer> perm : this.permissions.entrySet())
         {
-            int res = checkSelfPermission( perm);
+            int res = checkSelfPermission( perm.getKey());
             if (res == PackageManager.PERMISSION_GRANTED)
             {
                 //then we do not need to worry
-                Log.d(TAG, "Permission:["+perm+"]\n already granted!");
+                Log.d(TAG, "Permission:["+perm.getKey()+"]\n already granted!");
             }
             else if(res== PackageManager.PERMISSION_DENIED)
             {
                 //proceed to ask user...
                 // RequestMultiplePermissions.createIntent(this, PERMISSIONS);
-                Log.i(TAG, "Permission:["+perm+"] has NOT been granted.\n Requesting permission.");
+                Log.i(TAG, "Permission:["+perm.getKey()+"] has NOT been granted.\n Requesting permission.");
 
-                // BEGIN_INCLUDE(camera_permission_request)
-//                if (shouldShowRequestPermissionRationale(perm)) {
-//                    // Provide an additional rationale to the user if the permission was not granted
-//                    // and the user would benefit from additional context for the use of the permission.
-//                    // For example if the user has previously denied the permission.
-//                    Log.i(TAG, "Displaying camera permission rationale to provide additional context.");
-//                    Snackbar.make(view, "We need the permissions please", Snackbar.LENGTH_INDEFINITE)
-//                            .setAction("Danke Schoen", new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View view) {
-//                                    requestPermissions(new String[]{perm},
-////                                    requestPermissions(new String[]{perm},
-//                                            REQUEST_READ_STORAGE);
-//                                }
-//                            })
-//                            .show();
-//
-//                }
-                requestPermissions( new String[]{perm}, REQUEST_READ_STORAGE);
+                requestPermissions( new String[]{perm.getKey()}, perm.getValue());
             }
 
         }
