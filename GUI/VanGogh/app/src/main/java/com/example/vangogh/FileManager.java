@@ -117,21 +117,33 @@ public class FileManager extends Activity {
         switch(requestCode)
         {
             case FILE_SELECTED_CODE:
-                if( requestCode == RESULT_OK)
-                {
-                    Uri uri = data.getData();
-                    Log.d(TAG, "File URI:" +  uri.toString());
 
-                    String path = uri.getPath();
-                    Log.d(TAG, "File Path: "+ path);
-                    //process the file or pass it to data
-//                    super.onActivityResult(requestCode, resultCode,data);
-                }
+//                    Uri uri = data.getData();
+//                    Log.d(TAG, "File URI:" +  uri.toString());
+//
+//                    String path = uri.getPath();
+//                    Log.d(TAG, "File Path: "+ path);
+//                    //process the file or pass it to data
+////                    super.onActivityResult(requestCode, resultCode,data);
+
+                break;
+
+            case REQUEST_CHOOSER:
+
+                Uri uri = data.getData();
+                Log.d(TAG, "File URI:" +  uri.toString());
+
+                String path = uri.getPath();
+                Log.d(TAG, "File Path: "+ path);
+                //process the file or pass it to data
+                files.add(uri.toString());
+                    super.onActivityResult(requestCode, resultCode,data);
+
                 break;
 
         }
 
-        super.onActivityResult(requestCode, resultCode,data);
+//        super.onActivityResult(requestCode, resultCode,data);
     }
 
 
