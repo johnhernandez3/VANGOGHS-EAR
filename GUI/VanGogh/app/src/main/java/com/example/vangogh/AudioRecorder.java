@@ -42,10 +42,10 @@ public class AudioRecorder extends Fragment {
             context = this.getContext();
             //TODO Implement the output file path to store the Audio recordings from Mic.
             // Alternatively, we could use streams of audio because we don't really want to store the audio.
-            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + filename + ".mp4";
+            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + filename + ".aac";
         }
         else{
-            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + "sample" + ".mp4";
+            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + "sample" + ".aac";
         }
         return res;
     }
