@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.vangogh">
 
-<!--    <uses-feature android:name="android.hardware." android:required="false" />-->
-
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
@@ -28,10 +26,9 @@
         <activity android:name=".FileManager">
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

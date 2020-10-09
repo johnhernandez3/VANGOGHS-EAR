@@ -21,19 +21,36 @@ import android.os.Environment;
 
 public class AudioRecorder extends Fragment {
 
+    //used for maintaining track of how many clicks have been performed on the record button
     private int mic_button_clicks=0;//might be problematic in multi-threaded workloads due to possible race condition
                                     //TODO: Consider using atomic integers here
-
+    // Request Codes for acknowledging the permissions requested
     private final int REQUEST_READ_STORAGE = 0;
     private final int REQUEST_WRITE_STORAGE = 1;
     private final int REQUEST_RECORD_AUDIO = 2;
+
+    // String used to store the File being recorded from Mic
     private static final String Output_File = "Sample_File";
+
+    // String to debug using LogCat
     private static final String TAG = "AUDIO RECORDER FRAG";
     private Context context;// Needed for asking about external storage Directory used for storing the files...
+
+    // Android Implementation of media recorder for both audio and video
     MediaRecorder recorder;
+
+    // View that binds the XML Layout to the Java logic
     View view;
+
+    //Button for binding with the XML Button
     Button microphone_button;
 
+    /**
+     * Generates the Output File Path for the Audio Recorder to store recorded audio.
+     *
+     * @param filename the name of the file to be created for storing the recorded audio.
+     * @return String representation of the Output File Path
+     */
     private String OutputFilePath(String filename)
     {
         String res;
@@ -50,7 +67,11 @@ public class AudioRecorder extends Fragment {
         return res;
     }
 
-
+    /**
+     * Establishes the connection with mic hardware, sets the Audio format, Encoder and file storage path.
+     *
+     * @param file_path The filepath where the system will store the audio file created
+     */
     private void setupMediaRecorder(String file_path)
     {
         //TODO: Fix problem here when entering a session after the first music file is stored...
@@ -127,6 +148,7 @@ public class AudioRecorder extends Fragment {
                             e.printStackTrace();
 
                         }
+                        break;
 
                 }
                 mic_button_clicks = mic_button_clicks + 1 % 2;// to wrap around for the only two possible states
