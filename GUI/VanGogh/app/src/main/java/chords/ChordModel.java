@@ -2,13 +2,24 @@ package chords;
 
 public class ChordModel
 {
+    //TODO: Implement parameter checks to avoid parsing Null values
     private String chord_name;
     private String chord_class;
 
     public ChordModel(String chord_name, String chord_class)
     {
-        this.setChordClass(chord_class);
-        this.setChordName(chord_name);
+        //Verify value of chord name is not null
+        if(chord_name != null)
+            this.setChordName(chord_name);
+        else
+            this.setChordName("");
+
+        //Verify value of chord name is not null
+        if(chord_class != null)
+            this.setChordClass(chord_class);
+        else
+            this.setChordClass("");
+
     }
 
     public String getChordClass() {
