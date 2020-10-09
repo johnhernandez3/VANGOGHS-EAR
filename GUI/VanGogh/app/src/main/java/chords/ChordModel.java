@@ -14,12 +14,11 @@ public class ChordModel
         else
             this.setChordName("");
 
-        //Verify value of chord name is not null
+        //Verify value of chord class is not null
         if(chord_class != null)
             this.setChordClass(chord_class);
         else
             this.setChordClass("");
-
     }
 
     public String getChordClass() {
