@@ -3,18 +3,31 @@ package chords;
 import java.util.regex.*;
 import java.util.ArrayList;
 
+/**
+ * Class designated to enforcing valid ChordModel policies based on internal RegEx filters.
+ */
 public class ChordValidator
 {
 
+    //Internal immutable validators for names and classes
     private final String[] chord_names ;
     private final String[] chord_classes ;
 
+    /**
+     * Constructor for building ChordValidator Object
+     * @param names String[] for validating correct Chord Names
+     * @param clss String[] for validating correct Chord Classes
+     */
     public ChordValidator(String[] names, String[] clss)
     {
         this.chord_names =names;
         this.chord_classes=clss;
     }
 
+    /**
+     * Constructor for building ChordValidator Object
+     * @param valid_chords ArrayList<ChordModel> for validating ChordNames and Classes
+     */
     public ChordValidator(ArrayList<ChordModel> valid_chords)
     {
         //Used as intermediate since we cant re-assign to final variables
@@ -39,19 +52,26 @@ public class ChordValidator
         chord_classes = (String[]) partial_classes.toArray(new String[partial_classes.size()]);
     }
 
-
+    /**
+     *  Generates internal validators for filtering out ChordModels.
+     * @param validators String[] representing the basis for filtering invalid ChordModels
+     * @return ArrayList<String> representing the valid ChordModel features.
+     */
     public ArrayList<String> validationArrayList(String validators[])
-{
-    ArrayList<String> res = new ArrayList<>();
-
-    for(String  v  : validators)
     {
-        res.add(v);
+        ArrayList<String> res = new ArrayList<>();
+
+        for(String  v  : validators)
+            res.add(v);
+
+        return res;
     }
 
-    return res;
-}
-
+    /**
+     *  Generates internal validators for filtering out ChordModels.
+     * @param validators ArrayList<ChordModel>  representing the basis for filtering invalid ChordModels
+     * @return ArrayList<ChordModel> representing the valid ChordModel features.
+     */
     public ArrayList<ChordModel> validationArrayList(ArrayList<ChordModel> validators)
     {
         ArrayList<ChordModel> res = new ArrayList<>();
@@ -64,19 +84,29 @@ public class ChordValidator
         return res;
     }
 
-
-
-
+    /**
+     *  Internal method for Valid Chord Names ArrayList based filtering.
+     * @return ArrayList<String> Representing the internal Valid Chord Names
+     */
     private ArrayList<String> validChordNames()
     {
         return validationArrayList(chord_names);
     }
 
+    /**
+     *  Internal method for Valid Chord Class ArrayList based filtering.
+     * @return ArrayList<String> Representing the internal Valid Chord Classes.
+     */
     private ArrayList<String> validChordClass()
     {
         return validationArrayList(chord_classes);
     }
 
+    /**
+     * Verifies if the @param name provided is a valid Chord Name
+     * @param name String representing the Chord Name to be evaluated
+     * @return boolean representing the validity
+     */
     public boolean isValidChordName(String name)
     {
         for(String chord: this.validChordNames())
@@ -88,6 +118,11 @@ public class ChordValidator
         return false;
     }
 
+    /**
+     * Verifies if the @param clss provided is a valid Chord Class
+     * @param clss String representing the Chord Class to be evaluated
+     * @return boolean representing the validity
+     */
     public boolean isValidChordClass(String clss)
     {
         for(String cl: this.validChordClass())
@@ -99,7 +134,29 @@ public class ChordValidator
         return false;
     }
 
+    /**
+     * Verifies if the @param concatenated_string provided is a valid ChordModel.
+     * @param concatenated_string String representing the ChordModel to be evaluated
+     * @return boolean representing the validity
+     */
+    public boolean isValidChord(String concatenated_string)
+    {
+        //TODO: implement Regex here to detect correct chords
+        Pattern pattern = this.chordPattern();
+        Matcher target = pattern.matcher(concatenated_string);
 
+        if(target.find())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Verifies if the @param chord provided is a valid ChordModel.
+     * @param chord ChordModel representing the Chord to be evaluated.
+     * @return boolean representing the validity.
+     */
     public boolean isValidChord(ChordModel chord)
     {
         if(this.isValidChordClass(chord.getChordClass())
@@ -110,21 +167,49 @@ public class ChordValidator
         }
     }
 
-    private String stringPattern()
+    //Regex Logic for matching patterns in user input
+
+    /**
+     *  Extracts a valid ChordModel if @param concatenated_string is found to match the internal ChordModel pattern.
+     *  Otherwise, the method returns an invalid ChordModel with Name="Z" and Class="Z".
+     * @param concatenated_string String generated by user input that may contain a ChordModel compliant pattern.
+     * @return ChordModel representation of @param concatenated_string if a valid pattern is found.
+     */
+    public ChordModel extractChord(String concatenated_string)
     {
-        String str_pattern = "([abcdefg]|[ABCDEFG])[7]?[#]?(([M][a][j])|([M][i][n]))?";
-
-
-
-        return str_pattern;
+        ChordModel res;
+        Pattern pattern = this.chordPattern();
+        Matcher target = pattern.matcher(concatenated_string);
+        if(target.find())
+        {
+            res = new ChordModel(extractChordName(target.group()),
+                    extractChordClass(target.group()));
+        }
+        else{
+            //invalid chord
+            res = new ChordModel("Z", "Z");
+        }
+        return res;
     }
 
+    /**
+     *  Returns an internal RegEx Pattern used for detecting valid Chords to enforce ChordModel validity .
+     *
+     * @return Pattern representation of  a valid ChordModel pattern.
+     */
     private Pattern chordPattern()
     {
 
         return Pattern.compile(stringPattern());
     }
 
+    /**
+     *  Extracts a valid ChordModel name if @param whole_chord is found to match the internal ChordModel Name pattern.
+     *  Otherwise, the method returns an invalid ChordModel with Name="Z".
+     * @param whole_chord String generated by user input that may contain a ChordModel compliant pattern.
+     * @return String representation of matched substring found in @param whole_chord if a valid pattern is found.
+     *          Otherwise, the resulting string is "Z".
+     */
     private String extractChordName(String whole_chord)
     {
         Pattern pattern = Pattern.compile("([abcdefg]|[ABCDEFG])");
@@ -134,8 +219,16 @@ public class ChordValidator
             return target.group();
 
         else
-            return "";//No Match Found
+            return "Z";//No Match Found
     }
+
+    /**
+     *  Extracts a valid ChordModel Class if @param whole_chord is found to match the internal ChordModel Class pattern.
+     *  Otherwise, the method returns an invalid ChordModel with Class="Z".
+     * @param whole_chord String generated by user input that may contain a ChordModel compliant pattern.
+     * @return String representation of matched substring found in @param whole_chord if a valid pattern is found.
+     *          Otherwise, the resulting string is "Z".
+     */
     private String extractChordClass(String whole_chord)
     {
         Pattern pattern = Pattern.compile("[7]?[#]?(([M][a][j])|([M][i][n]))?");
@@ -149,36 +242,21 @@ public class ChordValidator
     }
 
 
-
-    public ChordModel extractChord(String concatenated_string)
+    /**
+     *  Returns an internal RegEx Pattern used for detecting valid Chords to enforce ChordModel validity .
+     *
+     * @return String representation of  a valid ChordModel pattern.
+     */
+    private String stringPattern()
     {
-        ChordModel res;
-        Pattern pattern = this.chordPattern();
-        Matcher target = pattern.matcher(concatenated_string);
-        if(target.find())
-        {
-            res = new ChordModel(extractChordName(target.group()),
-                                 extractChordClass(target.group()));
-        }
-        else{
-            //invalid chord
-            res = new ChordModel("Z", "Z");
-        }
-        return res;
+        String str_pattern = "([abcdefg]|[ABCDEFG])[7]?[#]?(([M][a][j])|([M][i][n]))?";
+
+
+
+        return str_pattern;
     }
 
-    public boolean isValidChord(String concatenated_string)
-    {
-        //TODO: implement Regex here to detect correct chords
-        Pattern pattern = this.chordPattern();
-        Matcher target = pattern.matcher(concatenated_string);
 
-        if(target.find())
-        {
-            return true;
-        }
-        return false;
-    }
 
 
 
