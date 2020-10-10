@@ -44,8 +44,8 @@ public class FileManager extends Activity {
         ListView list_view = (ListView) findViewById(R.id.files_list) ;
         list_view.setAdapter(files_adapter);
 
-        if (checkSelfPermission(
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED ) {
             //If not ask the user for the permission
             requestPermissions(
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);

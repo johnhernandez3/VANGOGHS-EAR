@@ -19,12 +19,18 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import android.os.Environment;
 
-public class AudioRecorder extends Fragment {
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+public class AudioRecorder extends Fragment
+{
+    private Date todays_date;
     //used for maintaining track of how many clicks have been performed on the record button
-    private int mic_button_clicks=0;//might be problematic in multi-threaded workloads due to possible race condition
+    private static int mic_button_clicks=0;//might be problematic in multi-threaded workloads due to possible race condition
                                     //TODO: Consider using atomic integers here
+
     // Request Codes for acknowledging the permissions requested
+    private final int MAX_RECORD_BTN_CLICKS = 2;
     private final int REQUEST_READ_STORAGE = 0;
     private final int REQUEST_WRITE_STORAGE = 1;
     private final int REQUEST_RECORD_AUDIO = 2;
@@ -49,7 +55,7 @@ public class AudioRecorder extends Fragment {
      * Generates the Output File Path for the Audio Recorder to store recorded audio.
      *
      * @param filename the name of the file to be created for storing the recorded audio.
-     * @return String representation of the Output File Path
+     * @return String representation of the Output File Path.
      */
     private String OutputFilePath(String filename)
     {
@@ -57,7 +63,7 @@ public class AudioRecorder extends Fragment {
         if(filename != null && filename != " ") {
 
             context = this.getContext();
-            //TODO Implement the output file path to store the Audio recordings from Mic.
+            //TODO: Implement the output file path to store the Audio recordings from Mic.
             // Alternatively, we could use streams of audio because we don't really want to store the audio.
             res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + filename + ".aac";
         }
@@ -68,20 +74,21 @@ public class AudioRecorder extends Fragment {
     }
 
     /**
-     * Establishes the connection with mic hardware, sets the Audio format, Encoder and file storage path.
+     * Establishes the connection with Mic hardware, sets the Audio format, Encoder and file storage path.
      *
      * @param file_path The filepath where the system will store the audio file created
      */
     private void setupMediaRecorder(String file_path)
     {
         //TODO: Fix problem here when entering a session after the first music file is stored...
-        // Will cause filename collissions enabling unexpected behaviour...
+        // Will cause filename collisions enabling unexpected behaviour...
         recorder = new MediaRecorder();
         try{
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             recorder.setOutputFile(file_path);
+            recorder.prepare();
         }
         catch(Exception e)
         {
@@ -96,15 +103,20 @@ public class AudioRecorder extends Fragment {
     {
         // Ask if Audio recording permission is granted
         if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ) {
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED )
+        {
             //If not ask the user for the permission
             requestPermissions(
                     new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO);
-        } else {
+        }
+
+        else {
             Log.e(TAG, "PERMISSION GRANTED");
 
             try {
-                setupMediaRecorder(this.OutputFilePath("sample"));
+                todays_date = new Date();
+                SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd-hh:mm:ss");
+                setupMediaRecorder(this.OutputFilePath(ft.format(todays_date)));
                 recorder.prepare();
             } catch(Exception e)
             {
@@ -115,10 +127,7 @@ public class AudioRecorder extends Fragment {
 
 
         view = inflater.inflate(R.layout.audio_recorder, container , false);
-
         microphone_button = (Button) view.findViewById(R.id.microphone_button);
-
-
         microphone_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
@@ -126,32 +135,59 @@ public class AudioRecorder extends Fragment {
                 switch(mic_button_clicks)
                 {
                     case 0:
+//                        todays_date = new Date();
+//                        SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd-hh:mm:ss");
+//                        setupMediaRecorder(OutputFilePath(ft.format(todays_date)));
+
+//                        Log.d(TAG, "File:"+OutputFilePath(ft.format(todays_date)));
+
                         microphone_button.setText("Stop");
-                        recorder.start();
-                        Toast.makeText(getActivity(),  "Starting Mic Recording", Toast.LENGTH_SHORT).show();
+                        try {
+//                            recorder.prepare();
+
+                            Log.d(TAG, "Button clicks:"+mic_button_clicks);
+                            recorder.start();
+                            Toast.makeText(getActivity(), "Starting Mic Recording", Toast.LENGTH_SHORT).show();
+                        }catch  (Exception e)
+                        {
+                            e.printStackTrace();
+                            Log.e(TAG, "Error starting MediaRecorder");
+                        }
+                        mic_button_clicks = (mic_button_clicks + 1) % MAX_RECORD_BTN_CLICKS;
                         break;
                     case 1:
                         microphone_button.setText("Start");
-                        Toast.makeText(getActivity(),  "Stopping Mic Recording", Toast.LENGTH_SHORT).show();
+
+                        try {
+                            Log.d(TAG, "Button clicks:"+mic_button_clicks);
                         recorder.stop();
-                        recorder.reset();
+//                        recorder.reset();
+                            Toast.makeText(getActivity(),  "Stopping Mic Recording", Toast.LENGTH_SHORT).show();
+                        }catch  (Exception e)
+                        {
+                            e.printStackTrace();
+                            Log.e(TAG, "Error stopping MediaRecorder");
+                        }
+
+                        mic_button_clicks = (mic_button_clicks + 1) % MAX_RECORD_BTN_CLICKS;
                         break;
 
                     default:
                         try {
-                            Log.e(TAG, "Unexpected value for Mic Button clicks!");
-                            recorder.stop();
-                            recorder.reset();
+                            Log.e(TAG, "Unexpected value for Mic Button clicks:"+mic_button_clicks);
+//                            recorder.stop();
+//                            recorder.reset();
                             microphone_button.setText("Start");
                         }catch(Exception e) {
                             Log.e(TAG, "Tried to stop/reset unavailable MediaRecorder!");
                             e.printStackTrace();
 
                         }
+                        mic_button_clicks = (mic_button_clicks + 1) % MAX_RECORD_BTN_CLICKS;
                         break;
 
                 }
-                mic_button_clicks = mic_button_clicks + 1 % 2;// to wrap around for the only two possible states
+//                mic_button_clicks = (mic_button_clicks + 1) % MAX_RECORD_BTN_CLICKS;// to wrap around for the only two possible states
             }
 
         });

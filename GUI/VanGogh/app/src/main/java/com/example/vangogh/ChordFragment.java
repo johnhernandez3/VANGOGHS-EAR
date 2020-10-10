@@ -3,6 +3,7 @@ package com.example.vangogh;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class ChordFragment extends Fragment
     private ChordFactory chord_factory;
     private ChordValidator chord_validator;
 
+    //GUI Components for binding the Frontend
     Button update_btn;
     View view;
     ImageView chord_view;
@@ -54,8 +56,8 @@ public class ChordFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(getActivity(),  TAG, Toast.LENGTH_SHORT).show();
                 drawChords(editText.getText().toString());
+                editText.setText("");
             }
 
         });
@@ -65,18 +67,14 @@ public class ChordFragment extends Fragment
 
     private boolean validateChord(String input_chord)
     {
-//        boolean result = false;
-
         chord_factory = new ChordFactory();
         ArrayList<ChordModel> valid_chords = chord_factory.createChords();
 
         chord_validator = new ChordValidator(valid_chords);
 
-        // may need to implement regex here to detect correct chords
         if(chord_validator.isValidChord(input_chord))
-        {
             return true;
-        }
+
 
         return false;
     }
@@ -90,17 +88,25 @@ public class ChordFragment extends Fragment
      */
     private void drawChords(String chordName, int width, int height)
     {
+        Log.d(TAG, "Processing chord:"+chordName);
         if(validateChord(chordName)) {
             // Prepare data
             Resources resources = this.getResources();
             int transpose = 0; // transpose distance (-12 to 12)
 
             // Draw chord
-            BitmapDrawable chord = DrawHelper.getBitmapDrawable(
-                    resources, width, height, chordName, fret_position, transpose);
+            try {
+                BitmapDrawable chord = DrawHelper.getBitmapDrawable(
+                        resources, width, height, chordName, fret_position, transpose);
 
-            // Display chord to your image view
-            this.chord_view.setImageDrawable(chord);
+                // Display chord to image view
+                this.chord_view.setImageDrawable(chord);
+            }catch(Exception e)
+            {
+                e.printStackTrace();
+                Log.e(TAG,"Error drawing chord:"+chordName);
+                Toast.makeText(getActivity(), "Sorry, invalid chord provided!", Toast.LENGTH_SHORT).show();
+            }
         }
         else{
             Toast.makeText(getActivity(), "Sorry, invalid chord provided!", Toast.LENGTH_SHORT).show();
