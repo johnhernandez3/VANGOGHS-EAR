@@ -8,6 +8,9 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,6 +47,8 @@ public class AudioRecorder extends Fragment
 
     // Android Implementation of media recorder for both audio and video
     MediaRecorder recorder;
+    SurfaceView output_surface;
+    SurfaceHolder surface_holder;
 
     // View that binds the XML Layout to the Java logic
     View view;
@@ -80,15 +85,21 @@ public class AudioRecorder extends Fragment
      */
     private void setupMediaRecorder(String file_path)
     {
-        //TODO: Fix problem here when entering a session after the first music file is stored...
-        // Will cause filename collisions enabling unexpected behaviour...
+//        output_surface = Surface.CREATOR.createFromParcel();
         recorder = new MediaRecorder();
         try{
-            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+//            recorder.setPreviewDisplay(this.surface_holder.getSurface());
             recorder.setOutputFile(file_path);
-            recorder.prepare();
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            try {
+                recorder.prepare();
+            }catch(Exception e)
+            {
+                Log.e(TAG, "Could not prepare MediaRecorder:"+e);
+            }
         }
         catch(Exception e)
         {
@@ -111,22 +122,25 @@ public class AudioRecorder extends Fragment
         }
 
         else {
-            Log.e(TAG, "PERMISSION GRANTED");
+            Log.d(TAG, "PERMISSION GRANTED:"+Manifest.permission.RECORD_AUDIO);
 
-            try {
-                todays_date = new Date();
-                SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd-hh:mm:ss");
-                setupMediaRecorder(this.OutputFilePath(ft.format(todays_date)));
-                recorder.prepare();
-            } catch(Exception e)
-            {
-                Log.e(TAG, "Error preparing Mic:" + e);
-                e.printStackTrace();
-            }
+//            try {
+////                todays_date = new Date();
+////                SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd-hh:mm:ss");
+////                setupMediaRecorder(this.OutputFilePath(ft.format(todays_date)));
+////                recorder.prepare();
+//            } catch(Exception e)
+//            {
+//                Log.e(TAG, "Error preparing Mic:" + e);
+//                e.printStackTrace();
+//            }
         }
 
 
+//        surface_holder.addCallback(this);
         view = inflater.inflate(R.layout.audio_recorder, container , false);
+//        output_surface = (SurfaceView) view.findViewById(R.id.surface_view);
+//        surface_holder = output_surface.getHolder();
         microphone_button = (Button) view.findViewById(R.id.microphone_button);
         microphone_button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -135,16 +149,15 @@ public class AudioRecorder extends Fragment
                 switch(mic_button_clicks)
                 {
                     case 0:
-//                        todays_date = new Date();
-//                        SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd-hh:mm:ss");
-//                        setupMediaRecorder(OutputFilePath(ft.format(todays_date)));
+                        todays_date = new Date();
+                        SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd-hh:mm:ss");
+                        setupMediaRecorder(OutputFilePath(ft.format(todays_date)));
 
-//                        Log.d(TAG, "File:"+OutputFilePath(ft.format(todays_date)));
+                        Log.d(TAG, "File:"+OutputFilePath(ft.format(todays_date)));
 
                         microphone_button.setText("Stop");
                         try {
 //                            recorder.prepare();
-
                             Log.d(TAG, "Button clicks:"+mic_button_clicks);
                             recorder.start();
                             Toast.makeText(getActivity(), "Starting Mic Recording", Toast.LENGTH_SHORT).show();
