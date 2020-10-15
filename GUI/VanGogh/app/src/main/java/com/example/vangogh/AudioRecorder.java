@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import android.os.Environment;
@@ -45,10 +46,12 @@ public class AudioRecorder extends Fragment
     private static final String TAG = "AUDIO RECORDER FRAG";
     private Context context;// Needed for asking about external storage Directory used for storing the files...
 
+    private boolean permissionToRecordAccepted = false;
+    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
+
     // Android Implementation of media recorder for both audio and video
     MediaRecorder recorder;
-    SurfaceView output_surface;
-    SurfaceHolder surface_holder;
+
 
     // View that binds the XML Layout to the Java logic
     View view;
@@ -85,13 +88,12 @@ public class AudioRecorder extends Fragment
      */
     private void setupMediaRecorder(String file_path)
     {
-//        output_surface = Surface.CREATOR.createFromParcel();
+
         recorder = new MediaRecorder();
         try{
             recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
 
-//            recorder.setPreviewDisplay(this.surface_holder.getSurface());
             recorder.setOutputFile(file_path);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             try {
@@ -137,10 +139,8 @@ public class AudioRecorder extends Fragment
         }
 
 
-//        surface_holder.addCallback(this);
         view = inflater.inflate(R.layout.audio_recorder, container , false);
-//        output_surface = (SurfaceView) view.findViewById(R.id.surface_view);
-//        surface_holder = output_surface.getHolder();
+
         microphone_button = (Button) view.findViewById(R.id.microphone_button);
         microphone_button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -174,7 +174,9 @@ public class AudioRecorder extends Fragment
                         try {
                             Log.d(TAG, "Button clicks:"+mic_button_clicks);
                         recorder.stop();
-//                        recorder.reset();
+                        recorder.reset();
+                        recorder.release();
+                        recorder = null;
                             Toast.makeText(getActivity(),  "Stopping Mic Recording", Toast.LENGTH_SHORT).show();
                         }catch  (Exception e)
                         {
@@ -224,6 +226,21 @@ public class AudioRecorder extends Fragment
         }
 
         Log.d(TAG, "AudioRecorder.onDestroyView method was called.");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_RECORD_AUDIO:
+                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;
+        }
+        if (!permissionToRecordAccepted ) {
+            Log.e(TAG, "Error: Permission not granted to record");
+            System.exit(1);
+        }
+
     }
 
 
