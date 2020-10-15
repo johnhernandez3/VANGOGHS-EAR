@@ -2,10 +2,14 @@ package com.example.vangogh;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -23,6 +27,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import android.os.Environment;
 
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -40,7 +45,7 @@ public class AudioRecorder extends Fragment
     private final int REQUEST_RECORD_AUDIO = 2;
 
     // String used to store the File being recorded from Mic
-    private static final String Output_File = "Sample_File";
+    String Output_File = "Sample_File";
 
     // String to debug using LogCat
     private static final String TAG = "AUDIO RECORDER FRAG";
@@ -73,10 +78,26 @@ public class AudioRecorder extends Fragment
             context = this.getContext();
             //TODO: Implement the output file path to store the Audio recordings from Mic.
             // Alternatively, we could use streams of audio because we don't really want to store the audio.
-            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + filename + ".aac";
+            res = this.OutputFilePath(filename, "3gp");
         }
         else{
-            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + "sample" + ".aac";
+            res = this.OutputFilePath("sample","3gp");
+        }
+        return res;
+    }
+
+    private String OutputFilePath(String filename, String format)
+    {
+        String res;
+        if(filename != null && filename != " ") {
+
+            context = this.getContext();
+            //TODO: Implement the output file path to store the Audio recordings from Mic.
+            // Alternatively, we could use streams of audio because we don't really want to store the audio.
+            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + filename + "." +format;
+        }
+        else{
+            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + "sample" + "."+format;
         }
         return res;
     }
@@ -126,16 +147,6 @@ public class AudioRecorder extends Fragment
         else {
             Log.d(TAG, "PERMISSION GRANTED:"+Manifest.permission.RECORD_AUDIO);
 
-//            try {
-////                todays_date = new Date();
-////                SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd-hh:mm:ss");
-////                setupMediaRecorder(this.OutputFilePath(ft.format(todays_date)));
-////                recorder.prepare();
-//            } catch(Exception e)
-//            {
-//                Log.e(TAG, "Error preparing Mic:" + e);
-//                e.printStackTrace();
-//            }
         }
 
 
@@ -151,7 +162,8 @@ public class AudioRecorder extends Fragment
                     case 0:
                         todays_date = new Date();
                         SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd-hh:mm:ss");
-                        setupMediaRecorder(OutputFilePath(ft.format(todays_date)));
+                        Output_File = OutputFilePath(ft.format(todays_date));//TODO: fix this, possible race-condition
+                        setupMediaRecorder(Output_File);
 
                         Log.d(TAG, "File:"+OutputFilePath(ft.format(todays_date)));
 
@@ -177,7 +189,25 @@ public class AudioRecorder extends Fragment
                         recorder.reset();
                         recorder.release();
                         recorder = null;
+
+                        //SAVE file to Media Store Audio section
+                            ContentValues cv =  new ContentValues();
+                            cv.put(MediaStore.MediaColumns.TITLE,"Sample Audio Recording");
+                            cv.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis());
+                            cv.put(MediaStore.Audio.Media.DATA, Output_File);
+                            cv.put(MediaStore.MediaColumns.MIME_TYPE, "audio/3gp");
+                            Uri uri = MediaStore.Audio.Media.getContentUri(Output_File);
+                            cv.put(MediaStore.Audio.Media.IS_PENDING, 1);
+
+//                            Uri audioCollection = MediaStore.Audio.Media.getContentUri(
+//                                    MediaStore.VOLUME_EXTERNAL_PRIMARY);
+
+                            ContentResolver resolver = getActivity().getContentResolver();
+                            Uri new_uri = resolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cv);
                             Toast.makeText(getActivity(),  "Stopping Mic Recording", Toast.LENGTH_SHORT).show();
+                            cv.clear();
+                            cv.put(MediaStore.Audio.Media.IS_PENDING, 0);
+                            resolver.update(uri, cv, null,null);
                         }catch  (Exception e)
                         {
                             e.printStackTrace();
