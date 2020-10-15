@@ -32,6 +32,7 @@ public class MainActivity extends FragmentActivity {
     private final int REQUEST_READ_STORAGE = 0;
     private final int REQUEST_WRITE_STORAGE = 1;
     private final int REQUEST_RECORD_AUDIO = 2;
+    private final int REQUEST_ACCESS_MEDIA = 3;
     private static final String[] PERMISSIONS = {
             "RECORD_AUDIO",
             "READ_EXTERNAL_STORAGE",
@@ -46,7 +47,7 @@ public class MainActivity extends FragmentActivity {
         for(String s : PERMISSIONS)
         {
             permissions.put(s ,i);
-            i+=3;
+            i+=1;
         }
     }
 
@@ -121,18 +122,29 @@ public class MainActivity extends FragmentActivity {
                     Log.d(TAG, "Granted Read Storage Permission");
                 }
                 return ;
+
             case REQUEST_WRITE_STORAGE:
-                if (grantResults.length > 0 && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     Log.d(TAG, "Granted Write Storage Permission");
                 }
                 return ;
+
             case REQUEST_RECORD_AUDIO:
-                if (grantResults.length > 0 && grantResults[2] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     Log.d(TAG, "Granted Record Audio Permission");
                     return;
                 }
 
                 return ;
+
+            case REQUEST_ACCESS_MEDIA:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Log.d(TAG, "Granted Access Media Permission");
+                    return;
+                }
+
+                return ;
+
             default:
                 Log.d(TAG,"Unknown permission requested:["+requestCode+"]\n");
                 return;
