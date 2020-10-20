@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 
 import org.tensorflow.lite.Interpreter;
+import org.tensorflow.lite.support.common.TensorOperator;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class MusicalChordClassifierNet extends Classifier{
       private final String model_path = "";
       public MusicalChordClassifierNet()
       {
+          super();
 //          interpreter = new Interpreter(loadModelFile(model_path));
           /**
            * There’s a helper function for this in the TensorFlow Lite sample on GitHub.
@@ -52,6 +54,43 @@ public class MusicalChordClassifierNet extends Classifier{
 //        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
         return null;
   }
+
+    /**
+     * Gets the name of the model file stored in Assets.
+     */
+    @Override
+    protected String getModelPath() {
+        return null;
+    }
+
+    /**
+     * Gets the name of the label file stored in Assets.
+     */
+    @Override
+    protected String getLabelPath() {
+        return null;
+    }
+
+    /**
+     * Gets the TensorOperator to nomalize the input image in preprocessing.
+     */
+    @Override
+    protected TensorOperator getPreprocessNormalizeOp() {
+        return null;
+    }
+
+    /**
+     * Gets the TensorOperator to dequantize the output probability in post processing.
+     *
+     * <p>For quantized model, we need de-quantize the prediction with NormalizeOp (as they are all
+     * essentially linear transformation). For float model, de-quantize is not required. But to
+     * uniform the API, de-quantize is added to float model too. Mean and std are set to 0.0f and
+     * 1.0f, respectively.
+     */
+    @Override
+    protected TensorOperator getPostprocessNormalizeOp() {
+        return null;
+    }
 }
 
 
