@@ -28,7 +28,10 @@ public class MusicalChordClassifierNet extends Classifier{
            */
       }
 
-      //TODO: Fix the data types of the parameters as we see necessary
+    public MusicalChordClassifierNet(Activity activity, Device device, int numThreads) {
+    }
+
+    //TODO: Fix the data types of the parameters as we see necessary
       public void infer(String data, double[] probability_array)
       {
           interpreter.run(data, probability_array);

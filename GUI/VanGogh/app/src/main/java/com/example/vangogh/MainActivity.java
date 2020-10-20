@@ -95,7 +95,7 @@ public class MainActivity extends FragmentActivity
 
     public void searchForFile()
     {
-        
+
         Intent intent = new Intent(this, FileManager.class);
 
         startActivity(intent);
@@ -123,7 +123,7 @@ public class MainActivity extends FragmentActivity
 ////            }
 ////
 ////        }
-        requestPermissions((String[])permissions.keySet().toArray(),ALL_REQ_PERMS);
+        requestPermissions((String[])permissions.keySet().toArray(new String[permissions.keySet().size()]),ALL_REQ_PERMS);
     }
 
     //TODO: Fix Permissions Request for File Storage and Audio Recording

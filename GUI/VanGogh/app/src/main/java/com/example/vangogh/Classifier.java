@@ -1,17 +1,12 @@
 package com.example.vangogh;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.RectF;
-import android.os.SystemClock;
-import android.os.Trace;
+
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
+
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
 //import org.tensorflow.lite.examples.classification.env.Logger;
@@ -19,15 +14,6 @@ import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.gpu.GpuDelegate;
 import org.tensorflow.lite.support.common.FileUtil;
 import org.tensorflow.lite.support.common.TensorOperator;
-import org.tensorflow.lite.support.common.TensorProcessor;
-import org.tensorflow.lite.support.image.ImageProcessor;
-import org.tensorflow.lite.support.image.TensorImage;
-import org.tensorflow.lite.support.image.ops.ResizeOp;
-import org.tensorflow.lite.support.image.ops.ResizeOp.ResizeMethod;
-import org.tensorflow.lite.support.image.ops.ResizeWithCropOrPadOp;
-import org.tensorflow.lite.support.image.ops.Rot90Op;
-import org.tensorflow.lite.support.label.TensorLabel;
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 public abstract class Classifier {
 
@@ -157,11 +143,11 @@ public abstract class Classifier {
      * @param numThreads The number of threads to use for classification.
      * @return A classifier with the desired configuration.
      */
-//    public static Classifier create(Activity activity, Device device, int numThreads)
-//            throws IOException {
-//
-//        return new ClassifierFloatMobileNet(activity, device, numThreads);
-//    }
+    public static MusicalChordClassifierNet create(Activity activity, Device device, int numThreads)
+            throws IOException {
+
+        return new MusicalChordClassifierNet(activity, device, numThreads);
+    }
 
     /** Initializes a {@code Classifier}. */
     protected Classifier(Activity activity, Device device, int numThreads) throws IOException {
