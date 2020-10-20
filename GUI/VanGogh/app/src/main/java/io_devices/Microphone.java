@@ -19,6 +19,7 @@ public class Microphone extends Device
      */
     public Microphone(String file_path)
     {
+        Log.d(TAG, "Using file:"+file_path);
         this.recorder = new MediaRecorder();
 
         try{
@@ -26,6 +27,7 @@ public class Microphone extends Device
             recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             recorder.setOutputFile(file_path);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            recorder.prepare();
         }catch(Exception e){
             Log.e(TAG,"Error Encountered while setting up mic."+ e);
 
@@ -38,7 +40,7 @@ public class Microphone extends Device
     public boolean start()
     {
         try{
-            recorder.prepare();
+//            recorder.prepare();
             recorder.start();
         }catch(Exception e)
         {
