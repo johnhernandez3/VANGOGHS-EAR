@@ -10,13 +10,18 @@ import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
-/*
+/**
+ * Class that allows us to know what chord is being measured
     Reference for creating this class:
     https://medium.com/tensorflow/using-tensorflow-lite-on-android-9bbc9cb7d69d
  */
 public class MusicalChordClassifierNet extends Classifier{
       protected Interpreter interpreter;
       private final String model_path = "";
+      
+    /**
+     * Identifies chords
+     */
       public MusicalChordClassifierNet()
       {
 //          interpreter = new Interpreter(loadModelFile(model_path));
@@ -26,6 +31,12 @@ public class MusicalChordClassifierNet extends Classifier{
            */
       }
 
+      
+    /**
+     * Fix the data types of the parameters as we see necessary
+     * @param data string that says what type of data is being run
+     * @param probability_array 
+     */
       //TODO: Fix the data types of the parameters as we see necessary
       public void infer(String data, double[] probability_array)
       {
@@ -41,7 +52,11 @@ public class MusicalChordClassifierNet extends Classifier{
 //    protected String getLabelPath() {
 //        return "labels.txt";
 //    }
-    /** Memory-map the model file in Assets. */
+
+    /** 
+     * Memory-map the model file in Assets. 
+     * @param activity model file that will be loaded
+     */
     private MappedByteBuffer loadModelFile(Activity activity) throws IOException {
         //TODO: Implement this method for loading the model
 //        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd(getModelPath());

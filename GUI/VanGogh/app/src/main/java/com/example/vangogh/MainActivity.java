@@ -19,6 +19,9 @@ import com.dqt.libs.chorddroid.components.ChordTextureView;
 import com.dqt.libs.chorddroid.*;
 import com.google.android.material.snackbar.Snackbar;
 
+/**
+ * Class 
+ */
 public class MainActivity extends FragmentActivity {
 
     AudioRecorder audio_fragment;
@@ -35,6 +38,11 @@ public class MainActivity extends FragmentActivity {
             "ACCESS_MEDIA_LOCATION"
     };
 
+    
+    /**
+     * When the object is created, it finds the Main View for the instance life cycle
+     * @param savedInstanceState the state of the parent that called the object if it wants to know anything
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -69,6 +77,9 @@ public class MainActivity extends FragmentActivity {
 //        chord.drawChord("Am", 0);
     }
 
+    /**
+     *Calls the FileManager class to move the files
+     */
     public void searchForFile()
     {
         Intent intent = new Intent(this, FileManager.class);
@@ -77,7 +88,9 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-
+    /**
+     * Asks for the permission that is missing, if it is denied it asks the user for permission
+     */
     private void requestPermissions()
     {
         for(final String perm : PERMISSIONS)
@@ -118,6 +131,13 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    /**
+     * When activity requires a permission
+     * @param requestCode an int that identifies the type of permission that is being asked
+     * @param permissions string array of the permissions being asked
+     * @param grantresults int array with numbers if it has a 0, it is denied the result, else anything different, 
+     * it is granted
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[] , int grantResults[])
     {

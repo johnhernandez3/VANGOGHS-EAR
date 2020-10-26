@@ -15,6 +15,9 @@ import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 
+/**
+ * Class that is used so that user can see files and be able to move them around
+ */
 public class FileManager extends Activity {
     private static final int FILE_SELECTED_CODE = 0;
     private static final String TAG = "FILE MANAGER";
@@ -25,6 +28,7 @@ public class FileManager extends Activity {
     private FileArrayAdapter files_adapter;
     private ArrayList<String> files = new ArrayList<>();
 
+
     private void testFilenames()
     {
         files.add("A");
@@ -33,6 +37,10 @@ public class FileManager extends Activity {
         files.add("O");
     }
 
+    /**
+     * When the object is created, it finds the File View for the instance life cycle
+     * @param savedInstanceState the state of the parent that called the object if it wants to know anything
+     */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -93,7 +101,10 @@ public class FileManager extends Activity {
         startActivityForResult(intent, REQUEST_CHOOSER);
     }
 
-
+    
+    /**
+     * Allows the user to choose the files that they are seeing
+     */
     private void showFilePicker()
     {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -111,6 +122,13 @@ public class FileManager extends Activity {
         }
     }
 
+    
+    /**
+     * When activity initiates a call for an action
+     * @param requestCode an int that identifies the type of permission that is being asked
+     * @param resultCode an int that identifies the result of the requestCode that was emitted
+     * @param data data that is passed from one activity to the other if any
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
