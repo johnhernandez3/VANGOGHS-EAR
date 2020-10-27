@@ -97,4 +97,4 @@ warnings.filterwarnings("ignore",category=UserWarning)
 
 if __name__ == "__main__":
     # print(f"Running  Sample file:{nix_filename}")
-    show_music()
+    show_music_log_pow()
