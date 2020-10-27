@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">VanGogh</string>
+    <string name="mic">Mic</string>
 </resources>

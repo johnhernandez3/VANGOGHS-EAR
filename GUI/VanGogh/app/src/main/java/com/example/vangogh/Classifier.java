@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.util.List;
 
-import org.tensorflow.lite.DataType;
-import org.tensorflow.lite.Interpreter;
-//import org.tensorflow.lite.examples.classification.env.Logger;
-//import org.tensorflow.lite.examples.classification.tflite.Classifier.Device;
-import org.tensorflow.lite.gpu.GpuDelegate;
-import org.tensorflow.lite.support.common.FileUtil;
-import org.tensorflow.lite.support.common.TensorOperator;
+//import org.tensorflow.lite.DataType;
+//import org.tensorflow.lite.Interpreter;
+////import org.tensorflow.lite.examples.classification.env.Logger;
+////import org.tensorflow.lite.examples.classification.tflite.Classifier.Device;
+//import org.tensorflow.lite.gpu.GpuDelegate;
+//import org.tensorflow.lite.support.common.FileUtil;
+//import org.tensorflow.lite.support.common.TensorOperator;
 
 public abstract class Classifier {
 
@@ -23,7 +23,7 @@ public abstract class Classifier {
 
     public enum Device{CPU,GPU};
 
-    protected Interpreter tflite;
+//    protected Interpreter tflite;
     private List<String> labels;
 
     /** Number of results to show in the UI. */
@@ -33,7 +33,7 @@ public abstract class Classifier {
     private MappedByteBuffer tfliteModel;
 
     /** Options for configuring the Interpreter. */
-    private final Interpreter.Options tfliteOptions = new Interpreter.Options();
+//    private final Interpreter.Options tfliteOptions = new Interpreter.Options();
 
     /** Output probability TensorBuffer. */
 //    private final TensorBuffer outputProbabilityBuffer;

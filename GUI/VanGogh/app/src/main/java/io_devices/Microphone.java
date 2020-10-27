@@ -58,6 +58,7 @@ public class Microphone extends Device
     {
         try{
             recorder.stop();
+            recorder.reset();
             recorder.release();
         }catch(Exception e)
         {
@@ -79,6 +80,7 @@ public class Microphone extends Device
             recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             recorder.setOutputFile(file_path);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            recorder.prepare();
 
         }catch(Exception e)
         {
