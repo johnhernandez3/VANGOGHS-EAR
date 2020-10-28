@@ -26,6 +26,7 @@ public class MainActivity extends FragmentActivity
 {
 
     Map<String, Integer> permissions;
+    TablatureFragment tablature_fragment;
     AudioRecorder audio_fragment;
     ChordFragment chord_fragment;
 
@@ -78,7 +79,9 @@ public class MainActivity extends FragmentActivity
             requestPermissions( new String[]{PERMISSIONS[0]}, REQUEST_RECORD_AUDIO);
         }
 
-        chord_fragment = (ChordFragment) man.findFragmentById(R.id.chord_fragment) ;
+//        chord_fragment = (ChordFragment) man.findFragmentById(R.id.chord_fragment) ;
+
+        tablature_fragment = (TablatureFragment) man.findFragmentById(R.id.tablature_fragment);
 
         Button find_file_btn = (Button) findViewById(R.id.find_button);
         find_file_btn.setOnClickListener(new View.OnClickListener()
@@ -91,6 +94,7 @@ public class MainActivity extends FragmentActivity
 
         });
 
+        transaction.commit();
     }
 
     public void searchForFile()
