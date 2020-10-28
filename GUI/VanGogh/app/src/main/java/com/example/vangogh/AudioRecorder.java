@@ -1,35 +1,25 @@
 package com.example.vangogh;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Surface;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import android.os.Environment;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -167,7 +157,7 @@ public class AudioRecorder extends Fragment
 
 
 
-        view = inflater.inflate(R.layout.audio_recorder, container , false);
+        view = inflater.inflate(R.layout.audio_recorder_fragment, container , false);
 
         microphone_button = (Button) view.findViewById(R.id.microphone_button);
         microphone_button.setOnClickListener(new View.OnClickListener(){

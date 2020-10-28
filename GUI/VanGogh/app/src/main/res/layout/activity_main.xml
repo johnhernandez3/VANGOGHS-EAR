@@ -25,11 +25,11 @@
 <!--            android:layout_alignParentBottom="true"-->
 <!--            android:layout_marginEnd="107dp"-->
 <!--            android:layout_marginBottom="254dp" />-->
-        <fragment android:name="com.example.vangogh.ChordFragment"
-            android:id="@+id/chord_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout="@layout/chord_fragment" />
+<!--        <fragment android:name="com.example.vangogh.ChordFragment"-->
+<!--        android:id="@+id/chord_fragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        tools:layout="@layout/chord_fragment" />-->
 
         <fragment
             android:id="@+id/audio_fragment"
@@ -38,13 +38,23 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="18dp"
-            tools:layout="@layout/audio_recorder" />
+            tools:layout="@layout/audio_recorder_fragment" />
+
+        <fragment
+            android:id="@+id/tablature_fragment"
+            android:name="com.example.vangogh.TablatureFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+
+            tools:layout="@layout/tablature_fragment" />
 
         <Button
             android:id="@+id/find_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search File" />
+            android:hint="Search File" />
     </RelativeLayout>
 
 
