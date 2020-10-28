@@ -39,15 +39,15 @@ def chord_classifier_model(input_shape, norm_layer, num_labels):
     model = models.Sequential(
         [
             layers.Input(shape=input_shape),
-            preprocessing.Resizing(32,32)
+            preprocessing.Resizing(32,32),
             norm_layer,
             layers.Conv2D(32,3,activation='relu'),
             layers.Conv2D(64,3,activation='relu'),
             layers.MaxPool2D(),
             layers.Dropout(0.25),
             layers.Flatten(),
-            layers.Dense(128,activation='relu')
-            layers.Dropout(0.5).
+            layers.Dense(128,activation='relu'),
+            layers.Dropout(0.5),
             layers.Dense(num_labels),
         ]
     )
