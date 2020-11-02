@@ -1,3 +1,7 @@
+import os, pathlib
+
+from utils.settings import * 
+
 import tensorflow as tf
 
 import matplotlib.pyplot as plt
@@ -8,6 +12,16 @@ import seaborn as sns
 from tensorflow.keras.layers.experimental import preprocessing
 from tensorflow.keras import layers
 from tensorflow.keras import models
+
+def chords_path():
+    path= settings.find('Guitar_Chords', settings.get_project_root())
+    return path
+
+def chord_files(path=chords_path(), chord_name='a'):
+
+    for chord_audio_path in settings.findPattern(path, pattern=chord_name):
+        yield chord_audio_path
+    
 
 def  decode_audio(audio_binary):
     audio, _  = tf.audio.decode_wav(audio_binary)
