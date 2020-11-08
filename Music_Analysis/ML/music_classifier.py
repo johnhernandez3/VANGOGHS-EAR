@@ -46,13 +46,25 @@ def setup():
     ROOT_DIR = os.path.dirname(os.path.abspath(filename))
     return ROOT_DIR
 
+def chords_files():
+    chord_path = Path(setup()) #may need to change this for *nix sys
+    chord_path = chord_path /'Guitar_Chords'
+
+    # if not chord_path.exists():
+    #     raise ValueError(f'Chords Database Directory not found!:{chord_path}')
+
+    filenames =  tf.io.gfile.glob(str(chord_path) + '/*/*')
+    filenames = tf.random.shuffle(filenames)
+
+    return filenames
+
 def chords_paths():
     '''
         Yields the paths to the Chord Classes if the subdirectory ~ML/Guitar_Chords/~
-        exists in the system.
+        exists in the system. If the path does not exist, the system raises a ValueError exception.
     '''
     chord_path = Path(setup()) #may need to change this for *nix sys
-    chord_path = chord_path / 'ML' / 'Guitar_Chords'
+    chord_path = chord_path / 'ML' / 'Guitar_Chords' 
     if path.exists(chord_path):
         if path.isdir(chord_path):
             # this is the Guitar_Chords parent folder
@@ -124,12 +136,14 @@ def get_waveform_and_label(file_path):
 def get_spectrogram(waveform):
 
     # this is zero padding for files whose sample rate is less than 16kHz
-    zero_padding = tf.zeros([16000] -  tf.shape(waveform), dtype=tf.float32)
-
+    # zero_padding = tf.zeros([16000] -  tf.shape(waveform), dtype=tf.float32)
+    # if tf.shape(waveform) > 0:
     waveform = tf.cast(waveform, tf.float32)
-    equal_length = tf.concat([waveform, zero_padding],0)
-    spectrogram = tf.signal.stft( equal_length, frame_length=255,frame_step=128)
+    # equal_length = tf.concat([waveform, zero_padding],0)
+    spectrogram = tf.signal.stft( waveform, frame_length=255,frame_step=128)
     return spectrogram
+    # else:
+    #     pass
 
 def spectrogram_dataset(files=[]):
 
@@ -138,18 +152,26 @@ def spectrogram_dataset(files=[]):
 
 def preprocess():
     AUTOTUNE = tf.data.experimental.AUTOTUNE
-    files_ds = [chord_file for chord_file in chord_files()]
+    files_ds = chords_files()
     files_ds = tf.data.Dataset.from_tensor_slices(files_ds)
     waveforms_ds = files_ds.map(get_waveform_and_label, num_parallel_calls=AUTOTUNE)
     return waveforms_ds
 
 def preprocess_dataset(files):
     AUTOTUNE = tf.data.experimental.AUTOTUNE
-    files_ds = [chord_file for chord_file in files]
-    files_ds = tf.data.Dataset.from_tensor_slices(files_ds)
+    # files_ds = (chord_file for chord_file in files)
+    # for idx, f in enumerate(files_ds):
+    #     print(f"{idx} Type of file: {type(f)}\nFilename:{f}\n")
+    files_ds = tf.data.Dataset.from_tensor_slices(files)
+    # for idx, f in enumerate(files_ds):
+    #     print(f"{idx} Type of file: {type(f)}\nFilename:{f}\n")
     waveforms_ds = files_ds.map(get_waveform_and_label, num_parallel_calls=AUTOTUNE)
     spectrogram_ds = waveforms_ds.map(get_spectrogram_and_label_id, num_parallel_calls=AUTOTUNE )
     return spectrogram_ds
+
+def filenames_to_tensor_slices(filenames):
+    files = tf.data.Dataset.from_tensor_slices(filenames)
+    return files
 
 def get_label_from_slice(waveform_ds):
 
@@ -170,14 +192,28 @@ def get_spectrogram_and_label_id(audio, label, num_labels=10):
     label_id = tf.argmax(label == num_labels)
     return spectrogram, label_id
 
-def divide_ds():
-    fs = [chord_files()]
-
-    if len(fs) % 3 == 0:
-        train, val, test = fs[0:len(fs)//3 - 1],fs[len(fs)//3: 2 * len(fs)//3 -1], fs[ 2 * len(fs)//3 : len(fs) -1]
-    else:
-        size = len(fs)
-        train, val, test = fs[0: size//3 - 1],fs[size//3: 2 * size//3 -1], fs[ 2 * size //3 ::]
+def divide_ds(files):
+    
+    # train, val, test = [] , [] , []
+    # if len(files) %2 == 0:
+        # then even
+    mid = len(files) // 2
+    # train , val, test = files[0:mid-1],files[mid:mid//2 + mid -1], files[mid//2 + mid:mid + mid -1]
+    train = files[:mid-1]
+    val = files[mid:mid//2 + mid -1]
+    test = files[mid//2 + mid//1:mid//1 + mid//1 -1]
+        # pass
+    # else:
+    #     #odd
+    #     mid = len(files) / 2
+    #     train , val, test = files[0:mid-1],files[mid,mid//2 + mid -1], files[mid//2 + mid,mid + mid -1]
+    #     pass
+    # if len(fs) % 3 == 0:
+    #     train, val, test = fs[0:len(fs)//3 - 1],fs[len(fs)//3: 2 * len(fs)//3 -1], fs[ 2 * len(fs)//3 : len(fs) -1]
+    # else:
+    #     size = len(fs)
+    #     train, val, test = fs[0: size//3 - 1],fs[size//3: 2 * size//3 -1], fs[ 2 * size //3 ::]
+    
     return train, val, test
 
 def chord_classifier_model(input_shape, norm_layer=None, num_labels=10):
@@ -209,18 +245,35 @@ def chord_classifier_model(input_shape, norm_layer=None, num_labels=10):
     return model
 
 def init_training():
-    train, val, test = divide_ds()
-
-    # train_ds = train.map(get_waveform_and_label, num_calls=AUTOTUNE)
-    # train_ds = train_ds.map(get_spectrogram_and_label_id,num_calls=AUTOTUNE)
-    train_ds = preprocess_dataset(train)
+    train, val, test = divide_ds(files=chords_files())
+    train, val, test = filenames_to_tensor_slices(train),filenames_to_tensor_slices(val),filenames_to_tensor_slices(test),
+    train_ds = train.map(get_waveform_and_label, num_parallel_calls=AUTOTUNE)
+    train_ds = train_ds.map(get_spectrogram_and_label_id,num_parallel_calls=AUTOTUNE)
+    # train_ds = get_spectrogram_and_label_id(decode_audio(train),)
     val_ds = preprocess_dataset(val)
     test_ds = preprocess_dataset(test)
 
-    model = chord_classifier_model(input_shape=train_ds.shape)
+    # in_shape = None
+    for  spectrogram, _ in train_ds.take(1):
+        in_shape = spectrogram.shape
+    model = chord_classifier_model(input_shape=in_shape)
     hist = train_model(train_ds, val_ds,model, )
 
     plot_model_loss(hist)
+
+def test_one_file():
+
+    chord = Path(setup())
+    chord = chord / 'Guitar_Chords' / 'a'/ 'a.wav'
+
+    train = str(chord)
+
+    train_ds = get_waveform_and_label(train)
+    train_ds = get_spectrogram_and_label_id(train_ds, 'a')
+
+    model = chord_classifier_model(input_shape=train_ds[0].take(1)[0].shape)
+    
+    return model
 
 def train_model(train_dataset, validation_data, model, epochs=10):
     batch_size = 64
@@ -258,7 +311,8 @@ def confusion_matrix(model, labels,y_true,y_pred):
     plt.show()
 
 def main():
-    init_training()
+    # init_training()
+    test_one_file()
     return
 
 if __name__ == "__main__":
