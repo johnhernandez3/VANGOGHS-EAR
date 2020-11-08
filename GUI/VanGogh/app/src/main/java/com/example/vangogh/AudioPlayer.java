@@ -38,6 +38,7 @@ public class AudioPlayer extends Fragment {
 
     public AudioPlayer(Uri file)
     {
+        handler = new Handler();
         start_time = 0;
         final_time = 0;
         this.file = file;
@@ -100,7 +101,14 @@ public class AudioPlayer extends Fragment {
             @Override
             public void onClick(View v)
             {
-                player.start();
+                try {
+                    player.start();
+
+                } catch(Exception e)
+                {
+                    e.printStackTrace();
+                    Log.e(TAG,"Error while trying to start audio player");
+                }
 
                 final_time = player.getDuration();
                 start_time = player.getCurrentPosition();
@@ -115,6 +123,7 @@ public class AudioPlayer extends Fragment {
                 handler.postDelayed(UpdateSongTime, 100);
                 play.setEnabled(false);
                 stop.setEnabled(true);
+                pause.setEnabled(true);
                 Toast.makeText(getActivity().getBaseContext(), "Starting audio playback", Toast.LENGTH_SHORT).show();
 
             }
@@ -128,7 +137,7 @@ public class AudioPlayer extends Fragment {
 
                 Toast.makeText(getActivity().getBaseContext(), "Stopping audio playback", Toast.LENGTH_SHORT).show();
 
-                play.setEnabled(true);
+                play.setEnabled(false);
                 stop.setEnabled(false);
                 pause.setEnabled(false);
                 player.stop();
@@ -144,6 +153,7 @@ public class AudioPlayer extends Fragment {
                 player.pause();
                 play.setEnabled(true);
                 pause.setEnabled(false);
+                stop.setEnabled(false);
             }
 
         });
