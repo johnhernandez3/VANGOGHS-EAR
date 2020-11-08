@@ -6,10 +6,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 //import android.support.design.widget.Snackbar;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -29,8 +32,10 @@ public class MainActivity extends FragmentActivity
     TablatureFragment tablature_fragment;
     AudioRecorder audio_fragment;
     ChordFragment chord_fragment;
-
+    ToggleButton toggle_frags ;
     private View view;
+
+    private Uri selected_recording;
 
     private final String TAG = "MAIN";
     private final int REQUEST_READ_STORAGE = 0;
@@ -64,8 +69,8 @@ public class MainActivity extends FragmentActivity
 
         preparePermissions();
 
-        FragmentManager man = getSupportFragmentManager();
-        FragmentTransaction transaction = man.beginTransaction();
+        final FragmentManager man = getSupportFragmentManager();
+        final FragmentTransaction transaction = man.beginTransaction();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -79,9 +84,48 @@ public class MainActivity extends FragmentActivity
             requestPermissions( new String[]{PERMISSIONS[0]}, REQUEST_RECORD_AUDIO);
         }
 
-//        chord_fragment = (ChordFragment) man.findFragmentById(R.id.chord_fragment) ;
+        toggle_frags = (ToggleButton) findViewById(R.id.toggle_frags);
 
-        tablature_fragment = (TablatureFragment) man.findFragmentById(R.id.tablature_fragment);
+        toggle_frags.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+
+                Log.d(TAG, "Entering On Checked Changed Listener");
+                if(isChecked)
+                {
+
+                    Log.d(TAG, "Entered On Checked Flag");
+                    if(man.findFragmentByTag("TABLATURE")!=null)
+                    {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("TABLATURE")).commit();
+                    }
+                    chord_fragment = (ChordFragment) new ChordFragment();
+                    man.beginTransaction().add(R.id.fragment_container_view, chord_fragment, "CHORD FRAG").commit();
+//                    transaction.commit();
+                }
+                else{
+                    Log.d(TAG, "Failed On Checked Flag");
+                    tablature_fragment = (TablatureFragment) new TablatureFragment();
+//                    transaction.commit();
+                    if(man.findFragmentByTag("CHORD FRAG")!=null)
+                    {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("CHORD FRAG")).commit();
+                    }
+//                    chord_fragment = (ChordFragment) new ChordFragment();
+                    man.beginTransaction().add(R.id.fragment_container_view, tablature_fragment, "TABLATURE").commit();
+
+                }
+//                transaction.commit();
+            }
+        });
+
+
+
+
+
+//        transaction.commit();
 
         Button find_file_btn = (Button) findViewById(R.id.find_button);
         find_file_btn.setOnClickListener(new View.OnClickListener()
@@ -94,15 +138,21 @@ public class MainActivity extends FragmentActivity
 
         });
 
-        transaction.commit();
+
     }
+
+    private void swapFragments()
+    {
+
+    }
+
 
     public void searchForFile()
     {
 
         Intent intent = new Intent(this, FileManager.class);
 
-        startActivity(intent);
+        startActivityForResult(intent,1234);
 
     }
 
@@ -176,6 +226,29 @@ public class MainActivity extends FragmentActivity
                 return;
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1234) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("file");
+                Uri uri = Uri.parse(result);
+                selected_recording = uri;
+                Log.d(TAG, "Saved URI of selected recording:"+uri);
+//                boolean bool = data.getBooleanExtra("bool");
+                FragmentManager man = this.getSupportFragmentManager();
+                AudioPlayer audio_player = new AudioPlayer(selected_recording);
+                man.beginTransaction().add(R.id.fragment_container_view, audio_player, "AUDIO PLAYER").commit();
+
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
+
 
 
 }

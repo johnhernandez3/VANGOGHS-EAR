@@ -25,6 +25,8 @@ public class FileManager extends Activity {
     private FileArrayAdapter files_adapter;
     private ArrayList<String> files = new ArrayList<>();
 
+    private Uri selected_file;
+
     private void testFilenames()
     {
         files.add("A");
@@ -70,7 +72,7 @@ public class FileManager extends Activity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
         }
         else {
-            Log.e(TAG, "PERMISSION GRANTED");
+            Log.d(TAG, "PERMISSION GRANTED");
 
             try {
 //                setupMediaRecorder(this.OutputFilePath());
@@ -92,6 +94,11 @@ public class FileManager extends Activity {
 
         startActivityForResult(intent, REQUEST_CHOOSER);
     }
+
+        public Uri returnChosenFile()
+        {
+            return this.selected_file;
+        }
 
 
     private void showFilePicker()
@@ -132,12 +139,17 @@ public class FileManager extends Activity {
 
                 Uri uri = data.getData();
                 Log.d(TAG, "File URI:" +  uri.toString());
-
+                selected_file=uri;
                 String path = uri.getPath();
                 Log.d(TAG, "File Path: "+ path);
                 //process the file or pass it to data
                 files.add(uri.toString());
-                    super.onActivityResult(requestCode, resultCode,data);
+                Intent files_d = new Intent();
+                files_d.putExtra("file", uri.toString());
+                setResult(Activity.RESULT_OK, files_d);
+                finish();
+
+                super.onActivityResult(REQUEST_CHOOSER, resultCode,files_d);
 
                 break;
 
