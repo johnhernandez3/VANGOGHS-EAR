@@ -102,7 +102,11 @@ public class AudioPlayer extends Fragment {
             public void onClick(View v)
             {
                 try {
-                    player.start();
+                    if(player != null)
+                        player.start();
+                     else {
+                        Toast.makeText(getActivity().getBaseContext(), "Select A File Again!", Toast.LENGTH_SHORT).show();
+                    }
 
                 } catch(Exception e)
                 {

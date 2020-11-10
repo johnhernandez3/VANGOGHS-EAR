@@ -8,12 +8,14 @@ import android.content.pm.PackageManager;
 //import android.support.design.widget.Snackbar;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -77,12 +79,41 @@ public class MainActivity extends FragmentActivity
 
         requestPermissions();
 
-        if(checkSelfPermission(PERMISSIONS[0]) == PackageManager.PERMISSION_GRANTED) {
-            audio_fragment = (AudioRecorder) man.findFragmentById(R.id.audio_fragment);
-        }else{
-            // Ask for record permissions here
-            requestPermissions( new String[]{PERMISSIONS[0]}, REQUEST_RECORD_AUDIO);
-        }
+        ToggleButton record_show_btn = (ToggleButton) findViewById(R.id.record_show_button);
+
+        record_show_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+
+                Log.d(TAG, "Entering On Checked Changed Listener");
+                if(isChecked)
+                {
+
+                    Log.d(TAG, "Entered On Checked Flag");
+                    //TODO: Fix Bug here with the permissions, refuses to ask or verify that they were granted
+                    // Fails to add audio recorder frag as a consequence
+                    if(checkSelfPermission("RECORD AUDIO") == PackageManager.PERMISSION_GRANTED) {
+                        Log.d(TAG, "Adding Audio Recorder Fragment");
+                        audio_fragment = new AudioRecorder();
+                        man.beginTransaction().add(R.id.audio_fragment_container_view, audio_fragment, "AUDIO RECORD FRAG").commit();
+                    }else{
+                        // Ask for record permissions here
+                        requestPermissions( new String[]{"RECORD AUDIO"}, REQUEST_RECORD_AUDIO);
+                    }
+                }
+                else{
+                    Log.d(TAG, "Failed On Checked Flag");
+//
+                    if(man.findFragmentByTag("AUDIO RECORD FRAG")!=null) {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO RECORD FRAG")).commit();
+                    }
+
+                }
+
+            }
+        });
+
 
         toggle_frags = (ToggleButton) findViewById(R.id.toggle_frags);
 
@@ -107,25 +138,22 @@ public class MainActivity extends FragmentActivity
                 else{
                     Log.d(TAG, "Failed On Checked Flag");
                     tablature_fragment = (TablatureFragment) new TablatureFragment();
-//                    transaction.commit();
                     if(man.findFragmentByTag("CHORD FRAG")!=null)
                     {
                         //remove this one
                         man.beginTransaction().remove(man.findFragmentByTag("CHORD FRAG")).commit();
                     }
-//                    chord_fragment = (ChordFragment) new ChordFragment();
+
                     man.beginTransaction().add(R.id.fragment_container_view, tablature_fragment, "TABLATURE").commit();
 
                 }
-//                transaction.commit();
+
             }
         });
 
 
 
 
-
-//        transaction.commit();
 
         Button find_file_btn = (Button) findViewById(R.id.find_button);
         find_file_btn.setOnClickListener(new View.OnClickListener()
@@ -139,6 +167,8 @@ public class MainActivity extends FragmentActivity
         });
 
 
+
+
     }
 
     private void swapFragments()
@@ -149,7 +179,7 @@ public class MainActivity extends FragmentActivity
 
     public void searchForFile()
     {
-
+        // Asks FileManager to be initialized and awaits the result of selected file
         Intent intent = new Intent(this, FileManager.class);
 
         startActivityForResult(intent,1234);
@@ -159,24 +189,6 @@ public class MainActivity extends FragmentActivity
 
     private void requestPermissions()
     {
-//        for(Map.Entry<String, Integer> perm : this.permissions.entrySet())
-////        {
-////            int res = checkSelfPermission(perm.getKey());
-////            if (res == PackageManager.PERMISSION_GRANTED)
-////            {
-////                //then we do not need to worry
-////                Log.d(TAG, "Permission:["+perm.getKey()+"]\n already granted!");
-////            }
-////            else if(res== PackageManager.PERMISSION_DENIED)
-////            {
-////                //proceed to ask user...
-////                // RequestMultiplePermissions.createIntent(this, PERMISSIONS);
-////                Log.i(TAG, "Permission:["+perm.getKey()+"] has NOT been granted.\n Requesting permission.");
-////
-////                requestPermissions( new String[]{perm.getKey()}, perm.getValue());
-////            }
-////
-////        }
         requestPermissions((String[])permissions.keySet().toArray(new String[permissions.keySet().size()]),ALL_REQ_PERMS);
     }
 
@@ -230,6 +242,8 @@ public class MainActivity extends FragmentActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        //Receives the URI of selected file from FileManager class
         if (requestCode == 1234) {
             if(resultCode == Activity.RESULT_OK){
                 String result=data.getStringExtra("file");
@@ -239,6 +253,7 @@ public class MainActivity extends FragmentActivity
 //                boolean bool = data.getBooleanExtra("bool");
                 FragmentManager man = this.getSupportFragmentManager();
                 AudioPlayer audio_player = new AudioPlayer(selected_recording);
+
                 man.beginTransaction().add(R.id.fragment_container_view, audio_player, "AUDIO PLAYER").commit();
 
 

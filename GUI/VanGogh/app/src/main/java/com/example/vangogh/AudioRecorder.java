@@ -66,7 +66,7 @@ public class AudioRecorder extends Fragment
      * @return String representation of the Output File Path.
      */
     @NotNull
-    private String OutputFilePath(String filename)
+    protected String OutputFilePath(String filename)
     {
         String res;
         if(nonEmptyString(filename)) {
@@ -82,13 +82,12 @@ public class AudioRecorder extends Fragment
         return res;
     }
 
-    private boolean nonEmptyString(String text)
+    protected boolean nonEmptyString(String text)
     {
         if(text.trim().length() > 0 && text  != null)
             return true;
         else
             return false;
-
     }
 
 

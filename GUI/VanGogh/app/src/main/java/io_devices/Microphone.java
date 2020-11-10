@@ -40,7 +40,6 @@ public class Microphone extends Device
     public boolean start()
     {
         try{
-//            recorder.prepare();
             recorder.start();
         }catch(Exception e)
         {

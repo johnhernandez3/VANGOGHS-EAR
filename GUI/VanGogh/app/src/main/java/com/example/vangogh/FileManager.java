@@ -83,11 +83,7 @@ public class FileManager extends Activity {
                 e.printStackTrace();
             }
         }
-//        Create the ACTION_GET_CONTENT Intent
-//        Intent getContentIntent = FileUtils.createGetContentIntent();
 
-//        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
-//        startActivityForResult(intent, REQUEST_CHOOSER);
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
