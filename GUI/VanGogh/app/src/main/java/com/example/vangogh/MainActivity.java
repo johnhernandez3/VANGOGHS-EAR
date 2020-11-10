@@ -2,31 +2,30 @@ package com.example.vangogh;
 
 import android.Manifest;
 import android.app.Activity;
-//import android.app.FragmentManager;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
-//import android.support.design.widget.Snackbar;
+
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
-import androidx.core.content.ContextCompat;
+
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.dqt.libs.chorddroid.components.ChordTextureView;
-import com.dqt.libs.chorddroid.*;
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class for the Main View of the system and where the user will mainly interact
+ */
 public class MainActivity extends FragmentActivity
 {
 
@@ -176,7 +175,9 @@ public class MainActivity extends FragmentActivity
 
     }
 
-
+    /**
+     * Generates an intent for the FileManager activity and awaits a result with code 1234 for a file URI.
+     */
     public void searchForFile()
     {
         // Asks FileManager to be initialized and awaits the result of selected file
@@ -186,7 +187,9 @@ public class MainActivity extends FragmentActivity
 
     }
 
-
+    /**
+     * Asks the user for IO device permissions such as accessing storage and the microphone
+     */
     private void requestPermissions()
     {
         requestPermissions((String[])permissions.keySet().toArray(new String[permissions.keySet().size()]),ALL_REQ_PERMS);

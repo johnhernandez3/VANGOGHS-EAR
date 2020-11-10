@@ -6,22 +6,10 @@ import utils.Controller;
 import utils.Device;
 import utils.Manager;
 
-public class IODeviceManager extends Manager
+public interface IODeviceManager extends Manager
 {
-    private List<Controller> controllers;
 
-    public IODeviceManager()
-    {
+    boolean addController(Controller control);
 
-    }
-
-    public boolean addController(Controller control)
-    {
-        return false;
-    }
-
-    protected boolean isValid(Controller control)
-    {
-        return false;
-    }
+    boolean isValid(Controller control);
 }

@@ -82,6 +82,11 @@ public class AudioRecorder extends Fragment
         return res;
     }
 
+    /**
+     * Verifies if @param text is an empty string or an only whitespace containing string
+     * @param text the String we want to verify for emptiness
+     * @return boolean representing if the @param text is non-empty
+     */
     protected boolean nonEmptyString(String text)
     {
         if(text.trim().length() > 0 && text  != null)
@@ -90,7 +95,13 @@ public class AudioRecorder extends Fragment
             return false;
     }
 
-
+    /**
+     * Generates the Output File Path for the Audio Recorder to store recorded audio.
+     *
+     * @param filename the name of the file to be created for storing the recorded audio.
+     * @param format the file format that the data will be stored as.
+     * @return String representation of the Output File Path with specified format
+     */
     @NotNull
     private String OutputFilePath(String filename, String format)
     {

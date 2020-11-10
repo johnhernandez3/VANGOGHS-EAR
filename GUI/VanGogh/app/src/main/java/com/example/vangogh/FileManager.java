@@ -14,8 +14,17 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class FileManager extends Activity {
+import io_devices.IODeviceManager;
+import utils.Controller;
+import utils.Device;
+
+/**
+ * Class designated with the management of File logic in the system.
+ * Queries for file URI's on the device, creates new files and deletes them.
+ */
+public class FileManager extends Activity implements IODeviceManager {
     private static final int FILE_SELECTED_CODE = 0;
     private static final String TAG = "FILE MANAGER";
     private static final int REQUEST_CHOOSER = 1234;
@@ -155,6 +164,33 @@ public class FileManager extends Activity {
     }
 
 
+    @Override
+    public List<Device> devices() {
+        return null;
+    }
 
+    @Override
+    public boolean addDevice(Device device) throws IllegalArgumentException {
+        return false;
+    }
 
+    @Override
+    public boolean removeDevice(Device device) throws IllegalArgumentException {
+        return false;
+    }
+
+    @Override
+    public Controller getDevice(Device device) throws IllegalArgumentException {
+        return null;
+    }
+
+    @Override
+    public boolean addController(Controller control) {
+        return false;
+    }
+
+    @Override
+    public boolean isValid(Controller control) {
+        return false;
+    }
 }

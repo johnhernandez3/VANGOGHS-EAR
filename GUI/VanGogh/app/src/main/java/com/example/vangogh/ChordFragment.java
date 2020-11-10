@@ -22,6 +22,9 @@ import chords.ChordFactory;
 import chords.ChordModel;
 import chords.ChordValidator;
 
+/**
+ * Class for displaying the Chord Diagram View to the user.
+ */
 public class ChordFragment extends Fragment
 {
     int fret_position = 0; // from 0 to 12
@@ -65,6 +68,11 @@ public class ChordFragment extends Fragment
         return view;
     }
 
+    /**
+     * Verifies if the provided @param input_chord is a valid representation of a chord.
+     * @param input_chord chord to be validated
+     * @return boolean representing if the @param input_chord is valid.
+     */
     private boolean validateChord(String input_chord)
     {
         chord_factory = new ChordFactory();
@@ -113,6 +121,9 @@ public class ChordFragment extends Fragment
         }
     }
 
+    /*
+        Draws the Chord Diagram onto the View for the user.
+     */
     private void drawChords(String chordName)
     {
         this.drawChords(chordName, DIAGRAM_WIDTH, DIAGRAM_HEIGHT);

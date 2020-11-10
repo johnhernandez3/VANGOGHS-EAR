@@ -16,6 +16,11 @@ public class ChordFactory {
     }
 
     //TODO: Filter out the non-existent chords for certain classes
+
+    /**
+     * Generates the valid chords our system accepts internally in the ChordFragment class
+     * @return
+     */
     public ArrayList<ChordModel> createChords()
     {
         ArrayList<ChordModel> chords = new ArrayList<>();

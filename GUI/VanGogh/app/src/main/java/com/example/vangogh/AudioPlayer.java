@@ -19,21 +19,30 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-
+/**
+ * AudioPlayer for playing back chord audio from the user's selection
+ */
 public class AudioPlayer extends Fragment {
 
+    // String used for debugging with LogCat utility
     private static  final String TAG = "AUDIO PLAYER";
 
+    //GUI Elements for interacting with the audio file
     private Button play, stop,pause,forward,back;
-    private static int one_time_only  = 0;
+
 
     private View view;
-//    private String file;
     private MediaPlayer player;
-    private SeekBar seekbar;
+
+    //The URI of the stored internal file to be played
     private Uri file;
+
+    //A handler for the thread designated to update the seekbar
     private Handler handler;
 
+    // SeekBar data for tracking Audio Playback progress
+    private SeekBar seekbar;
+    private static int one_time_only  = 0;
     private double start_time, final_time;
 
     public AudioPlayer(Uri file)
@@ -166,7 +175,7 @@ public class AudioPlayer extends Fragment {
             @Override
             public void onClick(View v)
             {
-
+                //TODO: Implement backwards logic
             }
 
         });
@@ -175,7 +184,7 @@ public class AudioPlayer extends Fragment {
             @Override
             public void onClick(View v)
             {
-
+                //TODO: Implement fast forward logic
             }
 
         });
@@ -183,6 +192,7 @@ public class AudioPlayer extends Fragment {
         return view;
     }
 
+    // Separate Thread for updating the seekbar object in parallel to the AudioPlayer execution logic.
     private Runnable UpdateSongTime = new Runnable() {
         @Override
         public void run() {
@@ -192,6 +202,9 @@ public class AudioPlayer extends Fragment {
         }
     };
 
+    /**
+     * Method for cleaning up the AudioPlayer fragment once it is popped from the process stack.
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
