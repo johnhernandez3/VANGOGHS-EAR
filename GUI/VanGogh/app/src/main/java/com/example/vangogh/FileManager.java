@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.List;
 
 import io_devices.IODeviceManager;
@@ -25,6 +26,10 @@ import utils.Device;
  * Queries for file URI's on the device, creates new files and deletes them.
  */
 public class FileManager extends Activity implements IODeviceManager {
+=======
+
+public class FileManager extends Activity {
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
     private static final int FILE_SELECTED_CODE = 0;
     private static final String TAG = "FILE MANAGER";
     private static final int REQUEST_CHOOSER = 1234;
@@ -34,8 +39,11 @@ public class FileManager extends Activity implements IODeviceManager {
     private FileArrayAdapter files_adapter;
     private ArrayList<String> files = new ArrayList<>();
 
+<<<<<<< HEAD
     private Uri selected_file;
 
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
     private void testFilenames()
     {
         files.add("A");
@@ -81,7 +89,11 @@ public class FileManager extends Activity implements IODeviceManager {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
         }
         else {
+<<<<<<< HEAD
             Log.d(TAG, "PERMISSION GRANTED");
+=======
+            Log.e(TAG, "PERMISSION GRANTED");
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 
             try {
 //                setupMediaRecorder(this.OutputFilePath());
@@ -92,7 +104,15 @@ public class FileManager extends Activity implements IODeviceManager {
                 e.printStackTrace();
             }
         }
+<<<<<<< HEAD
 
+=======
+//        Create the ACTION_GET_CONTENT Intent
+//        Intent getContentIntent = FileUtils.createGetContentIntent();
+
+//        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
+//        startActivityForResult(intent, REQUEST_CHOOSER);
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -100,11 +120,14 @@ public class FileManager extends Activity implements IODeviceManager {
         startActivityForResult(intent, REQUEST_CHOOSER);
     }
 
+<<<<<<< HEAD
         public Uri returnChosenFile()
         {
             return this.selected_file;
         }
 
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 
     private void showFilePicker()
     {
@@ -144,17 +167,25 @@ public class FileManager extends Activity implements IODeviceManager {
 
                 Uri uri = data.getData();
                 Log.d(TAG, "File URI:" +  uri.toString());
+<<<<<<< HEAD
                 selected_file=uri;
+=======
+
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
                 String path = uri.getPath();
                 Log.d(TAG, "File Path: "+ path);
                 //process the file or pass it to data
                 files.add(uri.toString());
+<<<<<<< HEAD
                 Intent files_d = new Intent();
                 files_d.putExtra("file", uri.toString());
                 setResult(Activity.RESULT_OK, files_d);
                 finish();
 
                 super.onActivityResult(REQUEST_CHOOSER, resultCode,files_d);
+=======
+                    super.onActivityResult(requestCode, resultCode,data);
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 
                 break;
 
@@ -164,6 +195,7 @@ public class FileManager extends Activity implements IODeviceManager {
     }
 
 
+<<<<<<< HEAD
     @Override
     public List<Device> devices() {
         return null;
@@ -193,4 +225,8 @@ public class FileManager extends Activity implements IODeviceManager {
     public boolean isValid(Controller control) {
         return false;
     }
+=======
+
+
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 }

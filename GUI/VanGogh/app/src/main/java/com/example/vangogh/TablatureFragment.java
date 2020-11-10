@@ -18,7 +18,11 @@ public class TablatureFragment extends Fragment
     Tablature tab;
     View view;
     Button load_btn;
+<<<<<<< HEAD
     TextView tablature_text;
+=======
+   TextView tablature_text;
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

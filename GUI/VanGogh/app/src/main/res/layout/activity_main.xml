@@ -9,6 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+<<<<<<< HEAD
 
 
         <Button
@@ -30,10 +31,47 @@
 
         <FrameLayout
             android:id="@+id/audio_fragment_container_view"
+=======
+<!--        <ImageView-->
+<!--            android:id="@+id/chord_image"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:contentDescription="@string/my_image_description"-->
+<!--            />-->
+
+<!--        <com.dqt.libs.chorddroid.components.ChordTextureView-->
+<!--            android:id="@+id/chord_texture_view"-->
+<!--            android:layout_width="216dp"-->
+<!--            android:layout_height="210dp"-->
+
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_marginEnd="107dp"-->
+<!--            android:layout_marginBottom="254dp" />-->
+<!--        <fragment android:name="com.example.vangogh.ChordFragment"-->
+<!--        android:id="@+id/chord_fragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        tools:layout="@layout/chord_fragment" />-->
+
+        <fragment
+            android:id="@+id/audio_fragment"
+            android:name="com.example.vangogh.AudioRecorder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="18dp"
+            tools:layout="@layout/audio_recorder_fragment" />
+
+        <fragment
+            android:id="@+id/tablature_fragment"
+            android:name="com.example.vangogh.TablatureFragment"
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
+<<<<<<< HEAD
             android:layout_marginEnd="102dp"
             android:layout_marginBottom="34dp"
             android:orientation="horizontal" />
@@ -70,6 +108,16 @@
 <!--            android:layout_marginEnd="169dp"-->
 <!--            android:layout_marginBottom="12dp"-->
 <!--            tools:layout="@layout/audio_recorder_fragment" />-->
+=======
+
+            tools:layout="@layout/tablature_fragment" />
+
+        <Button
+            android:id="@+id/find_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Search File" />
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
     </RelativeLayout>
 
 
