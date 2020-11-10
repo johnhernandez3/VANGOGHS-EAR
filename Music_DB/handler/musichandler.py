@@ -39,7 +39,7 @@ class MusicHandler:
         songname = args.get('songname')
         songartist = args.get('songartist')
         music_list = []
-        elif (len(args) == 2) and songname and songartist:
+        if (len(args) == 2) and songname and songartist:
             music_list = dao.getMusicBySongnameandSongartist(songname, songartist)
         elif (len(args) == 1) and songname:
             music_list = dao.getMusicBySongname(songname)

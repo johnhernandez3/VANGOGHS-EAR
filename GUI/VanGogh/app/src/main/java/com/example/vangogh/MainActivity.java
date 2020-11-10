@@ -26,6 +26,7 @@ public class MainActivity extends FragmentActivity {
 
     AudioRecorder audio_fragment;
     ChordFragment chord_fragment;
+    Button dbview_button;
     private View view;
     private final String TAG = "MAIN";
     private final int REQUEST_READ_STORAGE = 0;
@@ -69,6 +70,18 @@ public class MainActivity extends FragmentActivity {
             }
 
         });
+
+
+        final Intent intent = new Intent(this, DatabaseView.class);
+        dbview_button = (Button) findViewById(R.id.dbview_button);
+        dbview_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(intent);
+            }
+        });
+
 
 //        fragment = (RecordFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
 //            transaction.add(R.id.chord_fragment, chord_fragment);
@@ -135,7 +148,7 @@ public class MainActivity extends FragmentActivity {
      * When activity requires a permission
      * @param requestCode an int that identifies the type of permission that is being asked
      * @param permissions string array of the permissions being asked
-     * @param grantresults int array with numbers if it has a 0, it is denied the result, else anything different, 
+     * @param grantResults int array with numbers if it has a 0, it is denied the result, else anything different,
      * it is granted
      */
     @Override
