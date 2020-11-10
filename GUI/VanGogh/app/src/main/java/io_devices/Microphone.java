@@ -6,7 +6,7 @@ import android.util.Log;
 import utils.Device;
 
 
-public class Microphone extends Device
+public class Microphone implements Device
 {
 
     private final String TAG  = "MIC";

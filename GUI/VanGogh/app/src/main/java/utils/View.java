@@ -1,5 +1,5 @@
 package utils;
 
-public class View {
+public interface View {
 
 }

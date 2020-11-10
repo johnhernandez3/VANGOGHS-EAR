@@ -1,4 +1,4 @@
 package utils;
 
-public class Controller {
+public interface Controller {
 }

@@ -1,4 +1,4 @@
 package utils;
 
-public class Manager {
+public interface Manager {
 }
