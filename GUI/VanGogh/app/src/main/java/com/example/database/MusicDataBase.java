@@ -21,6 +21,10 @@ public class MusicDataBase extends SQLiteOpenHelper {
     public static final String CCOL_2 = "CHORDS";
 
 
+    /**
+     * Represents instance of class using context
+     * @param context allows created instance to understand what is happening and connect to the database
+     */
     public MusicDataBase (Context context) { super(context, DB_NAME, null, 1); }
 
     @Override
@@ -36,6 +40,12 @@ public class MusicDataBase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Inserts data into the desired table created in the database
+     * @param DATA String representing the value inserted into the table
+     * @param i decides which table is having data inserted
+     * @return is true if the data was inserted and false if it was not
+     */
     public boolean insertData(String DATA, int i) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -66,20 +76,10 @@ public class MusicDataBase extends SQLiteOpenHelper {
 
     }
 
-//    public boolean insertChordData(String CHORDS) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues contentValues1 = new ContentValues();
-//        contentValues1.put(CCOL_2, CHORDS);
-//        long res1 = db.insert(TABLE_NAME1, null, contentValues1);
-//
-//        if(res1 == -1) {
-//            return false;
-//        }
-//        else {
-//            return true;
-//        }
-//    }
-
+    /**
+     * Acts as a select command that receives all of the non-deleted values from the tablature table as a List object
+     * @return returns List object that has every value currently in the table
+     */
     public List getAllID() {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> al = new ArrayList<>();
@@ -92,6 +92,10 @@ public class MusicDataBase extends SQLiteOpenHelper {
         return al;
     }
 
+    /**
+     * Acts as a select command that receives all of the non-deleted values from the chord table as a List object
+     * @return returns List object that has every value currently in the table
+     */
     public List getAllID2() {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> al = new ArrayList<>();
@@ -104,11 +108,21 @@ public class MusicDataBase extends SQLiteOpenHelper {
         return al;
     }
 
+    /**
+     * Represents the delete query on the tablature table for id provided
+     * @param id the String id that represents the value on the table that will be deleted
+     * @return returns the integer representation of the rows deleted
+     */
     public Integer deleteData(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME, "ID = ?", new String[] {id});
     }
 
+    /**
+     * Represents the delete query on the chords table for id provided
+     * @param id the String id that represents the value on the table that will be deleted
+     * @return returns the integer representation of the rows deleted
+     */
     public Integer deleteChordData(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME1, "CID = ?", new String[] {id});

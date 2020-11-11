@@ -142,6 +142,11 @@ public class DatabaseView extends Activity {
         });
     }
 
+    /**
+     * Shows messages on a separate window
+     * @param title the title of the message that is demonstrated on the window
+     * @param msg the message demonstrated on the window
+     */
     public void showMessage(String title, String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
