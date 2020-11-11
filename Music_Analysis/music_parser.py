@@ -9,9 +9,11 @@ import warnings
 
 from utils.settings import get_project_root, find
 
-filename = r"C:\Users\johnm\git\MusicAnalysis\Music_Analysis\Megaman_ZX_-_Green_Grass_Gradiation_NITRO_Remix (1).wav"
+filename = ""
+nix_filename = ""
+# filename = r"C:\Users\johnm\git\MusicAnalysis\Music_Analysis\Megaman_ZX_-_Green_Grass_Gradiation_NITRO_Remix (1).wav"
 
-nix_filename = r"Megaman_ZX_-_Green_Grass_Gradiation_NITRO_Remix (1).wav"
+# nix_filename = r"Megaman_ZX_-_Green_Grass_Gradiation_NITRO_Remix (1).wav"
 
 def load_music(filename, dir=get_project_root()):
 
@@ -97,4 +99,4 @@ warnings.filterwarnings("ignore",category=UserWarning)
 
 if __name__ == "__main__":
     # print(f"Running  Sample file:{nix_filename}")
-    show_music()
+    show_music_log_pow()

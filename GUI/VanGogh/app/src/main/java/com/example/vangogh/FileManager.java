@@ -19,6 +19,17 @@ import java.util.ArrayList;
  * Class that is used so that user can see files and be able to move them around
  */
 public class FileManager extends Activity {
+import java.util.List;
+
+import io_devices.IODeviceManager;
+import utils.Controller;
+import utils.Device;
+
+/**
+ * Class designated with the management of File logic in the system.
+ * Queries for file URI's on the device, creates new files and deletes them.
+ */
+public class FileManager extends Activity implements IODeviceManager {
     private static final int FILE_SELECTED_CODE = 0;
     private static final String TAG = "FILE MANAGER";
     private static final int REQUEST_CHOOSER = 1234;
@@ -28,6 +39,7 @@ public class FileManager extends Activity {
     private FileArrayAdapter files_adapter;
     private ArrayList<String> files = new ArrayList<>();
 
+    private Uri selected_file;
 
     private void testFilenames()
     {
@@ -52,8 +64,8 @@ public class FileManager extends Activity {
         ListView list_view = (ListView) findViewById(R.id.files_list) ;
         list_view.setAdapter(files_adapter);
 
-        if (checkSelfPermission(
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED ) {
             //If not ask the user for the permission
             requestPermissions(
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);
@@ -78,7 +90,7 @@ public class FileManager extends Activity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
         }
         else {
-            Log.e(TAG, "PERMISSION GRANTED");
+            Log.d(TAG, "PERMISSION GRANTED");
 
             try {
 //                setupMediaRecorder(this.OutputFilePath());
@@ -105,6 +117,12 @@ public class FileManager extends Activity {
     /**
      * Allows the user to choose the files that they are seeing
      */
+        public Uri returnChosenFile()
+        {
+            return this.selected_file;
+        }
+
+
     private void showFilePicker()
     {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -150,12 +168,17 @@ public class FileManager extends Activity {
 
                 Uri uri = data.getData();
                 Log.d(TAG, "File URI:" +  uri.toString());
-
+                selected_file=uri;
                 String path = uri.getPath();
                 Log.d(TAG, "File Path: "+ path);
                 //process the file or pass it to data
                 files.add(uri.toString());
-                    super.onActivityResult(requestCode, resultCode,data);
+                Intent files_d = new Intent();
+                files_d.putExtra("file", uri.toString());
+                setResult(Activity.RESULT_OK, files_d);
+                finish();
+
+                super.onActivityResult(REQUEST_CHOOSER, resultCode,files_d);
 
                 break;
 
@@ -165,6 +188,33 @@ public class FileManager extends Activity {
     }
 
 
+    @Override
+    public List<Device> devices() {
+        return null;
+    }
 
+    @Override
+    public boolean addDevice(Device device) throws IllegalArgumentException {
+        return false;
+    }
 
+    @Override
+    public boolean removeDevice(Device device) throws IllegalArgumentException {
+        return false;
+    }
+
+    @Override
+    public Controller getDevice(Device device) throws IllegalArgumentException {
+        return null;
+    }
+
+    @Override
+    public boolean addController(Controller control) {
+        return false;
+    }
+
+    @Override
+    public boolean isValid(Controller control) {
+        return false;
+    }
 }

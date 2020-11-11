@@ -4,6 +4,7 @@
 
 <!--    <uses-feature android:name="android.hardware." android:required="false" />-->
 
+<!--    <uses-permission android:name="android.permission.CAPTURE_AUDIO_OUTPUT" />-->
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
