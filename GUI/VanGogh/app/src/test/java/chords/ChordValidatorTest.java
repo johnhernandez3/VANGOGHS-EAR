@@ -2,6 +2,7 @@ package chords;
 import org.junit.Test;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,12 +84,23 @@ public class ChordValidatorTest {
     public void validateCorrectChords()
     {
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
+public class ChordValidatorTest {
+
+    @Test
+    public void validateCorrectChords()
+    {
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 
     }
 
     @Test
     public void validateIncorrectChords()
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
         chord_factory = new ChordFactory();
         validator = new ChordValidator(chord_factory.createChords());
@@ -99,6 +111,9 @@ public class ChordValidatorTest {
         {
             assertFalse(validator.isValidChord(chord));
         }
+=======
+
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec

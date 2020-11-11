@@ -10,9 +10,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /**
  * Class used for displaying the Files into the FileManager View.
  */
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 public class FileArrayAdapter  extends ArrayAdapter<String>

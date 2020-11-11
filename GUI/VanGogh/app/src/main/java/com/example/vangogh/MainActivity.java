@@ -3,6 +3,7 @@ package com.example.vangogh;
 import android.Manifest;
 import android.app.Activity;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,8 @@ import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
 =======
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 //import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,12 +28,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+<<<<<<< HEAD
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +46,8 @@ import java.util.Map;
  * Class for the Main View of the system and where the user will mainly interact
  */
 =======
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 import com.dqt.libs.chorddroid.components.ChordTextureView;
 import com.dqt.libs.chorddroid.*;
 import com.google.android.material.snackbar.Snackbar;
@@ -46,6 +55,9 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.HashMap;
 import java.util.Map;
 
+<<<<<<< HEAD
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 public class MainActivity extends FragmentActivity
 {
@@ -55,10 +67,15 @@ public class MainActivity extends FragmentActivity
     AudioRecorder audio_fragment;
     ChordFragment chord_fragment;
 <<<<<<< HEAD
+<<<<<<< HEAD
     ToggleButton toggle_frags ;
     private View view;
 
     private Uri selected_recording;
+=======
+
+    private View view;
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 
     private View view;
@@ -97,8 +114,13 @@ public class MainActivity extends FragmentActivity
         preparePermissions();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         final FragmentManager man = getSupportFragmentManager();
         final FragmentTransaction transaction = man.beginTransaction();
+=======
+        FragmentManager man = getSupportFragmentManager();
+        FragmentTransaction transaction = man.beginTransaction();
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
         FragmentManager man = getSupportFragmentManager();
         FragmentTransaction transaction = man.beginTransaction();
@@ -109,6 +131,7 @@ public class MainActivity extends FragmentActivity
 
         requestPermissions();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         ToggleButton record_show_btn = (ToggleButton) findViewById(R.id.record_show_button);
 
@@ -186,6 +209,8 @@ public class MainActivity extends FragmentActivity
 
 
 =======
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
         if(checkSelfPermission(PERMISSIONS[0]) == PackageManager.PERMISSION_GRANTED) {
             audio_fragment = (AudioRecorder) man.findFragmentById(R.id.audio_fragment);
         }else{
@@ -196,6 +221,9 @@ public class MainActivity extends FragmentActivity
 //        chord_fragment = (ChordFragment) man.findFragmentById(R.id.chord_fragment) ;
 
         tablature_fragment = (TablatureFragment) man.findFragmentById(R.id.tablature_fragment);
+<<<<<<< HEAD
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 
         Button find_file_btn = (Button) findViewById(R.id.find_button);
@@ -209,6 +237,7 @@ public class MainActivity extends FragmentActivity
 
         });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 
@@ -238,6 +267,8 @@ public class MainActivity extends FragmentActivity
     private void requestPermissions()
     {
 =======
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
         transaction.commit();
     }
 
@@ -271,6 +302,9 @@ public class MainActivity extends FragmentActivity
 ////            }
 ////
 ////        }
+<<<<<<< HEAD
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
         requestPermissions((String[])permissions.keySet().toArray(new String[permissions.keySet().size()]),ALL_REQ_PERMS);
     }
@@ -323,6 +357,7 @@ public class MainActivity extends FragmentActivity
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -349,6 +384,8 @@ public class MainActivity extends FragmentActivity
     }
 
 
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 

@@ -19,7 +19,11 @@ public class TablatureFragment extends Fragment
     View view;
     Button load_btn;
 <<<<<<< HEAD
+<<<<<<< HEAD
     TextView tablature_text;
+=======
+   TextView tablature_text;
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
    TextView tablature_text;
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec

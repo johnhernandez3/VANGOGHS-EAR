@@ -6,10 +6,15 @@ import android.util.Log;
 import utils.Device;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /**
  * Class for representing the IO Device of a Microphone for the AudioRecorder class.
  */
 public class Microphone implements Device
+=======
+
+public class Microphone extends Device
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 
 public class Microphone extends Device
@@ -44,6 +49,7 @@ public class Microphone extends Device
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     /**
      * Initiates the process of storing data from the microphone into the internal file
      * @return boolean representing if it was successful or not
@@ -52,11 +58,16 @@ public class Microphone extends Device
     {
         try{
 =======
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 
     public boolean start()
     {
         try{
 //            recorder.prepare();
+<<<<<<< HEAD
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
             recorder.start();
         }catch(Exception e)
@@ -72,10 +83,13 @@ public class Microphone extends Device
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     /**
      * Halts he process of storing data from the microphone into the internal file
      * @return boolean representing if it was successful or not
      */
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
     public boolean stop()
@@ -96,6 +110,7 @@ public class Microphone extends Device
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @Override
     public boolean reset() {
         return false;
@@ -105,6 +120,9 @@ public class Microphone extends Device
      * Resets he process of storing data from the microphone into the new internal file @param file_path
      * @return boolean representing if it was successful or not
      */
+=======
+
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec

@@ -67,7 +67,11 @@ public class AudioRecorder extends Fragment
      */
     @NotNull
 <<<<<<< HEAD
+<<<<<<< HEAD
     protected String OutputFilePath(String filename)
+=======
+    private String OutputFilePath(String filename)
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
     private String OutputFilePath(String filename)
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
@@ -87,6 +91,7 @@ public class AudioRecorder extends Fragment
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     /**
      * Verifies if @param text is an empty string or an only whitespace containing string
      * @param text the String we want to verify for emptiness
@@ -96,11 +101,15 @@ public class AudioRecorder extends Fragment
 =======
     private boolean nonEmptyString(String text)
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
+    private boolean nonEmptyString(String text)
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
     {
         if(text.trim().length() > 0 && text  != null)
             return true;
         else
             return false;
+<<<<<<< HEAD
 <<<<<<< HEAD
     }
 
@@ -112,10 +121,15 @@ public class AudioRecorder extends Fragment
      * @return String representation of the Output File Path with specified format
      */
 =======
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 
     }
 
 
+<<<<<<< HEAD
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
     @NotNull
     private String OutputFilePath(String filename, String format)

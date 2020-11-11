@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.util.List;
 
 import io_devices.IODeviceManager;
@@ -30,6 +31,10 @@ public class FileManager extends Activity implements IODeviceManager {
 
 public class FileManager extends Activity {
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
+
+public class FileManager extends Activity {
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
     private static final int FILE_SELECTED_CODE = 0;
     private static final String TAG = "FILE MANAGER";
     private static final int REQUEST_CHOOSER = 1234;
@@ -40,8 +45,11 @@ public class FileManager extends Activity {
     private ArrayList<String> files = new ArrayList<>();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     private Uri selected_file;
 
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
     private void testFilenames()
@@ -90,7 +98,11 @@ public class FileManager extends Activity {
         }
         else {
 <<<<<<< HEAD
+<<<<<<< HEAD
             Log.d(TAG, "PERMISSION GRANTED");
+=======
+            Log.e(TAG, "PERMISSION GRANTED");
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
             Log.e(TAG, "PERMISSION GRANTED");
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
@@ -105,13 +117,19 @@ public class FileManager extends Activity {
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 //        Create the ACTION_GET_CONTENT Intent
 //        Intent getContentIntent = FileUtils.createGetContentIntent();
 
 //        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
 //        startActivityForResult(intent, REQUEST_CHOOSER);
+<<<<<<< HEAD
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
@@ -121,11 +139,14 @@ public class FileManager extends Activity {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Uri returnChosenFile()
         {
             return this.selected_file;
         }
 
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 
@@ -168,7 +189,11 @@ public class FileManager extends Activity {
                 Uri uri = data.getData();
                 Log.d(TAG, "File URI:" +  uri.toString());
 <<<<<<< HEAD
+<<<<<<< HEAD
                 selected_file=uri;
+=======
+
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
@@ -177,12 +202,16 @@ public class FileManager extends Activity {
                 //process the file or pass it to data
                 files.add(uri.toString());
 <<<<<<< HEAD
+<<<<<<< HEAD
                 Intent files_d = new Intent();
                 files_d.putExtra("file", uri.toString());
                 setResult(Activity.RESULT_OK, files_d);
                 finish();
 
                 super.onActivityResult(REQUEST_CHOOSER, resultCode,files_d);
+=======
+                    super.onActivityResult(requestCode, resultCode,data);
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
                     super.onActivityResult(requestCode, resultCode,data);
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
@@ -195,6 +224,7 @@ public class FileManager extends Activity {
     }
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     @Override
     public List<Device> devices() {
@@ -225,6 +255,10 @@ public class FileManager extends Activity {
     public boolean isValid(Controller control) {
         return false;
     }
+=======
+
+
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 
 

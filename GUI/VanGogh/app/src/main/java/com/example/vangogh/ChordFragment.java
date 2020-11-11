@@ -23,9 +23,12 @@ import chords.ChordModel;
 import chords.ChordValidator;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /**
  * Class for displaying the Chord Diagram View to the user.
  */
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 public class ChordFragment extends Fragment
@@ -72,11 +75,14 @@ public class ChordFragment extends Fragment
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     /**
      * Verifies if the provided @param input_chord is a valid representation of a chord.
      * @param input_chord chord to be validated
      * @return boolean representing if the @param input_chord is valid.
      */
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
     private boolean validateChord(String input_chord)
@@ -128,9 +134,12 @@ public class ChordFragment extends Fragment
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     /*
         Draws the Chord Diagram onto the View for the user.
      */
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
     private void drawChords(String chordName)

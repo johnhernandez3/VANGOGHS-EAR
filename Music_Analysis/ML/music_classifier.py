@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import os, pathlib
 
 # from utils.settings import get_project_root, find
@@ -7,16 +8,21 @@ import os, pathlib
 
 =======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 import tensorflow as tf
 
 import matplotlib.pyplot as plt
 import numpy as np
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 import os.path as path
 from pathlib import Path, PurePath
 import re
 
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 import seaborn as sns
@@ -26,6 +32,7 @@ from tensorflow.keras.layers.experimental import preprocessing
 from tensorflow.keras import layers
 from tensorflow.keras import models
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 ROOT_DIR = None
 
@@ -78,11 +85,14 @@ def chord_files(path=chords_paths(), chord_name='a'):
 
 =======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 def  decode_audio(audio_binary):
     audio, _  = tf.audio.decode_wav(audio_binary)
 
     return tf.squeeze(audio, axis=-1)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 def detect_chord_name(str_filename):
 
@@ -96,10 +106,15 @@ def get_label(file_path):
         # return None
 
 =======
+=======
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 def get_label(file_path):
 
     return
 
+<<<<<<< HEAD
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
+=======
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 def get_spectrogram(waveform):
 
@@ -152,7 +167,11 @@ def train(train_dataset, validation_data, model, epochs=10):
         callbacks=tf.keras.callbacks.EarlyStopping(verbose=1,patience=2),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
     return history
+=======
+    return
+>>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 =======
     return
 >>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
