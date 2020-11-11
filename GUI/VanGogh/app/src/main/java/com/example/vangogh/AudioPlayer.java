@@ -85,10 +85,10 @@ public class AudioPlayer extends Fragment {
         // Bind Java Objects to XML Layout Views
 
         play = (Button) view.findViewById(R.id.play);
-        stop = (Button) view.findViewById(R.id.stop);
+//        stop = (Button) view.findViewById(R.id.stop);
         pause = (Button) view.findViewById(R.id.pause);
-        back = (Button) view.findViewById(R.id.back);
-        forward = (Button) view.findViewById(R.id.forward);
+//        back = (Button) view.findViewById(R.id.back);
+//        forward = (Button) view.findViewById(R.id.forward);
 
         seekbar = (SeekBar)  view.findViewById(R.id.seekbar);
         seekbar.setClickable(false);
