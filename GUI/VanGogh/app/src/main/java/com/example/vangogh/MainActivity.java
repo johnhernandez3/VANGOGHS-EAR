@@ -20,9 +20,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.dqt.libs.chorddroid.components.ChordTextureView;
-import com.dqt.libs.chorddroid.*;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -97,6 +94,12 @@ public class MainActivity extends FragmentActivity
                 Log.d(TAG, "Entering On Checked Changed Listener");
                 if(isChecked)
                 {
+                    if(man.findFragmentByTag("AUDIO PLAYER")!=null) {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO PLAYER")).commit();
+                    }
+
+
 
                     Log.d(TAG, "Entered On Checked Flag");
                     //TODO: Fix Bug here with the permissions, refuses to ask or verify that they were granted
@@ -109,13 +112,34 @@ public class MainActivity extends FragmentActivity
 //                        // Ask for record permissions here
 //                        requestPermissions( new String[]{"RECORD AUDIO"}, REQUEST_RECORD_AUDIO);
 //                    }
+
+//                    if(man.findFragmentByTag("AUDIO RECORD FRAG")!=null) {
+//                        //remove this one
+//                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO RECORD FRAG")).commit();
+//                    }
                 }
                 else{
                     Log.d(TAG, "Failed On Checked Flag");
+
+                    if(man.findFragmentByTag("AUDIO PLAYER")!=null) {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO PLAYER")).commit();
+                    }
+
 //
                     if(man.findFragmentByTag("AUDIO RECORD FRAG")!=null) {
                         //remove this one
                         man.beginTransaction().remove(man.findFragmentByTag("AUDIO RECORD FRAG")).commit();
+                    }
+
+                    if(man.findFragmentByTag("TABLATURE")!=null) {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("TABLATURE")).commit();
+                    }
+
+                    if(man.findFragmentByTag("CHORD FRAG")!=null) {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("CHORD_FRAG")).commit();
                     }
 
                 }
@@ -133,6 +157,17 @@ public class MainActivity extends FragmentActivity
                 Log.d(TAG, "Entering On Checked Changed Listener");
                 if(isChecked)
                 {
+                    if(man.findFragmentByTag("AUDIO RECORD FRAG")!=null) {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO RECORD FRAG")).commit();
+                    }
+
+                    if(man.findFragmentByTag("AUDIO PLAYER")!=null) {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO PLAYER")).commit();
+                    }
+
+
 
                     Log.d(TAG, "Entered On Checked Flag");
                     if(man.findFragmentByTag("TABLATURE")!=null)
@@ -142,7 +177,7 @@ public class MainActivity extends FragmentActivity
                     }
                     chord_fragment = (ChordFragment) new ChordFragment();
                     man.beginTransaction().add(R.id.fragment_container_view, chord_fragment, "CHORD FRAG").commit();
-//                    transaction.commit();
+
                 }
                 else{
                     Log.d(TAG, "Failed On Checked Flag");
@@ -185,13 +220,6 @@ public class MainActivity extends FragmentActivity
                 startActivity(intent);
             }
         });
-
-
-//        fragment = (RecordFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
-//            transaction.add(R.id.chord_fragment, chord_fragment);
-//            transaction.commit();
-//        ChordTextureView chord = (ChordTextureView) findViewById(R.id.chord_texture_view);
-//        chord.drawChord("Am", 0);
     }
 
 //    /**
