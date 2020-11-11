@@ -18,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -65,7 +64,6 @@ public class AudioRecorder extends Fragment
      * @param filename the name of the file to be created for storing the recorded audio.
      * @return String representation of the Output File Path.
      */
-    @NotNull
     protected String OutputFilePath(String filename)
     {
         String res;
@@ -102,7 +100,6 @@ public class AudioRecorder extends Fragment
      * @param format the file format that the data will be stored as.
      * @return String representation of the Output File Path with specified format
      */
-    @NotNull
     private String OutputFilePath(String filename, String format)
     {
         String res;

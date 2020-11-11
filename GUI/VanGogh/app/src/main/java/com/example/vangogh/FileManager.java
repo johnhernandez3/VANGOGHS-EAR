@@ -14,11 +14,6 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
-
-/**
- * Class that is used so that user can see files and be able to move them around
- */
-public class FileManager extends Activity {
 import java.util.List;
 
 import io_devices.IODeviceManager;

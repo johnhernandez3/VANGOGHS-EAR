@@ -38,6 +38,7 @@ public class MainActivity extends FragmentActivity
     AudioRecorder audio_fragment;
     ChordFragment chord_fragment;
     ToggleButton toggle_frags ;
+    Button dbview_button;
     private View view;
 
     private Uri selected_recording;
@@ -193,17 +194,17 @@ public class MainActivity extends FragmentActivity
 //        chord.drawChord("Am", 0);
     }
 
-    /**
-     *Calls the FileManager class to move the files
-     */
-    public void searchForFile()
-    {
-        Intent intent = new Intent(this, FileManager.class);
-
-        startActivity(intent);
-
-
-    }
+//    /**
+//     *Calls the FileManager class to move the files
+//     */
+//    public void searchForFile()
+//    {
+//        Intent intent = new Intent(this, FileManager.class);
+//
+//        startActivity(intent);
+//
+//
+//    }
 
     /**
      * Generates an intent for the FileManager activity and awaits a result with code 1234 for a file URI.
