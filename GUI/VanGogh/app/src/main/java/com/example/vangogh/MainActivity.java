@@ -101,14 +101,14 @@ public class MainActivity extends FragmentActivity
                     Log.d(TAG, "Entered On Checked Flag");
                     //TODO: Fix Bug here with the permissions, refuses to ask or verify that they were granted
                     // Fails to add audio recorder frag as a consequence
-                    if(checkSelfPermission("RECORD AUDIO") == PackageManager.PERMISSION_GRANTED) {
+//                    if(checkSelfPermission("RECORD AUDIO") == PackageManager.PERMISSION_GRANTED) {
                         Log.d(TAG, "Adding Audio Recorder Fragment");
                         audio_fragment = new AudioRecorder();
                         man.beginTransaction().add(R.id.audio_fragment_container_view, audio_fragment, "AUDIO RECORD FRAG").commit();
-                    }else{
-                        // Ask for record permissions here
-                        requestPermissions( new String[]{"RECORD AUDIO"}, REQUEST_RECORD_AUDIO);
-                    }
+//                    }else{
+//                        // Ask for record permissions here
+//                        requestPermissions( new String[]{"RECORD AUDIO"}, REQUEST_RECORD_AUDIO);
+//                    }
                 }
                 else{
                     Log.d(TAG, "Failed On Checked Flag");
