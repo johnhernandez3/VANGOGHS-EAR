@@ -104,7 +104,7 @@ def get_spectrogram(waveform):
     padding_size = [44100] - tf.shape(waveform)
     #if padding_size < 0:
      #   padding_size *= -1
-    #zero_padding = tf.zeros(padding_size, dtype=tf.float32)
+    zero_padding = tf.zeros(padding_size, dtype=tf.float32)
 
 
     waveform = tf.cast(waveform, tf.float32)
@@ -245,7 +245,7 @@ def sample_plot():
     plot_audio(waveform, spectrogram=get_spectrogram(waveform))
 
 def main():
-    #create_model()
+    # create_model()
     sample_plot()
     return
 
