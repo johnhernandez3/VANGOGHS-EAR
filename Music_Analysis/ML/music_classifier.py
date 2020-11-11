@@ -1,30 +1,18 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 import os, pathlib
 
 # from utils.settings import get_project_root, find
 # from utils.settings import *
 # from settings import *
 
-=======
->>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
-=======
->>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 import tensorflow as tf
 
 import matplotlib.pyplot as plt
 import numpy as np
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 import os.path as path
 from pathlib import Path, PurePath
 import re
 
-=======
->>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
-=======
->>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 import seaborn as sns
 
 
@@ -32,8 +20,6 @@ from tensorflow.keras.layers.experimental import preprocessing
 from tensorflow.keras import layers
 from tensorflow.keras import models
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 ROOT_DIR = None
 
 def setup():
@@ -83,17 +69,11 @@ def chord_files(path=chords_paths(), chord_name='a'):
             yield chord
 
 
-=======
->>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
-=======
->>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 def  decode_audio(audio_binary):
     audio, _  = tf.audio.decode_wav(audio_binary)
 
     return tf.squeeze(audio, axis=-1)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 def detect_chord_name(str_filename):
 
     return
@@ -105,17 +85,6 @@ def get_label(file_path):
         raise ValueError(f"Could not find file:{file_path}")
         # return None
 
-=======
-=======
->>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
-def get_label(file_path):
-
-    return
-
-<<<<<<< HEAD
->>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
-=======
->>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 def get_spectrogram(waveform):
 
     # this is zero padding for files whose sample rate is less than 16kHz
@@ -166,15 +135,7 @@ def train(train_dataset, validation_data, model, epochs=10):
         epochs=epochs,
         callbacks=tf.keras.callbacks.EarlyStopping(verbose=1,patience=2),
     )
-<<<<<<< HEAD
-<<<<<<< HEAD
     return history
-=======
-    return
->>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
-=======
-    return
->>>>>>> 0ce85476119f84991042c85c05a9056e632a04ec
 
 def confusion_matrix(model, labels,y_true,y_pred):
 
