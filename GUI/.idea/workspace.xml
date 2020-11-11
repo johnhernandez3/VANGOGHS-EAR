@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5a97edb7-1670-4cc9-8639-d037b78e630b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Music_DB/config/dbconfig.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Music_DB/dao/musictable.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Music_DB/dao/musictable.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Music_DB/handler/musichandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Music_DB/handler/musichandler.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1jsumXauu97YnORDKGXrAEOA0Zp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/VanGogh" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5a97edb7-1670-4cc9-8639-d037b78e630b" name="Default Changelist" comment="" />
+      <created>1604605281790</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1604605281790</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="654" y="275" key="#Notifications" timestamp="1604605739307">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="654" y="275" key="#Notifications/0.0.1536.824@0.0.1536.824" timestamp="1604605739307" />
+    <state x="286" y="158" key="#PSD" timestamp="1604605514478">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="286" y="158" key="#PSD/0.0.1536.824@0.0.1536.824" timestamp="1604605514478" />
+    <state x="249" y="0" key="#Project_Structure" timestamp="1604605686410">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="249" y="0" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1604605686410" />
+    <state x="474" y="154" key="FileChooserDialogImpl" timestamp="1604789111191">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="474" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1604789111191" />
+  </component>
+</project>

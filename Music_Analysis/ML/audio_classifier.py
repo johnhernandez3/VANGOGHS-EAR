@@ -80,9 +80,17 @@ def split_files(files):
     return train, val, test
 
 def decode_audio(audio_binary):
-    audio, _ = tf.audio.decode_wav(audio_binary)
+    audio, sample_rate = tf.audio.decode_wav(audio_binary,desired_channels=1)
 
-    return tf.squeeze(audio, axis=-1)
+    print(type(audio))
+    print(audio.shape)
+    # return audio
+    return tf.squeeze(audio,axis=-1)
+
+def get_waveform(file_path):
+    audio_binary = tf.io.read_file(file_path)
+    waveform = decode_audio(audio_binary)
+    return waveform
 
 def get_waveform_and_label(file_path):
     label = get_label(file_path)
@@ -94,15 +102,15 @@ def get_waveform_and_label(file_path):
 
 def get_spectrogram(waveform):
     padding_size = [44100] - tf.shape(waveform)
-    if padding_size < 0:
-        padding_size *= -1
-    zero_padding = tf.zeros(padding_size, dtype=tf.float32)
+    #if padding_size < 0:
+     #   padding_size *= -1
+    #zero_padding = tf.zeros(padding_size, dtype=tf.float32)
 
 
     waveform = tf.cast(waveform, tf.float32)
-    equal_length = tf.concat([waveform, zero_padding], 0)
+    #equal_length = tf.concat([waveform, zero_padding], 0)
 
-    spectrogram = tf.signal.stft(equal_length, frame_length=255, frame_step=256)
+    spectrogram = tf.signal.stft(waveform, frame_length=255, frame_step=128)
     spectrogram = tf.abs(spectrogram)
     print('/n/nWaveform shape:', waveform.shape)
     print('Spectrogram shape:', spectrogram.shape)
@@ -208,10 +216,37 @@ def metrics(history):
 
     return
 
+def plot_spectrogram(spectrogram, ax):
+    # Convert to frequencies to log scale and transpose so that the time is
+    # represented in the x-axis (columns).
+    log_spec = np.log(spectrogram.T)
+    height = log_spec.shape[0]
+    X = np.arange(40700, step=100)
+    Y = range(height)
+    ax.pcolormesh( X,Y, log_spec)
 
+def plot_audio(waveform, spectrogram):
+    fig, axes = plt.subplots(2, figsize=(12, 8))
+    timescale = np.arange(waveform.shape[0])
+    axes[0].plot(timescale, waveform.numpy())
+    axes[0].set_title('Waveform')
+    # axes[0].set_xlim([0, 16000])
+    # spec,x,y = spectrogram
+    # print(type(spectrogram))
+    plot_spectrogram(spectrogram.numpy(), axes[1])
+    axes[1].set_title('Spectrogram')
+    plt.show()
+
+
+
+def sample_plot():
+    # waveform=get_waveform("C:\\Users\\johnm\\git\\VANGOGHS-EAR\\Music_Analysis\\Megaman_ZX_-_Green_Grass_Gradiation_NITRO_Remix (1).wav")
+    waveform=get_waveform("C:\\Users\\Alejandro Natal\\Documents\\GitHub\\VANGOGHS-EAR\\Music_Analysis\\ML\\sample\\a.wav")
+    plot_audio(waveform, spectrogram=get_spectrogram(waveform))
 
 def main():
-    create_model()
+    #create_model()
+    sample_plot()
     return
 
 if __name__ == "__main__":
