@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ public class MainActivity extends FragmentActivity
     AudioRecorder audio_fragment;
     ChordFragment chord_fragment;
     ToggleButton toggle_frags ;
+    Button dbview_button;
     private View view;
 
     private Uri selected_recording;
@@ -55,6 +57,8 @@ public class MainActivity extends FragmentActivity
             "ACCESS_MEDIA_LOCATION"
     };
 
+    
+    
     private void preparePermissions()
     {
         int  i = 0;
@@ -66,7 +70,10 @@ public class MainActivity extends FragmentActivity
         }
     }
 
-
+    /**
+     * When the object is created, it finds the Main View for the instance life cycle
+     * @param savedInstanceState the state of the parent that called the object if it wants to know anything
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -91,6 +98,12 @@ public class MainActivity extends FragmentActivity
                 Log.d(TAG, "Entering On Checked Changed Listener");
                 if(isChecked)
                 {
+                    if(man.findFragmentByTag("AUDIO PLAYER")!=null) {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO PLAYER")).commit();
+                    }
+
+
 
                     Log.d(TAG, "Entered On Checked Flag");
                     //TODO: Fix Bug here with the permissions, refuses to ask or verify that they were granted
@@ -108,6 +121,16 @@ public class MainActivity extends FragmentActivity
                     Log.d(TAG, "Failed On Checked Flag");
 
                     swapFragments("", "AUDIO RECORDER");
+
+                    if(man.findFragmentByTag("TABLATURE")!=null) {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("TABLATURE")).commit();
+                    }
+
+                    if(man.findFragmentByTag("CHORD FRAG")!=null) {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("CHORD_FRAG")).commit();
+                    }
 
                 }
 
@@ -152,8 +175,15 @@ public class MainActivity extends FragmentActivity
         });
 
 
+        final Intent intent = new Intent(this, DatabaseView.class);
+        dbview_button = (Button) findViewById(R.id.dbview_button);
+        dbview_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-
+                startActivity(intent);
+            }
+        });
     }
 
     private void removeAllFragments()
@@ -215,6 +245,17 @@ public class MainActivity extends FragmentActivity
 
     }
 
+    /**
+     * Asks for the permission that is missing, if it is denied it asks the user for permission
+     */
+
+    /**
+     * When activity requires a permission
+     * @param requestCode an int that identifies the type of permission that is being asked
+     * @param permissions string array of the permissions being asked
+     * @param grantResults int array with numbers if it has a 0, it is denied the result, else anything different,
+     * it is granted
+     */
     /**
      * Asks the user for IO device permissions such as accessing storage and the microphone
      */

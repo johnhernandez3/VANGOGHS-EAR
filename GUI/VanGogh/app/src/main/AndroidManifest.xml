@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.vangogh">
 
+<!--    <uses-feature android:name="android.hardware." android:required="false" />-->
+
 <!--    <uses-permission android:name="android.permission.CAPTURE_AUDIO_OUTPUT" />-->
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -27,9 +29,18 @@
         <activity android:name=".FileManager">
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
 
+        <activity android:name=".DatabaseView">
+            <intent-filter>
+                <action android:name="com.example.vangogh" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

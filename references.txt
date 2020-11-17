@@ -1,0 +1,43 @@
+Music Auto-Tagging Using CNNs and Mel-Spectrograms with reduced f's and Time resolution:
+-- https://arxiv.org/pdf/1911.04824v2.pdf
+
+Detecting Musical Key with Supervised Learning
+-- http://cs229.stanford.edu/proj2016/report/Mahieu-DetectingMusicalKeyWithSupervisedLearning-report.pdf
+
+Musical key estimation of audio signal based on hidden Markov modeling of chroma vectors
+-- http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.422.4590
+
+Modeling the Degree of Realized Expectation in Functional Tonal Music:
+-- https://pdfs.semanticscholar.org/7c9c/6ae89ce27a0b25cbebbee8790f68488db911.pdf
+
+Superposition Principle:
+-- https://en.wikipedia.org/wiki/Superposition_principle
+
+Guitar Chords MIDI Pitches:
+-- https://data.world/alexandra/guitar-chords-midi-pitches
+
+Chord progressions (small list of popular ones):
+-- https://data.world/alexandra/chord-progressions
+
+Guitar Chord Chart:
+-- https://nationalguitaracademy.com/guitar-chord-chart/
+-- https://nationalguitaracademy.com/guitar-chord-chart/2/
+
+What is a chord in terms of freqs:
+-- https://music.stackexchange.com/questions/42694/what-is-a-chord-in-terms-of-frequencies
+
+Librosa - Official Documentation:
+-- https://librosa.org/librosa/core.html
+
+PyAudio:
+-- http://people.csail.mit.edu/hubert/pyaudio/
+
+FileFormat specifications (AAC, WAV):
+-- https://wiki.fileformat.com/audio/aac/
+-- https://wiki.fileformat.com/audio/wav/
+
+Fix for platform dependent issues on FS:
+-- https://stackoverflow.com/questions/25389095/python-get-path-of-root-project-structure
+
+RWC Music Database: Musical Instrument Sound
+-- https://staff.aist.go.jp/m.goto/RWC-MDB/rwc-mdb-i.html

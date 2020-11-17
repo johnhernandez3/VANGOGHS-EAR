@@ -6,71 +6,102 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <!--        <ImageView-->
+                <!--            android:id="@+id/chord_image"-->
+                <!--            android:layout_width="wrap_content"-->
+                <!--            android:layout_height="wrap_content"-->
+                <!--            android:contentDescription="@string/my_image_description"-->
+                <!--            />-->
+
+                <!--        <com.dqt.libs.chorddroid.components.ChordTextureView-->
+                <!--            android:id="@+id/chord_texture_view"-->
+                <!--            android:layout_width="216dp"-->
+                <!--            android:layout_height="210dp"-->
+
+                <!--            android:layout_alignParentEnd="true"-->
+                <!--            android:layout_alignParentBottom="true"-->
+                <!--            android:layout_marginEnd="107dp"-->
+                <!--            android:layout_marginBottom="254dp" />-->
+                <!--        <fragment android:name="com.example.vangogh.ChordFragment"-->
+                <!--            android:id="@+id/chord_fragment"-->
+                <!--            android:layout_width="match_parent"-->
+                <!--            android:layout_height="wrap_content"-->
+                <!--            tools:layout="@layout/chord_fragment" />-->
+
+                <!--        <fragment-->
+                <!--            android:id="@+id/audio_fragment"-->
+                <!--            android:name="com.example.vangogh.AudioRecorder"-->
+                <!--            android:layout_width="wrap_content"-->
+                <!--            android:layout_height="wrap_content"-->
+                <!--            android:layout_alignParentEnd="true"-->
+                <!--            android:layout_marginEnd="18dp"-->
+                <!--            tools:layout="@layout/audio_recorder" />-->
 
 
-        <Button
-            android:id="@+id/find_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Select File" />
+                <Button
+                    android:id="@+id/dbview_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginBottom="618dp"
+                    android:text="DBView" />
 
-        <ToggleButton
-            android:id="@+id/record_show_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="116dp"
-            android:layout_marginBottom="678dp"
-            android:textOff="Record"
-            android:textOn="Hide" />
+                <Button
+                    android:id="@+id/find_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Select File" />
 
-        <FrameLayout
-            android:id="@+id/audio_fragment_container_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="102dp"
-            android:layout_marginBottom="34dp"
-            android:orientation="horizontal" />
+                <FrameLayout
+                    android:id="@+id/audio_fragment_container_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="102dp"
+                    android:layout_marginBottom="34dp"
+                    android:orientation="horizontal" />
 
 
-        <FrameLayout
-            android:id="@+id/fragment_container_view"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_above="@+id/audio_fragment_container_view"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="103dp"
-            android:layout_marginBottom="103dp"
-            android:orientation="horizontal" />
+                <FrameLayout
+                    android:id="@+id/fragment_container_view"
+                    android:layout_width="314dp"
+                    android:layout_height="370dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="55dp"
+                    android:layout_marginBottom="29dp"
+                    android:orientation="horizontal" />
 
-        <ToggleButton
-            android:id="@+id/toggle_frags"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="680dp"
-            android:textOff="Tablature"
-            android:textOn="Chord Diagram" />
+                <ToggleButton
+                    android:id="@+id/record_show_button"
+                    android:layout_width="122dp"
+                    android:layout_height="75dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginEnd="145dp"
+                    android:textOff="Record"
+                    android:textOn="Hide" />
 
-<!--        <fragment-->
-<!--            android:id="@+id/audio_fragment"-->
-<!--            android:name="com.example.vangogh.AudioRecorder"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:layout_marginEnd="169dp"-->
-<!--            android:layout_marginBottom="12dp"-->
-<!--            tools:layout="@layout/audio_recorder_fragment" />-->
-    </RelativeLayout>
+                <ToggleButton
+                    android:id="@+id/toggle_frags"
+                    android:layout_width="118dp"
+                    android:layout_height="61dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="29dp"
+                    android:layout_marginEnd="13dp"
+                    android:layout_marginBottom="641dp"
+                    android:textOff="Tablature"
+                    android:textOn="Chord Diagram" />
+
+        </RelativeLayout>
 
 
 </LinearLayout>

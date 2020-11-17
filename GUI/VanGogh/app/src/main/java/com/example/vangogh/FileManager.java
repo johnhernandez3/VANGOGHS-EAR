@@ -44,6 +44,10 @@ public class FileManager extends Activity implements IODeviceManager {
         files.add("O");
     }
 
+    /**
+     * When the object is created, it finds the File View for the instance life cycle
+     * @param savedInstanceState the state of the parent that called the object if it wants to know anything
+     */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -92,6 +96,11 @@ public class FileManager extends Activity implements IODeviceManager {
                 e.printStackTrace();
             }
         }
+//        Create the ACTION_GET_CONTENT Intent
+//        Intent getContentIntent = FileUtils.createGetContentIntent();
+
+//        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
+//        startActivityForResult(intent, REQUEST_CHOOSER);
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -99,6 +108,10 @@ public class FileManager extends Activity implements IODeviceManager {
         startActivityForResult(intent, REQUEST_CHOOSER);
     }
 
+    
+    /**
+     * Allows the user to choose the files that they are seeing
+     */
         public Uri returnChosenFile()
         {
             return this.selected_file;
@@ -122,6 +135,13 @@ public class FileManager extends Activity implements IODeviceManager {
         }
     }
 
+    
+    /**
+     * When activity initiates a call for an action
+     * @param requestCode an int that identifies the type of permission that is being asked
+     * @param resultCode an int that identifies the result of the requestCode that was emitted
+     * @param data data that is passed from one activity to the other if any
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
