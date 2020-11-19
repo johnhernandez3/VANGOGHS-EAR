@@ -39,6 +39,7 @@ public class MainActivity extends FragmentActivity
     private View view;
 
     private Uri selected_recording;
+    private AudioPlayer ap;
 
     private final String TAG = "MAIN";
     private final int REQUEST_READ_STORAGE = 0;
@@ -220,6 +221,11 @@ public class MainActivity extends FragmentActivity
                 startActivity(intent);
             }
         });
+
+        ap = new AudioPlayer(uri);
+
+
+
     }
 
 //    /**

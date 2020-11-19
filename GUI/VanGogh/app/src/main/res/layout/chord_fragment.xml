@@ -35,5 +35,15 @@
         android:layout_marginBottom="17dp"
         android:text="Update" />
 
+    <FrameLayout
+        android:id="@+id/new_audio_fragment_container_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="359dp"
+        android:layout_marginBottom="45dp"
+        android:orientation="horizontal" />
+
 
 </RelativeLayout>

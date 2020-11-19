@@ -112,7 +112,7 @@ public class FileManager extends Activity implements IODeviceManager {
     /**
      * Allows the user to choose the files that they are seeing
      */
-        public Uri returnChosenFile()
+    public Uri returnChosenFile()
         {
             return this.selected_file;
         }
@@ -180,6 +180,27 @@ public class FileManager extends Activity implements IODeviceManager {
         }
 
 //        super.onActivityResult(requestCode, resultCode,data);
+    }
+
+    /**
+     * Generates the Output File Path for the Audio Recorder to store recorded audio.
+     *
+     * @param filename the name of the file to be created for storing the recorded audio.
+     * @param format the file format that the data will be stored as.
+     * @return String representation of the Output File Path with specified format
+     */
+    private String InputFilePath(String filename, String format)
+    {
+        String res;
+        if(filename != null && filename != " ") {
+
+            context = this.getContext();
+            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + filename + "." +format;
+        }
+        else{
+            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + "sample" + "."+format;
+        }
+        return res;
     }
 
 

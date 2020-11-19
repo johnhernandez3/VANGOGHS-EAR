@@ -32,6 +32,7 @@ public class ChordFragment extends Fragment
     private final String TAG = "CHORD FRAG";
     private final int DIAGRAM_WIDTH = 200;
     private final int DIAGRAM_HEIGHT = 200;
+    public String currchord = "";
 
     private ChordModel chord;
     private ChordFactory chord_factory;
@@ -53,6 +54,11 @@ public class ChordFragment extends Fragment
         editText = (EditText) view.findViewById(R.id.chord_input);
         update_btn = (Button) view.findViewById(R.id.update_chord);
         chord_view = (ImageView) view.findViewById(R.id.chord_view);
+
+        if(validateChord(editText.getText().toString())) {
+            currchord = editText.getText().toString();
+            drawChords(currchord);
+        }
 
         // Set callback listener for events on the update button
         update_btn.setOnClickListener(new View.OnClickListener(){
