@@ -16,6 +16,8 @@ import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -30,7 +32,7 @@ import chords.ChordFactory;
 /**
  * Class for the Main View of the system and where the user will mainly interact
  */
-public class MainActivity extends FragmentActivity
+public class MainActivity extends AppCompatActivity
 {
 
     Map<String, Integer> permissions;
@@ -39,6 +41,7 @@ public class MainActivity extends FragmentActivity
     ChordFragment chord_fragment;
     ToggleButton toggle_frags ;
     Button dbview_button;
+    Toolbar toolbar;
     private View view;
 
     private Uri selected_recording;
@@ -85,6 +88,9 @@ public class MainActivity extends FragmentActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+//        setSupportActionBar(toolbar);
 
         requestPermissions();
 
@@ -219,11 +225,14 @@ public class MainActivity extends FragmentActivity
         {
             //remove this one
             man.beginTransaction().remove(man.findFragmentByTag(outgoing)).commit();
+            return;
         }
+
         Fragment incoming_fragment = FragmentFactory.createFragment(incoming);
         if(incoming_fragment != null)
         {
             man.beginTransaction().add(R.id.fragment_container_view,incoming_fragment, incoming).commit();
+            return;
         }
 
         else{

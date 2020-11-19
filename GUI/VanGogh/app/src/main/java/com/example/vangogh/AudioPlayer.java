@@ -45,6 +45,8 @@ public class AudioPlayer extends Fragment {
     private static int one_time_only  = 0;
     private double start_time, final_time;
 
+
+
     public AudioPlayer(Uri file)
     {
         handler = new Handler();
