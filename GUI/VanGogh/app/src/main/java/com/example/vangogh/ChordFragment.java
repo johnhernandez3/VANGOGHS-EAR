@@ -55,17 +55,18 @@ public class ChordFragment extends Fragment
         update_btn = (Button) view.findViewById(R.id.update_chord);
         chord_view = (ImageView) view.findViewById(R.id.chord_view);
 
-        if(validateChord(editText.getText().toString())) {
-            currchord = editText.getText().toString();
-            drawChords(currchord);
-        }
+
 
         // Set callback listener for events on the update button
         update_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
             {
-                drawChords(editText.getText().toString());
+
+                if(validateChord(editText.getText().toString())) {
+                    currchord = editText.getText().toString();
+                    drawChords(currchord);
+                }
                 editText.setText("");
             }
 
