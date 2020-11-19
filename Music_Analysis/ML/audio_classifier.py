@@ -221,7 +221,7 @@ def plot_spectrogram(spectrogram, ax):
     # represented in the x-axis (columns).
     log_spec = np.log(spectrogram.T)
     height = log_spec.shape[0]
-    X = np.arange(40700, step=100)
+    X = np.arange(72500, step=100)
     Y = range(height)
     ax.pcolormesh( X,Y, log_spec)
 

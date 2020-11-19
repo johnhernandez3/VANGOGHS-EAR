@@ -115,7 +115,7 @@ public class MusicDataBase extends SQLiteOpenHelper {
      */
     public Integer deleteData(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "ID = ?", new String[] {id});
+        return db.delete(TABLE_NAME, "SONGNAME = ?", new String[] {id});
     }
 
     /**
@@ -125,6 +125,6 @@ public class MusicDataBase extends SQLiteOpenHelper {
      */
     public Integer deleteChordData(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME1, "CID = ?", new String[] {id});
+        return db.delete(TABLE_NAME1, "CHORDS = ?", new String[] {id});
     }
 }

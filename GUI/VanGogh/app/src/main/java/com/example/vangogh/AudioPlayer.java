@@ -192,7 +192,9 @@ public class AudioPlayer extends Fragment {
         return view;
     }
 
-    // Separate Thread for updating the seekbar object in parallel to the AudioPlayer execution logic.
+    /**
+     * Separate Thread for updating the seekbar object in parallel to the AudioPlayer execution logic.
+      */
     private Runnable UpdateSongTime = new Runnable() {
         @Override
         public void run() {
