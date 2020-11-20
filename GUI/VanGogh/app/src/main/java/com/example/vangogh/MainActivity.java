@@ -3,6 +3,7 @@ package com.example.vangogh;
 import android.Manifest;
 import android.app.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
@@ -21,6 +22,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +42,6 @@ public class MainActivity extends FragmentActivity
     private View view;
 
     private Uri selected_recording;
-    private AudioPlayer ap;
 
     private final String TAG = "MAIN";
     private final int REQUEST_READ_STORAGE = 0;
@@ -222,7 +224,79 @@ public class MainActivity extends FragmentActivity
             }
         });
 
-        ap = new AudioPlayer(uri);
+
+        String a = "a.wav";
+        String fileContents = "Hello world!";
+        try (FileOutputStream fos = this.openFileOutput(a, Context.MODE_PRIVATE)) {
+            fos.write(fileContents.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String am = "am.wav";
+        String fileContents1 = "Hello world!1";
+        try (FileOutputStream fos = this.openFileOutput(am, Context.MODE_PRIVATE)) {
+            fos.write(fileContents1.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String bm = "bm.wav";
+        String fileContents2 = "Hello world!2";
+        try (FileOutputStream fos = this.openFileOutput(bm, Context.MODE_PRIVATE)) {
+            fos.write(fileContents2.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String c = "c.wav";
+        String fileContents3 = "Hello world!3";
+        try (FileOutputStream fos = this.openFileOutput(c, Context.MODE_PRIVATE)) {
+            fos.write(fileContents3.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String d = "d.wav";
+        String fileContents4 = "Hello world!4";
+        try (FileOutputStream fos = this.openFileOutput(d, Context.MODE_PRIVATE)) {
+            fos.write(fileContents4.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String dm = "dm.wav";
+        String fileContents5 = "Hello world!5";
+        try (FileOutputStream fos = this.openFileOutput(dm, Context.MODE_PRIVATE)) {
+            fos.write(fileContents5.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String echord = "e.wav";
+        String fileContents6 = "Hello world!6";
+        try (FileOutputStream fos = this.openFileOutput(echord, Context.MODE_PRIVATE)) {
+            fos.write(fileContents6.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String em = "em.wav";
+        String fileContents7 = "Hello world!7";
+        try (FileOutputStream fos = this.openFileOutput(em, Context.MODE_PRIVATE)) {
+            fos.write(fileContents7.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String f = "f.wav";
+        String fileContents8 = "Hello world!8";
+        try (FileOutputStream fos = this.openFileOutput(f, Context.MODE_PRIVATE)) {
+            fos.write(fileContents8.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String g = "g.wav";
+        String fileContents9 = "Hello world!9";
+        try (FileOutputStream fos = this.openFileOutput(g, Context.MODE_PRIVATE)) {
+            fos.write(fileContents9.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
 
 

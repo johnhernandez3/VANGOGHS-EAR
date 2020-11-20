@@ -204,11 +204,10 @@ public class FileManager extends Activity implements IODeviceManager {
         String res;
         if(filename != null && filename != " ") {
 
-            context = this.getContext();
-            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + filename + "." +format;
+            res = this.getExternalFilesDir(null).getAbsolutePath() + "/" + filename + "." +format;
         }
         else{
-            res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + "sample" + "."+format;
+            res = this.getExternalFilesDir(null).getAbsolutePath() + "/" + "sample" + "."+format;
         }
         return res;
     }

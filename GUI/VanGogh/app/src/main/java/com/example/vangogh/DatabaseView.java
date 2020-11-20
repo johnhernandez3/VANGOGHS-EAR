@@ -3,6 +3,7 @@ package com.example.vangogh;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +13,10 @@ import androidx.annotation.Nullable;
 
 import com.example.database.MusicDataBase;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DatabaseView extends Activity {
 
@@ -25,6 +29,8 @@ public class DatabaseView extends Activity {
     Button view2_button;
     Button del2_button;
     EditText editSongName, editTextId, editTextChord, editTextId2;
+
+    public HashMap<String, File> chordsmap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,6 +146,9 @@ public class DatabaseView extends Activity {
                 }
             }
         });
+
+
+
     }
 
     /**
@@ -153,6 +162,21 @@ public class DatabaseView extends Activity {
         builder.setTitle(title);
         builder.setMessage(msg);
         builder.show();
+    }
+
+    /**
+     * Gets the chordsmap in the system
+     */
+    public HashMap<String, File> getChordsmap() {
+        chordsmap.put("a", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\chords\\a.wav"));
+        chordsmap.put("am", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\chords\\am.wav"));
+        chordsmap.put("bm", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\chords\\bm.wav"));
+        chordsmap.put("c", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\chords\\c.wav"));
+        chordsmap.put("d", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\chords\\d.wav"));
+        chordsmap.put("dm", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\chords\\dm.wav"));
+        chordsmap.put("e", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\chords\\e.wav"));
+        chordsmap.put("em", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\chords\\em.wav"));
+        return this.chordsmap;
     }
 
 }

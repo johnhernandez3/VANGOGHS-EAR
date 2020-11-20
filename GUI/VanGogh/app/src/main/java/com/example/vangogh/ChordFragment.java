@@ -2,6 +2,7 @@ package com.example.vangogh;
 
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,9 +14,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.dqt.libs.chorddroid.helper.DrawHelper;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import chords.ChordFactory;
@@ -33,6 +40,8 @@ public class ChordFragment extends Fragment
     private final int DIAGRAM_WIDTH = 200;
     private final int DIAGRAM_HEIGHT = 200;
     public String currchord = "";
+    private DatabaseView dbview;
+    private AudioPlayer ap;
 
     private ChordModel chord;
     private ChordFactory chord_factory;
@@ -55,6 +64,7 @@ public class ChordFragment extends Fragment
         update_btn = (Button) view.findViewById(R.id.update_chord);
         chord_view = (ImageView) view.findViewById(R.id.chord_view);
 
+        final FragmentManager man = this.getActivity().getSupportFragmentManager();
 
 
         // Set callback listener for events on the update button
@@ -64,8 +74,15 @@ public class ChordFragment extends Fragment
             {
 
                 if(validateChord(editText.getText().toString())) {
+                    Log.d(TAG, "editText received: " + editText.getText().toString());
                     currchord = editText.getText().toString();
-                    drawChords(currchord);
+                    drawChords("dm");
+                    dbview = new DatabaseView();
+                    ap = new AudioPlayer(Uri.fromFile(dbview.getChordsmap().get("dm")));
+                    Log.d(TAG, "audioplayer received: " + Uri.fromFile(dbview.getChordsmap().get("dm")));
+                    man.beginTransaction().add(R.id.new_audio_fragment_container_view, ap, "AUDIO PLAYER");
+
+
                 }
                 editText.setText("");
             }
