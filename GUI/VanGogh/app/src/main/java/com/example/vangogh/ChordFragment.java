@@ -19,11 +19,13 @@ import androidx.fragment.app.FragmentManager;
 import com.dqt.libs.chorddroid.helper.DrawHelper;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import chords.ChordFactory;
 import chords.ChordModel;
@@ -76,10 +78,10 @@ public class ChordFragment extends Fragment
                 if(validateChord(editText.getText().toString())) {
                     Log.d(TAG, "editText received: " + editText.getText().toString());
                     currchord = editText.getText().toString();
-                    drawChords("dm");
+                    drawChords(editText.getText().toString());
                     dbview = new DatabaseView();
-                    ap = new AudioPlayer(Uri.fromFile(dbview.getChordsmap().get("dm")));
-                    Log.d(TAG, "audioplayer received: " + Uri.fromFile(dbview.getChordsmap().get("dm")));
+                    ap = new AudioPlayer(Uri.fromFile(dbview.getChordsmap().get(editText.getText().toString())));
+//                    Log.d(TAG, "audioplayer received: " + Uri.fromFile(dbview.getChordsmap().get("dm")));
                     man.beginTransaction().add(R.id.new_audio_fragment_container_view, ap, "AUDIO PLAYER");
 
 
