@@ -143,20 +143,20 @@ public class AudioPlayer extends Fragment {
 
         });
 
-        stop.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
-            {
-
-                Toast.makeText(getActivity().getBaseContext(), "Stopping audio playback", Toast.LENGTH_SHORT).show();
-
-                play.setEnabled(false);
-                stop.setEnabled(false);
-                pause.setEnabled(false);
-                player.stop();
-            }
-
-        });
+//        stop.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v)
+//            {
+//
+//                Toast.makeText(getActivity().getBaseContext(), "Stopping audio playback", Toast.LENGTH_SHORT).show();
+//
+//                play.setEnabled(false);
+//                stop.setEnabled(false);
+//                pause.setEnabled(false);
+//                player.stop();
+//            }
+//
+//        });
 
         pause.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -171,23 +171,23 @@ public class AudioPlayer extends Fragment {
 
         });
 
-        back.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
-            {
-                //TODO: Implement backwards logic
-            }
-
-        });
-
-        forward.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
-            {
-                //TODO: Implement fast forward logic
-            }
-
-        });
+//        back.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v)
+//            {
+//                //TODO: Implement backwards logic
+//            }
+//
+//        });
+//
+//        forward.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v)
+//            {
+//                //TODO: Implement fast forward logic
+//            }
+//
+//        });
 
         return view;
     }
