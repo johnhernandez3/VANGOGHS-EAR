@@ -31,7 +31,7 @@ public class DatabaseView extends Activity {
     Button del2_button;
     EditText editSongName, editTextId, editTextChord, editTextId2;
 
-    public HashMap<String, File> chordsmap = new HashMap<>();
+    public HashMap<String, String> chordsmap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -168,15 +168,15 @@ public class DatabaseView extends Activity {
     /**
      * Gets the chordsmap in the system
      */
-    public HashMap<String, File> getChordsmap() {
-        chordsmap.put("a", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\files\\a.wav"));
-        chordsmap.put("am", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\files\\am.wav"));
-        chordsmap.put("bm", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\files\\bm.wav"));
-        chordsmap.put("c", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\files\\c.wav"));
-        chordsmap.put("d", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\files\\d.wav"));
-        chordsmap.put("dm", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\files\\dm.wav"));
-        chordsmap.put("e", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\files\\e.wav"));
-        chordsmap.put("em", new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "\\files\\em.wav"));
+    public HashMap<String, String> getChordsmap() {
+        chordsmap.put("a", "a.wav");
+        chordsmap.put("am", "am.wav");
+        chordsmap.put("bm", "bm.wav");
+        chordsmap.put("c", "c.wav");
+        chordsmap.put("d", "d.wav");
+        chordsmap.put("dm", "dm.wav");
+        chordsmap.put("e", "e.wav");
+        chordsmap.put("em", "em.wav");
         return this.chordsmap;
     }
 

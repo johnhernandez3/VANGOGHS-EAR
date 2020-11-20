@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import com.example.database.MusicDataBase;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,9 +116,9 @@ public class FileManager extends Activity implements IODeviceManager {
      * Allows the user to choose the files that they are seeing
      */
     public Uri returnChosenFile()
-        {
-            return this.selected_file;
-        }
+    {
+        return this.selected_file;
+    }
 
 
     private void showFilePicker()
@@ -182,6 +185,14 @@ public class FileManager extends Activity implements IODeviceManager {
 //        super.onActivityResult(requestCode, resultCode,data);
     }
 
+    public List getAllChords()
+    {
+        MusicDataBase music_database = new MusicDataBase(this);
+
+        return music_database.getAllID2();
+    }
+
+
     /**
      * Generates the Output File Path for the Audio Recorder to store recorded audio.
      *
@@ -202,6 +213,24 @@ public class FileManager extends Activity implements IODeviceManager {
         return res;
     }
 
+    private Uri getChordsFilePathURI()
+    {
+        return Uri.fromFile(getBaseContext().getApplicationContext().getFilesDir());
+    }
+
+
+    public File getChordFile(String chord_filename) throws Exception
+    {
+
+        File a_file = new File(this.getBaseContext().getApplicationContext().getFilesDir(), chord_filename);
+
+        Log.d(TAG, "Created File:"+a_file.toString());
+        if(a_file.exists())
+            return a_file;
+        else{
+            throw new Exception("Error while trying to open file:"+a_file.getPath());
+        }
+    }
 
     @Override
     public List<Device> devices() {
