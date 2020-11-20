@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.database.MusicDataBase;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -212,6 +213,24 @@ public class FileManager extends Activity implements IODeviceManager {
         return res;
     }
 
+    private Uri getChordsFilePathURI()
+    {
+        return Uri.fromFile(getBaseContext().getApplicationContext().getFilesDir());
+    }
+
+
+    public File getChordFile(String chord_filename) throws Exception
+    {
+
+        File a_file = new File(this.getBaseContext().getApplicationContext().getFilesDir(), chord_filename);
+
+        Log.d(TAG, "Created File:"+a_file.toString());
+        if(a_file.exists())
+            return a_file;
+        else{
+            throw new Exception("Error while trying to open file:"+a_file.getPath());
+        }
+    }
 
     @Override
     public List<Device> devices() {

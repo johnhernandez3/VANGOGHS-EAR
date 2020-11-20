@@ -1,5 +1,6 @@
 package com.example.vangogh;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import com.dqt.libs.chorddroid.helper.DrawHelper;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -53,9 +55,12 @@ public class ChordFragment extends Fragment
     ImageView chord_view;
     EditText editText;
 
+    Context context;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        context = this.getActivity().getApplicationContext();
         // Loads the base view XML file
         view = inflater.inflate(R.layout.chord_fragment, container , false);
 
@@ -76,12 +81,19 @@ public class ChordFragment extends Fragment
                 if(validateChord(editText.getText().toString())) {
                     Log.d(TAG, "editText received: " + editText.getText().toString());
                     currchord = editText.getText().toString();
-                    drawChords("dm");
+                    drawChords(currchord);
                     dbview = new DatabaseView();
-                    ap = new AudioPlayer(Uri.fromFile(dbview.getChordsmap().get("dm")));
-                    Log.d(TAG, "audioplayer received: " + Uri.fromFile(dbview.getChordsmap().get("dm")));
-                    man.beginTransaction().add(R.id.new_audio_fragment_container_view, ap, "AUDIO PLAYER");
+                    try {
+                        File chord = getChordFile();
+                        ap = new AudioPlayer(Uri.fromFile(chord), context);
+                        Log.d(TAG, "audioplayer received: " + Uri.fromFile(chord));
 
+                        if(ap != null && man.findFragmentByTag("AUDIO PLAYER IN CHORDS") == null)
+                            man.beginTransaction().add(R.id.new_audio_fragment_container_view, ap, "AUDIO PLAYER IN CHORDS").commit();/**/
+                    }catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
 
                 }
                 editText.setText("");
@@ -91,6 +103,41 @@ public class ChordFragment extends Fragment
 
         return view;
     }
+
+    private Uri getChordFileUri()
+    {
+        Uri files_dir = Uri.fromFile(this.getActivity().getBaseContext().getApplicationContext().getFilesDir());
+        files_dir = Uri.withAppendedPath(files_dir , "g.wav");
+        Log.d(TAG, "Created File URI:"+files_dir.toString());
+        return files_dir;
+    }
+
+    private File getChordFile() throws Exception
+    {
+        //This defaults to returning the g.wav file, for debugging purposes
+        File a_file = new File(this.getActivity().getBaseContext().getApplicationContext().getFilesDir(), "g.wav");
+        Log.d(TAG, "Created File:"+a_file.toString());
+        if(a_file.exists())
+            return a_file;
+        else{
+            throw new Exception("Error while trying to open file:"+a_file.getPath());
+        }
+    }
+
+
+    public File getChordFile(String chord_filename) throws Exception
+    {
+
+        File a_file = new File(this.getActivity().getBaseContext().getApplicationContext().getFilesDir(), chord_filename);
+
+        Log.d(TAG, "Created File:"+a_file.toString());
+        if(a_file.exists())
+            return a_file;
+        else{
+            throw new Exception("Error while trying to open file:"+a_file.getPath());
+        }
+    }
+
 
     /**
      * Verifies if the provided @param input_chord is a valid representation of a chord.

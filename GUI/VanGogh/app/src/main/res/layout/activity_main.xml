@@ -52,14 +52,12 @@
 
                 <Button
                     android:id="@+id/dbview_button"
-                    android:layout_width="143dp"
-                    android:layout_height="125dp"
-                    android:layout_above="@+id/fragment_container_view"
+                    android:layout_width="112dp"
+                    android:layout_height="71dp"
                     android:layout_below="@+id/find_button"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="25dp"
-                    android:layout_marginEnd="268dp"
-                    android:layout_marginBottom="249dp"
+                    android:layout_marginEnd="299dp"
                     android:text="DBView" />
 
                 <Button
@@ -75,18 +73,18 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="359dp"
-                    android:layout_marginBottom="45dp"
+                    android:layout_marginEnd="217dp"
+                    android:layout_marginBottom="0dp"
                     android:orientation="horizontal" />
 
                 <FrameLayout
                     android:id="@+id/fragment_container_view"
-                    android:layout_width="213dp"
-                    android:layout_height="220dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="105dp"
-                    android:layout_marginBottom="64dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="12dp"
                     android:orientation="horizontal" />
 
                 <ToggleButton
@@ -95,21 +93,19 @@
                     android:layout_height="75dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="19dp"
+                    android:layout_marginTop="7dp"
                     android:layout_marginEnd="145dp"
                     android:textOff="Record"
                     android:textOn="Hide" />
 
                 <ToggleButton
                     android:id="@+id/toggle_frags"
-                    android:layout_width="117dp"
-                    android:layout_height="133dp"
+                    android:layout_width="114dp"
+                    android:layout_height="59dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="29dp"
-                    android:layout_marginEnd="13dp"
-                    android:layout_marginBottom="569dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="12dp"
                     android:textOff="Tablature"
                     android:textOn="Chord Diagram" />
 
