@@ -2,6 +2,7 @@ package com.example.vangogh;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -38,6 +39,19 @@ public class FileManager extends Activity implements IODeviceManager {
     private ArrayList<String> files = new ArrayList<>();
 
     private Uri selected_file;
+
+    private Context context;
+
+    public FileManager(Context context)
+    {
+        this.context  = context;
+    }
+
+    public FileManager()
+    {
+        this.context = this.getBaseContext();
+    }
+
 
     private void testFilenames()
     {
@@ -213,16 +227,17 @@ public class FileManager extends Activity implements IODeviceManager {
         return res;
     }
 
-    private Uri getChordsFilePathURI()
+    public Uri getChordsFilePathURI()
     {
-        return Uri.fromFile(getBaseContext().getApplicationContext().getFilesDir());
+        return Uri.fromFile(this.context.getFilesDir());
     }
 
 
     public File getChordFile(String chord_filename) throws Exception
     {
-
-        File a_file = new File(this.getBaseContext().getApplicationContext().getFilesDir(), chord_filename);
+        Log.e(TAG, "Current stored context" + this.context.toString());
+        Log.e(TAG, "Current stored context directory" + this.context.getFilesDir().getPath().toString());
+        File a_file = new File(this.context.getFilesDir(), chord_filename);
 
         Log.d(TAG, "Created File:"+a_file.toString());
         if(a_file.exists())

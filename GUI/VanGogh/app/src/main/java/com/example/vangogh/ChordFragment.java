@@ -85,7 +85,11 @@ public class ChordFragment extends Fragment
                     drawChords(currchord);
                     dbview = new DatabaseView();
                     try {
-                        File chord = getChordFile(dbview.getChordsmap().get(currchord));
+
+                        //getChordsmap() expects a lowercase key!
+                        String chord_filename = dbview.getChordsmap().get(currchord.toLowerCase());
+                        Log.d(TAG, "From dbview chordsmap received: " + chord_filename);
+                        File chord = getChordFile(chord_filename);
                         ap = new AudioPlayer(Uri.fromFile(chord), context);
                         Log.d(TAG, "audioplayer received: " + Uri.fromFile(chord));
 
@@ -93,6 +97,7 @@ public class ChordFragment extends Fragment
                             man.beginTransaction().add(R.id.new_audio_fragment_container_view, ap, "AUDIO PLAYER IN CHORDS").commit();/**/
                     }catch(Exception e)
                     {
+                        Log.e(TAG, "Current Chord stored:" + currchord);
                         e.printStackTrace();
                     }
 
@@ -107,36 +112,45 @@ public class ChordFragment extends Fragment
 
     private Uri getChordFileUri()
     {
-        Uri files_dir = Uri.fromFile(this.getActivity().getBaseContext().getApplicationContext().getFilesDir());
-        files_dir = Uri.withAppendedPath(files_dir , "g.wav");
-        Log.d(TAG, "Created File URI:"+files_dir.toString());
-        return files_dir;
+        FileManager fileManager = new FileManager(this.getActivity().getBaseContext().getApplicationContext());
+        return fileManager.getChordsFilePathURI();
+
+//        Uri files_dir = Uri.fromFile(this.getActivity().getBaseContext().getApplicationContext().getFilesDir());
+//        files_dir = Uri.withAppendedPath(files_dir , "g.wav");
+//        Log.d(TAG, "Created File URI:"+files_dir.toString());
+//        return files_dir;
     }
 
     private File getChordFile() throws Exception
     {
-        //This defaults to returning the g.wav file, for debugging purposes
-        File a_file = new File(this.getActivity().getBaseContext().getApplicationContext().getFilesDir(), "g.wav");
-        Log.d(TAG, "Created File:"+a_file.toString());
-        if(a_file.exists())
-            return a_file;
-        else{
-            throw new Exception("Error while trying to open file:"+a_file.getPath());
-        }
+//        //This defaults to returning the g.wav file, for debugging purposes
+//        File a_file = new File(this.getActivity().getBaseContext().getApplicationContext().getFilesDir(), "g.wav");
+//        Log.d(TAG, "Created File:"+a_file.toString());
+//        if(a_file.exists())
+//            return a_file;
+//        else{
+//            throw new Exception("Error while trying to open file:"+a_file.getPath());
+//        }
+        FileManager fileManager = new FileManager(this.getActivity().getBaseContext().getApplicationContext());
+
+        return fileManager.getChordFile("g");
     }
 
 
-    public File getChordFile(String chord_filename) throws Exception
+    private File getChordFile(String chord_filename) throws Exception
     {
+        FileManager fileManager = new FileManager(this.getActivity().getBaseContext().getApplicationContext());
 
-        File a_file = new File(this.getActivity().getBaseContext().getApplicationContext().getFilesDir(), chord_filename);
+//        File a_file = new File(this.getActivity().getBaseContext().getApplicationContext().getFilesDir(), chord_filename);
+//
+//        Log.d(TAG, "Created File:"+a_file.toString());
+//        if(a_file.exists())
+//            return a_file;
+//        else{
+//            throw new Exception("Error while trying to open file:"+a_file.getPath());
+//        }
+       return fileManager.getChordFile(chord_filename);
 
-        Log.d(TAG, "Created File:"+a_file.toString());
-        if(a_file.exists())
-            return a_file;
-        else{
-            throw new Exception("Error while trying to open file:"+a_file.getPath());
-        }
     }
 
 
@@ -148,7 +162,7 @@ public class ChordFragment extends Fragment
     private boolean validateChord(String input_chord)
     {
         chord_factory = new ChordFactory();
-        ArrayList<ChordModel> valid_chords = chord_factory.createChords();
+        ArrayList<ChordModel> valid_chords = chord_factory.createValidInternalChords();
 
         chord_validator = new ChordValidator(valid_chords);
 
