@@ -228,13 +228,13 @@ public class MainActivity extends FragmentActivity
         });
 
 
-//        String a = "a.wav";
-//        String fileContents = "Hello world!";
-//        try (FileOutputStream fos = this.openFileOutput(a, Context.MODE_PRIVATE)) {
-//            fos.write(fileContents.getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        String a = "a.wav";
+        File fileContents = new File(this.getFilesDir(), a);
+        try (FileOutputStream fos = this.openFileOutput(a, Context.MODE_PRIVATE)) {
+            fos.write(fileContents.toString().getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 //        String am = "am.wav";
 //        String fileContents1 = "Hello world!1";
 //        try (FileOutputStream fos = this.openFileOutput(am, Context.MODE_PRIVATE)) {
