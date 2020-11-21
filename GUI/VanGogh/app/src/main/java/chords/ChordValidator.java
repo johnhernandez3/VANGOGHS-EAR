@@ -238,7 +238,7 @@ public class ChordValidator
      */
     private String extractChordClass(String whole_chord)
     {
-        Pattern pattern = Pattern.compile("[7]?[#]?(([M][a][j])|([M][i][n]))?");
+        Pattern pattern = Pattern.compile("[7]?[#]?(([M][a][j])|([M][i][n])|[m])?");
         Matcher target = pattern.matcher(whole_chord);
 
         if(target.find())
@@ -256,7 +256,7 @@ public class ChordValidator
      */
     private String stringPattern()
     {
-        String str_pattern = "([abcdefg]|[ABCDEFG])[7]?[#]?(([M][a][j])|([M][i][n]))?";
+        String str_pattern = "([abcdefg]|[ABCDEFG])[7]?[#]?(([M][a][j])|([M][i][n])|([m]))?";
 
 
 

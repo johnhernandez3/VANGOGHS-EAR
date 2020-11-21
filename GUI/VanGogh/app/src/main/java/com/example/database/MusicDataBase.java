@@ -11,6 +11,9 @@ import java.util.List;
 
 public class MusicDataBase extends SQLiteOpenHelper {
 
+    private static final int CHORD_TABLE = 1;
+    private static final int TABLATURE_TABLE = 2;
+
     //Assign variable
     public static final String DB_NAME = "Music2.db";
     public static final String TABLE_NAME = "tablature_table";
@@ -46,10 +49,10 @@ public class MusicDataBase extends SQLiteOpenHelper {
      * @param i decides which table is having data inserted
      * @return is true if the data was inserted and false if it was not
      */
-    public boolean insertData(String DATA, int i) {
+    public boolean insertData(String DATA, int table) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        switch(i) {
+        switch(table) {
             case 1:
                 contentValues.put(COL_2, DATA);
                 long res = db.insert(TABLE_NAME, null, contentValues);
@@ -115,7 +118,7 @@ public class MusicDataBase extends SQLiteOpenHelper {
      */
     public Integer deleteData(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "ID = ?", new String[] {id});
+        return db.delete(TABLE_NAME, "SONGNAME = ?", new String[] {id});
     }
 
     /**
@@ -125,6 +128,6 @@ public class MusicDataBase extends SQLiteOpenHelper {
      */
     public Integer deleteChordData(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME1, "CID = ?", new String[] {id});
+        return db.delete(TABLE_NAME1, "CHORDS = ?", new String[] {id});
     }
 }

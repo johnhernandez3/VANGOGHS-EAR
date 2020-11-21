@@ -35,5 +35,20 @@ public class ChordFactory {
         return chords;
     }
 
+    public ArrayList<ChordModel> createValidInternalChords()
+    {
+        ArrayList<ChordModel> valid_chords = new ArrayList<>();
+
+        for(String chord: chord_names)
+        {
+            valid_chords.add(new ChordModel(chord, ""));
+            if(chord == "A" || chord == "B" || chord == "D" || chord == "E" )
+                valid_chords.add(new ChordModel(chord, "m"));
+        }
+
+        return valid_chords;
+    }
+
+
 
 }

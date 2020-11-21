@@ -1,5 +1,6 @@
 package com.example.vangogh;
 
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -10,8 +11,12 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+
+    ChordFragment cf = new ChordFragment();
+
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void getChordFileisCorrect() throws Exception {
+        System.out.println(cf.getChordFile("g.wav").getAbsolutePath());
+        assertEquals("\\src\\main\\java\\chords\\a.wav", cf.getChordFile("g.wav").getAbsolutePath());
     }
 }

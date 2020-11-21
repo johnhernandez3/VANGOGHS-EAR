@@ -206,7 +206,7 @@ public class AudioRecorder extends Fragment
                             cv.put(MediaStore.Audio.Media.DATA, Output_File);
                             cv.put(MediaStore.MediaColumns.MIME_TYPE, "audio/3gp");
                             Uri uri = MediaStore.Audio.Media.getContentUri(Output_File);
-                            cv.put(MediaStore.Audio.Media.IS_PENDING, 1);
+//                            cv.put(MediaStore.Audio.Media.IS_PENDING, 1);
 
 //                            Uri audioCollection = MediaStore.Audio.Media.getContentUri(
 //                                    MediaStore.VOLUME_EXTERNAL_PRIMARY);
@@ -215,7 +215,7 @@ public class AudioRecorder extends Fragment
                             Uri new_uri = resolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cv);
                             Toast.makeText(getActivity(),  "Stopping Mic Recording", Toast.LENGTH_SHORT).show();
                             cv.clear();
-                            cv.put(MediaStore.Audio.Media.IS_PENDING, 0);
+//                            cv.put(MediaStore.Audio.Media.IS_PENDING, 0);
                             resolver.update(uri, cv, null,null);
                         }catch  (Exception e)
                         {

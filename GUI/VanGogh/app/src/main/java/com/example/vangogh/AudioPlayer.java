@@ -1,5 +1,6 @@
 package com.example.vangogh;
 
+import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 
@@ -44,9 +45,7 @@ public class AudioPlayer extends Fragment {
     private SeekBar seekbar;
     private static int one_time_only  = 0;
     private double start_time, final_time;
-
-
-
+    private Context context;
     public AudioPlayer(Uri file)
     {
         handler = new Handler();
@@ -54,6 +53,14 @@ public class AudioPlayer extends Fragment {
         final_time = 0;
         this.file = file;
     }
+
+    public  AudioPlayer(Uri file, Context context)
+    {
+        this(file);
+        this.context = context;
+
+    }
+
 
 
     /**
@@ -95,16 +102,20 @@ public class AudioPlayer extends Fragment {
         seekbar = (SeekBar)  view.findViewById(R.id.seekbar);
         seekbar.setClickable(false);
 
-        player = new MediaPlayer();
-        player.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).setUsage(AudioAttributes.USAGE_MEDIA).build());
+//        player = new MediaPlayer();
+        Log.d(TAG, "Creating Media Player with file:" + file);
+        player = MediaPlayer.create(this.getActivity().getBaseContext(),file);
+//        player.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).setUsage(AudioAttributes.USAGE_MEDIA).build());
 
         try {
-            player.setDataSource(this.getActivity().getApplicationContext(), file);
-            player.prepare();
+//            player.setDataSource(this.getActivity().getApplicationContext(), R.raw.g);
+//            if(player != null)
+//                player.start();
         }catch(Exception e)
         {
             e.printStackTrace();
             Log.e(TAG,"Error while trying to open URI:"+file);
+            Log.e(TAG, "Error Encountered:" + e);
         }
 
         // Set callback listener for events on the update button
@@ -194,7 +205,9 @@ public class AudioPlayer extends Fragment {
         return view;
     }
 
-    // Separate Thread for updating the seekbar object in parallel to the AudioPlayer execution logic.
+    /**
+     * Separate Thread for updating the seekbar object in parallel to the AudioPlayer execution logic.
+      */
     private Runnable UpdateSongTime = new Runnable() {
         @Override
         public void run() {

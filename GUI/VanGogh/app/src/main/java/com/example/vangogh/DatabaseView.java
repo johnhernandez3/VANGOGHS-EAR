@@ -2,7 +2,9 @@ package com.example.vangogh;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +14,10 @@ import androidx.annotation.Nullable;
 
 import com.example.database.MusicDataBase;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DatabaseView extends Activity {
 
@@ -25,6 +30,8 @@ public class DatabaseView extends Activity {
     Button view2_button;
     Button del2_button;
     EditText editSongName, editTextId, editTextChord, editTextId2;
+
+    public HashMap<String, String> chordsmap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,6 +147,9 @@ public class DatabaseView extends Activity {
                 }
             }
         });
+
+
+
     }
 
     /**
@@ -153,6 +163,21 @@ public class DatabaseView extends Activity {
         builder.setTitle(title);
         builder.setMessage(msg);
         builder.show();
+    }
+
+    /**
+     * Gets the chordsmap in the system
+     */
+    public HashMap<String, String> getChordsmap() {
+        chordsmap.put("a", "a.wav");
+        chordsmap.put("am", "am.wav");
+        chordsmap.put("bm", "bm.wav");
+        chordsmap.put("c", "c.wav");
+        chordsmap.put("d", "d.wav");
+        chordsmap.put("dm", "dm.wav");
+        chordsmap.put("e", "e.wav");
+        chordsmap.put("em", "em.wav");
+        return this.chordsmap;
     }
 
 }
