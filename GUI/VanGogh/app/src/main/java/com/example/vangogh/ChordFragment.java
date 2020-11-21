@@ -115,23 +115,10 @@ public class ChordFragment extends Fragment
     {
         FileManager fileManager = new FileManager(this.getActivity().getBaseContext().getApplicationContext());
         return fileManager.getChordsFilePathURI();
-
-//        Uri files_dir = Uri.fromFile(this.getActivity().getBaseContext().getApplicationContext().getFilesDir());
-//        files_dir = Uri.withAppendedPath(files_dir , "g.wav");
-//        Log.d(TAG, "Created File URI:"+files_dir.toString());
-//        return files_dir;
     }
 
     private File getChordFile() throws Exception
     {
-//        //This defaults to returning the g.wav file, for debugging purposes
-//        File a_file = new File(this.getActivity().getBaseContext().getApplicationContext().getFilesDir(), "g.wav");
-//        Log.d(TAG, "Created File:"+a_file.toString());
-//        if(a_file.exists())
-//            return a_file;
-//        else{
-//            throw new Exception("Error while trying to open file:"+a_file.getPath());
-//        }
         FileManager fileManager = new FileManager(this.getActivity().getBaseContext().getApplicationContext());
 
         return fileManager.getChordFile("g");
@@ -142,14 +129,6 @@ public class ChordFragment extends Fragment
     {
         FileManager fileManager = new FileManager(this.getActivity().getBaseContext().getApplicationContext());
 
-//        File a_file = new File(this.getActivity().getBaseContext().getApplicationContext().getFilesDir(), chord_filename);
-//
-//        Log.d(TAG, "Created File:"+a_file.toString());
-//        if(a_file.exists())
-//            return a_file;
-//        else{
-//            throw new Exception("Error while trying to open file:"+a_file.getPath());
-//        }
        return fileManager.getChordFile(chord_filename);
 
     }
