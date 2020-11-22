@@ -18,6 +18,9 @@ import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -38,7 +41,7 @@ import java.nio.file.Paths;
 /**
  * Class for the Main View of the system and where the user will mainly interact
  */
-public class MainActivity extends FragmentActivity
+public class MainActivity extends AppCompatActivity
 {
 
     Map<String, Integer> permissions;
@@ -47,6 +50,7 @@ public class MainActivity extends FragmentActivity
     ChordFragment chord_fragment;
     ToggleButton toggle_frags ;
     Button dbview_button;
+    Toolbar toolbar;
     private View view;
 
     private Uri selected_recording;
@@ -94,6 +98,9 @@ public class MainActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+//        setSupportActionBar(toolbar);
+
         requestPermissions();
 
         ToggleButton record_show_btn = (ToggleButton) findViewById(R.id.record_show_button);
@@ -101,6 +108,7 @@ public class MainActivity extends FragmentActivity
         record_show_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                removeAllFragments();
 
                 Log.d(TAG, "Entering On Checked Changed Listener");
                 if(isChecked)
@@ -118,30 +126,16 @@ public class MainActivity extends FragmentActivity
 //                    if(checkSelfPermission("RECORD AUDIO") == PackageManager.PERMISSION_GRANTED) {
                         Log.d(TAG, "Adding Audio Recorder Fragment");
                         audio_fragment = new AudioRecorder();
-                        man.beginTransaction().add(R.id.audio_fragment_container_view, audio_fragment, "AUDIO RECORD FRAG").commit();
+                        man.beginTransaction().add(R.id.audio_fragment_container_view, audio_fragment, "AUDIO RECORDER").commit();
 //                    }else{
 //                        // Ask for record permissions here
 //                        requestPermissions( new String[]{"RECORD AUDIO"}, REQUEST_RECORD_AUDIO);
-//                    }
-
-//                    if(man.findFragmentByTag("AUDIO RECORD FRAG")!=null) {
-//                        //remove this one
-//                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO RECORD FRAG")).commit();
 //                    }
                 }
                 else{
                     Log.d(TAG, "Failed On Checked Flag");
 
-                    if(man.findFragmentByTag("AUDIO PLAYER")!=null) {
-                        //remove this one
-                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO PLAYER")).commit();
-                    }
-
-//
-                    if(man.findFragmentByTag("AUDIO RECORD FRAG")!=null) {
-                        //remove this one
-                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO RECORD FRAG")).commit();
-                    }
+                    swapFragments("", "AUDIO RECORDER");
 
                     if(man.findFragmentByTag("TABLATURE")!=null) {
                         //remove this one
@@ -165,50 +159,24 @@ public class MainActivity extends FragmentActivity
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
+                removeAllFragments();
+
                 Log.d(TAG, "Entering On Checked Changed Listener");
                 if(isChecked)
                 {
-                    if(man.findFragmentByTag("AUDIO RECORD FRAG")!=null) {
-                        //remove this one
-                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO RECORD FRAG")).commit();
-                    }
-
-                    if(man.findFragmentByTag("AUDIO PLAYER")!=null) {
-                        //remove this one
-                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO PLAYER")).commit();
-                    }
-
-
-
                     Log.d(TAG, "Entered On Checked Flag");
-                    if(man.findFragmentByTag("TABLATURE")!=null)
-                    {
-                        //remove this one
-                        man.beginTransaction().remove(man.findFragmentByTag("TABLATURE")).commit();
-                    }
-                    chord_fragment = (ChordFragment) new ChordFragment();
-                    man.beginTransaction().add(R.id.fragment_container_view, chord_fragment, "CHORD FRAG").commit();
 
+                    swapFragments("TABLATURE", "CHORD");
                 }
                 else{
                     Log.d(TAG, "Failed On Checked Flag");
-                    tablature_fragment = (TablatureFragment) new TablatureFragment();
-                    if(man.findFragmentByTag("CHORD FRAG")!=null)
-                    {
-                        //remove this one
-                        man.beginTransaction().remove(man.findFragmentByTag("CHORD FRAG")).commit();
-                    }
 
-                    man.beginTransaction().add(R.id.fragment_container_view, tablature_fragment, "TABLATURE").commit();
+                    swapFragments("CHORD", "TABLATURE");
 
                 }
 
             }
         });
-
-
-
-
 
         Button find_file_btn = (Button) findViewById(R.id.find_button);
         find_file_btn.setOnClickListener(new View.OnClickListener()
@@ -310,17 +278,55 @@ public class MainActivity extends FragmentActivity
 
     }
 
-//    /**
-//     *Calls the FileManager class to move the files
-//     */
-//    public void searchForFile()
-//    {
-//        Intent intent = new Intent(this, FileManager.class);
-//
-//        startActivity(intent);
-//
-//
-//    }
+    private void removeAllFragments()
+    {
+        FragmentManager man = this.getSupportFragmentManager();
+
+        for(Fragment frag : man.getFragments())
+        {
+            if(frag != null)
+                man.beginTransaction().remove(frag).commit();
+        }
+
+    }
+
+
+    private void swapFragments(String incoming, String outgoing)
+    {
+        FragmentManager man = this.getSupportFragmentManager();
+
+        if(incoming.isEmpty() && outgoing.isEmpty() || outgoing.isEmpty())
+        {
+            // Do Nothing
+            return;
+        }
+
+        if(incoming.isEmpty())
+        {
+            man.beginTransaction().remove(man.findFragmentByTag(outgoing)).commit();
+            return ;
+        }
+
+        if(man.findFragmentByTag(outgoing)!=null)
+        {
+            //remove this one
+            man.beginTransaction().remove(man.findFragmentByTag(outgoing)).commit();
+            return;
+        }
+
+        Fragment incoming_fragment = FragmentFactory.createFragment(incoming);
+        if(incoming_fragment != null)
+        {
+            man.beginTransaction().add(R.id.fragment_container_view,incoming_fragment, incoming).commit();
+            return;
+        }
+
+        else{
+            Log.e(TAG, "Invalid fragment created for swapping views:" + incoming);
+            throw new IllegalStateException("Invalid fragment created for swapping views:"+ incoming);
+        }
+
+    }
 
     /**
      * Generates an intent for the FileManager activity and awaits a result with code 1234 for a file URI.
@@ -411,9 +417,10 @@ public class MainActivity extends FragmentActivity
                 Uri uri = Uri.parse(result);
                 selected_recording = uri;
                 Log.d(TAG, "Saved URI of selected recording:"+uri);
-//                boolean bool = data.getBooleanExtra("bool");
                 FragmentManager man = this.getSupportFragmentManager();
                 AudioPlayer audio_player = new AudioPlayer(selected_recording);
+
+                removeAllFragments();
 
                 man.beginTransaction().add(R.id.fragment_container_view, audio_player, "AUDIO PLAYER").commit();
 

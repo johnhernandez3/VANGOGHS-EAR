@@ -222,6 +222,8 @@ public class AudioPlayer extends Fragment {
      */
     @Override
     public void onDestroy() {
+
+        //TODO: Cleanup the audio player when removing this instance from fragment manager
         super.onDestroy();
         if (player != null) player.release();
     }

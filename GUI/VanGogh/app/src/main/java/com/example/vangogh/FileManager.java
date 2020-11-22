@@ -28,7 +28,9 @@ import utils.Device;
  * Class designated with the management of File logic in the system.
  * Queries for file URI's on the device, creates new files and deletes them.
  */
-public class FileManager extends Activity implements IODeviceManager {
+public class FileManager extends Activity implements IODeviceManager
+{
+    private String CHORD_DIR = "chords";
     private static final int FILE_SELECTED_CODE = 0;
     private static final String TAG = "FILE MANAGER";
     private static final int REQUEST_CHOOSER = 1234;
@@ -39,6 +41,7 @@ public class FileManager extends Activity implements IODeviceManager {
     private ArrayList<String> files = new ArrayList<>();
 
     private Uri selected_file;
+//    Context context;
 
     private Context context;
 
@@ -60,6 +63,48 @@ public class FileManager extends Activity implements IODeviceManager {
         files.add("B");
         files.add("O");
     }
+
+    /**
+     * Generates the Output File Path for the Audio Recorder to store recorded audio.
+     *
+     * @param filename the name of the file to be created for storing the recorded audio.
+     * @param format the file format that the data will be stored as.
+     * @return String representation of the Output File Path with specified format
+     */
+    private String OutputFilePath(String filename, String format)
+    {
+        String res;
+        if(filename != null && filename != " ") {
+            res = this.getExternalFilesDir(null).getAbsolutePath() + "/" + filename + "." +format;
+        }
+        else{
+            res = this.getExternalFilesDir(null).getAbsolutePath() + "/" + "sample" + "."+format;
+        }
+        return res;
+    }
+
+    public String getAbsoluteChordsDirPath()
+    {
+        return getAbsoluteProjectPath() + '/' + CHORD_DIR;
+    }
+
+
+    public String getAbsoluteProjectPath()
+    {
+        String path_str = this.getExternalFilesDir(null).getAbsolutePath().toString();
+
+        return path_str;
+    }
+
+
+    public Uri getAbsoluteProjectPathURI()
+    {
+
+        Uri path = Uri.parse(getAbsoluteProjectPath());
+
+        return path;
+    }
+
 
     /**
      * When the object is created, it finds the File View for the instance life cycle
@@ -113,11 +158,7 @@ public class FileManager extends Activity implements IODeviceManager {
                 e.printStackTrace();
             }
         }
-//        Create the ACTION_GET_CONTENT Intent
-//        Intent getContentIntent = FileUtils.createGetContentIntent();
 
-//        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
-//        startActivityForResult(intent, REQUEST_CHOOSER);
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -166,14 +207,6 @@ public class FileManager extends Activity implements IODeviceManager {
         {
             case FILE_SELECTED_CODE:
 
-//                    Uri uri = data.getData();
-//                    Log.d(TAG, "File URI:" +  uri.toString());
-//
-//                    String path = uri.getPath();
-//                    Log.d(TAG, "File Path: "+ path);
-//                    //process the file or pass it to data
-////                    super.onActivityResult(requestCode, resultCode,data);
-
                 break;
 
             case REQUEST_CHOOSER:
@@ -196,7 +229,6 @@ public class FileManager extends Activity implements IODeviceManager {
 
         }
 
-//        super.onActivityResult(requestCode, resultCode,data);
     }
 
     public List getAllChords()
