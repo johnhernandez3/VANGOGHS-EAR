@@ -5,8 +5,10 @@ import android.util.Log;
 
 import utils.Device;
 
-
-public class Microphone extends Device
+/**
+ * Class for representing the IO Device of a Microphone for the AudioRecorder class.
+ */
+public class Microphone implements Device
 {
 
     private final String TAG  = "MIC";
@@ -36,11 +38,13 @@ public class Microphone extends Device
         }
     }
 
-
+    /**
+     * Initiates the process of storing data from the microphone into the internal file
+     * @return boolean representing if it was successful or not
+     */
     public boolean start()
     {
         try{
-//            recorder.prepare();
             recorder.start();
         }catch(Exception e)
         {
@@ -54,6 +58,10 @@ public class Microphone extends Device
         }
     }
 
+    /**
+     * Halts he process of storing data from the microphone into the internal file
+     * @return boolean representing if it was successful or not
+     */
     public boolean stop()
     {
         try{
@@ -71,7 +79,15 @@ public class Microphone extends Device
         }
     }
 
+    @Override
+    public boolean reset() {
+        return false;
+    }
 
+    /**
+     * Resets he process of storing data from the microphone into the new internal file @param file_path
+     * @return boolean representing if it was successful or not
+     */
     public boolean reset(String file_path)
     {
         try{

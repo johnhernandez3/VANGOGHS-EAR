@@ -1,61 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".MainActivity">-->
+
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
+<!--    android:background="@color/white"-->
 
-    <RelativeLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-<!--        <ImageView-->
-<!--            android:id="@+id/chord_image"-->
-<!--            android:layout_width="wrap_content"-->
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            app:titleTextColor="@color/white"
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:menu="@menu/top_app_bar"
+            app:navigationIcon="@drawable/ic_nav_bar"
+            app:title="Main Menu" />
+
+<!--        <androidx.fragment.app.FragmentContainerView-->
+<!--            android:id="@+id/nav_host_fragment"-->
 <!--            android:layout_height="wrap_content"-->
-<!--            android:contentDescription="@string/my_image_description"-->
-<!--            />-->
+<!--            android:layout_width="wrap_content"/>-->
 
-<!--        <com.dqt.libs.chorddroid.components.ChordTextureView-->
-<!--            android:id="@+id/chord_texture_view"-->
-<!--            android:layout_width="216dp"-->
-<!--            android:layout_height="210dp"-->
+<!--        <com.google.android.material.navigation.NavigationView-->
+<!--            android:id="@+id/nav_view"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="start"-->
+<!--            android:fitsSystemWindows="true" />-->
 
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:layout_marginEnd="107dp"-->
-<!--            android:layout_marginBottom="254dp" />-->
-<!--        <fragment android:name="com.example.vangogh.ChordFragment"-->
-<!--        android:id="@+id/chord_fragment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        tools:layout="@layout/chord_fragment" />-->
-
-        <fragment
-            android:id="@+id/audio_fragment"
-            android:name="com.example.vangogh.AudioRecorder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="18dp"
-            tools:layout="@layout/audio_recorder_fragment" />
-
-        <fragment
-            android:id="@+id/tablature_fragment"
-            android:name="com.example.vangogh.TablatureFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-
-            tools:layout="@layout/tablature_fragment" />
-
-        <Button
-            android:id="@+id/find_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Search File" />
-    </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+                <Button
+                    android:id="@+id/dbview_button"
+                    android:layout_width="112dp"
+                    android:layout_height="71dp"
+                    android:layout_below="@+id/find_button"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="299dp"
+                    android:text="DBView" />
+
+                <Button
+                    android:id="@+id/find_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Select File" />
+
+
+                <FrameLayout
+                    android:id="@+id/audio_fragment_container_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="217dp"
+                    android:layout_marginBottom="0dp"
+                    android:orientation="horizontal" />
+
+                <FrameLayout
+                    android:id="@+id/fragment_container_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal" />
+
+                <ToggleButton
+                    android:id="@+id/record_show_button"
+                    android:layout_width="122dp"
+                    android:layout_height="75dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="145dp"
+                    android:textOff="Record"
+                    android:textOn="Hide" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_frags"
+                    android:layout_width="114dp"
+                    android:layout_height="59dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="12dp"
+                    android:textOff="Tablature"
+                    android:textOn="Chord Diagram" />
+
+        </RelativeLayout>
+
+
+
+
+<!--</LinearLayout>-->
+
+</androidx.drawerlayout.widget.DrawerLayout>

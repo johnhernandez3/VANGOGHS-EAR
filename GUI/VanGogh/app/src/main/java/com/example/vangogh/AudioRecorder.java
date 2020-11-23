@@ -18,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -65,8 +64,7 @@ public class AudioRecorder extends Fragment
      * @param filename the name of the file to be created for storing the recorded audio.
      * @return String representation of the Output File Path.
      */
-    @NotNull
-    private String OutputFilePath(String filename)
+    protected String OutputFilePath(String filename)
     {
         String res;
         if(nonEmptyString(filename)) {
@@ -82,17 +80,26 @@ public class AudioRecorder extends Fragment
         return res;
     }
 
-    private boolean nonEmptyString(String text)
+    /**
+     * Verifies if @param text is an empty string or an only whitespace containing string
+     * @param text the String we want to verify for emptiness
+     * @return boolean representing if the @param text is non-empty
+     */
+    protected boolean nonEmptyString(String text)
     {
         if(text.trim().length() > 0 && text  != null)
             return true;
         else
             return false;
-
     }
 
-
-    @NotNull
+    /**
+     * Generates the Output File Path for the Audio Recorder to store recorded audio.
+     *
+     * @param filename the name of the file to be created for storing the recorded audio.
+     * @param format the file format that the data will be stored as.
+     * @return String representation of the Output File Path with specified format
+     */
     private String OutputFilePath(String filename, String format)
     {
         String res;
@@ -199,7 +206,7 @@ public class AudioRecorder extends Fragment
                             cv.put(MediaStore.Audio.Media.DATA, Output_File);
                             cv.put(MediaStore.MediaColumns.MIME_TYPE, "audio/3gp");
                             Uri uri = MediaStore.Audio.Media.getContentUri(Output_File);
-                            cv.put(MediaStore.Audio.Media.IS_PENDING, 1);
+//                            cv.put(MediaStore.Audio.Media.IS_PENDING, 1);
 
 //                            Uri audioCollection = MediaStore.Audio.Media.getContentUri(
 //                                    MediaStore.VOLUME_EXTERNAL_PRIMARY);
@@ -208,7 +215,7 @@ public class AudioRecorder extends Fragment
                             Uri new_uri = resolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cv);
                             Toast.makeText(getActivity(),  "Stopping Mic Recording", Toast.LENGTH_SHORT).show();
                             cv.clear();
-                            cv.put(MediaStore.Audio.Media.IS_PENDING, 0);
+//                            cv.put(MediaStore.Audio.Media.IS_PENDING, 0);
                             resolver.update(uri, cv, null,null);
                         }catch  (Exception e)
                         {

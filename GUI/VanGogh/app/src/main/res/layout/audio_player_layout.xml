@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="203dp" />
+
+    <Button
+        android:id="@+id/play"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+
+
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="255dp"
+        android:text="PLAY" />
+
+    <Button
+        android:id="@+id/pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="103dp"
+        android:text="PAUSE" />
+
+    <!--    <Button-->
+<!--        android:id="@+id/stop"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginStart="87dp"-->
+<!--        android:layout_marginEnd="64dp"-->
+<!--        android:layout_marginBottom="259dp"-->
+<!--        android:layout_toStartOf="@+id/pause"-->
+<!--        android:text="STOP"-->
+<!--        tools:layout_editor_absoluteX="68dp"-->
+<!--        tools:layout_editor_absoluteY="408dp" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/forward"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginEnd="21dp"-->
+<!--        android:layout_marginBottom="326dp"-->
+<!--        android:text=">"-->
+<!--        tools:layout_editor_absoluteX="262dp"-->
+<!--        tools:layout_editor_absoluteY="408dp" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/back"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginStart="58dp"-->
+<!--        android:layout_marginEnd="40dp"-->
+<!--        android:layout_marginBottom="328dp"-->
+<!--        android:layout_toStartOf="@+id/play"-->
+<!--        android:text="BACK"-->
+<!--        tools:layout_editor_absoluteX="163dp"-->
+<!--        tools:layout_editor_absoluteY="369dp" />-->
+</RelativeLayout>

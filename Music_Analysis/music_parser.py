@@ -9,6 +9,8 @@
 
 # from utils.settings import get_project_root, find
 
+filename = ""
+nix_filename = ""
 # filename = r"C:\Users\johnm\git\MusicAnalysis\Music_Analysis\Megaman_ZX_-_Green_Grass_Gradiation_NITRO_Remix (1).wav"
 
 # nix_filename = r"Megaman_ZX_-_Green_Grass_Gradiation_NITRO_Remix (1).wav"

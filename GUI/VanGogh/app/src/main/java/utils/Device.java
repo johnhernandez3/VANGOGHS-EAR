@@ -1,4 +1,8 @@
 package utils;
 
-public class Device {
+public interface Device {
+
+    boolean start();
+    boolean stop();
+    boolean reset();
 }

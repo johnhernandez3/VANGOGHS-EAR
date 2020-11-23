@@ -51,7 +51,7 @@ def setup():
 def labels():
     # labels = np.array(tf.io.gfile.listdir(str(chords_audio_files_path())))
     # return labels
-    return np.array(['a','am','bm','c','d','dm','e','em','f','g'])
+    return ['a','am','bm','c','d','dm','e','em','f','g']
 
 def get_label(file_path):
   parts = tf.strings.split(file_path, os.path.sep)
@@ -68,7 +68,7 @@ def chords_audio_files_path():
 # these are file tensors 
 def chords_audio_filenames(chords_path = chords_audio_files_path()):
     print(chords_path)
-    filenames = tf.io.gfile.glob(str(chords_path)+'/*')
+    filenames = tf.io.gfile.glob(str(chords_path)+'/*/*')
     filenames = tf.random.shuffle(filenames)
     print(filenames)
     print('\n\n')
@@ -80,7 +80,7 @@ def split_files(files):
     return train, val, test
 
 def decode_audio(audio_binary):
-    audio, sample_rate = tf.audio.decode_wav(audio_binary,desired_channels=1)
+    audio, sample_rate = tf.audio.decode_wav(audio_binary,desired_samples=16000 ,desired_channels=1)
 
     print(type(audio))
     print(audio.shape)
@@ -101,10 +101,12 @@ def get_waveform_and_label(file_path):
     return waveform, label
 
 def get_spectrogram(waveform):
-    padding_size = [44100] - tf.shape(waveform)
+    # padding_size = [44100] - tf.shape(waveform)
+
+    # print(f"Shape of waveform:{tf.shape(waveform)}\n")
     #if padding_size < 0:
      #   padding_size *= -1
-    zero_padding = tf.zeros(padding_size, dtype=tf.float32)
+    #zero_padding = tf.zeros(padding_size, dtype=tf.float32)
 
 
     waveform = tf.cast(waveform, tf.float32)
@@ -112,7 +114,7 @@ def get_spectrogram(waveform):
 
     spectrogram = tf.signal.stft(waveform, frame_length=255, frame_step=128)
     spectrogram = tf.abs(spectrogram)
-    print('/n/nWaveform shape:', waveform.shape)
+    print('/n/n Waveform shape:', waveform.shape)
     print('Spectrogram shape:', spectrogram.shape)
     print()
     return spectrogram
@@ -126,22 +128,23 @@ def get_spectrogram_and_label_id(audio, label):
 
 def audio_classifier_model(input_shape,norm_layer, num_labels=len(labels())):
     model = models.Sequential([
+    # layers.Input(shape=input_shape),
     layers.Input(shape=input_shape),
-    # layers.Input(shape=(input_shape[-2],input_shape[-1]),name='input'),
     preprocessing.Resizing(32, 32), 
     norm_layer,
+    layers.Conv2D(32, 3, activation='relu'),
     layers.Conv2D(64, 3, activation='relu'),
-    layers.Conv2D(128, 3, activation='relu'),
     layers.MaxPooling2D(),
     layers.Dropout(0.25),
     layers.Flatten(),
-    layers.Dense(256, activation='relu'),
+    layers.Dense(128, activation='relu'),
     layers.Dropout(0.5),
     layers.Dense(num_labels),
 ])
     model.compile(
     optimizer=tf.keras.optimizers.Adam(),
     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    # loss='categorical_crossentropy',
     metrics=['accuracy'],
 )
 
@@ -154,15 +157,17 @@ def preprocess_dataset(files):
       get_spectrogram_and_label_id,  num_parallel_calls=AUTOTUNE)
   return output_ds
 
-def prepare_ds():
-    # filenames = chords_audio_filenames()
-    # train_files = filenames[:1000]
-    # val_files = filenames[1000:1000 +500]
-    # test_files = filenames[-500:]
-    filenames = chords_audio_filenames(Path(setup()) / 'sample')
-    train_files = filenames
-    val_files = filenames
-    test_files = filenames
+def prepare_ds(debug=False):
+    filenames = chords_audio_filenames()
+    train_files = filenames[:1000]
+    val_files = filenames[1001:1001 +499]
+    test_files = filenames[-499:]
+
+    if debug:
+        filenames = chords_audio_filenames(Path(setup()) / 'sample')
+        train_files = filenames
+        val_files = filenames
+        test_files = filenames
 
     files_ds = tf.data.Dataset.from_tensor_slices(train_files)
     waveform_ds = files_ds.map(get_waveform_and_label, num_parallel_calls=AUTOTUNE)
@@ -170,17 +175,22 @@ def prepare_ds():
 
     train_ds = spectrogram_ds
     val_ds = preprocess_dataset(val_files)
+
+    # print(f"/n/nValidationDS:{val_ds}/n/n")
     test_ds = preprocess_dataset(test_files)
 
     return train_ds, val_ds, test_ds
 
 def create_model():
     batch_size = BATCHES
-    train_ds, val_ds, test_ds =  prepare_ds()
+    train_ds, val_ds, test_ds =  prepare_ds()#prepare_ds(debug=True)
 
     train_ds = train_ds.cache().prefetch(AUTOTUNE)
     val_ds = val_ds.cache().prefetch(AUTOTUNE)
 
+    # for k,v in train_ds:
+    #     print(f"spectrogram:{k}\nlabel:{v}\n")
+    # print()
     for spec, _ in train_ds.take(1):
         input_shape = spec.shape
     
@@ -190,6 +200,7 @@ def create_model():
     norm_layer = preprocessing.Normalization()
     norm_layer.adapt(train_ds.map(lambda x,_ : x))
 
+    print(f"Input Shape:{input_shape}\n Num Labels:{num_labels}\n Normalization Layer:{norm_layer}\n\n")
     model = audio_classifier_model(input_shape, norm_layer, num_labels)
     
     
@@ -221,7 +232,7 @@ def plot_spectrogram(spectrogram, ax):
     # represented in the x-axis (columns).
     log_spec = np.log(spectrogram.T)
     height = log_spec.shape[0]
-    X = np.arange(40700, step=100)
+    X = np.arange(72500, step=100)
     Y = range(height)
     ax.pcolormesh( X,Y, log_spec)
 
@@ -237,16 +248,14 @@ def plot_audio(waveform, spectrogram):
     axes[1].set_title('Spectrogram')
     plt.show()
 
-
-
 def sample_plot():
     # waveform=get_waveform("C:\\Users\\johnm\\git\\VANGOGHS-EAR\\Music_Analysis\\Megaman_ZX_-_Green_Grass_Gradiation_NITRO_Remix (1).wav")
-    waveform=get_waveform("C:\\Users\\Alejandro Natal\\Documents\\GitHub\\VANGOGHS-EAR\\Music_Analysis\\ML\\sample\\a.wav")
+    waveform=get_waveform("C:\\Users\\johnm\\git\\VANGOGHS-EAR\\Music_Analysis\\ML\\sample\\Guitar_Only\\am\\am1.wav")
     plot_audio(waveform, spectrogram=get_spectrogram(waveform))
 
 def main():
-    # create_model()
-    sample_plot()
+    create_model()
+    # sample_plot()
     return
 
 if __name__ == "__main__":

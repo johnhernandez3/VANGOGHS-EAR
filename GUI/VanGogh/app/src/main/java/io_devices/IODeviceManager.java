@@ -1,12 +1,15 @@
 package io_devices;
 
+import java.util.List;
+
+import utils.Controller;
+import utils.Device;
 import utils.Manager;
 
-public class IODeviceManager extends Manager
+public interface IODeviceManager extends Manager
 {
-    public IODeviceManager()
-    {
 
-    }
+    boolean addController(Controller control);
 
+    boolean isValid(Controller control);
 }

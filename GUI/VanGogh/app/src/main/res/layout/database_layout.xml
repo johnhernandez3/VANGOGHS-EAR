@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/db_button"
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="235dp"
+        android:layout_marginBottom="393dp"
+        android:text="Tablature" />
+
+    <Button
+        android:id="@+id/db_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="397dp"
+        android:text="Chords" />
+
+    <EditText
+        android:id="@+id/editTextTextSongName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="200dp"
+        android:layout_marginBottom="614dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="SongName" />
+
+    <Button
+        android:id="@+id/viewtablature_button"
+        android:layout_width="202dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="209dp"
+        android:layout_marginBottom="332dp"
+        android:text="View All Tablatures" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <EditText
+        android:id="@+id/editTextTextId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="204dp"
+        android:layout_marginBottom="573dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="TablatureId" />
+
+    <Button
+        android:id="@+id/del_button"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="221dp"
+        android:layout_marginBottom="276dp"
+        android:text="Delete Tablatures" />
+
+    <EditText
+        android:id="@+id/editTextTextChord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="195dp"
+        android:layout_marginBottom="508dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Chord" />
+
+    <Button
+        android:id="@+id/viewchord_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="-1dp"
+        android:layout_marginBottom="335dp"
+        android:text="View All Chords" />
+
+    <Button
+        android:id="@+id/del_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="279dp"
+        android:text="Delete Chords" />
+
+    <EditText
+        android:id="@+id/editTextTextId2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="197dp"
+        android:layout_marginBottom="456dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="ChordId" />
+
+</RelativeLayout>
