@@ -320,7 +320,7 @@ public class FileManager extends Activity implements IODeviceManager
     public void writeChordsToFilesDir() throws IOException {
         int chords[] = {R.raw.am, R.raw.bm, R.raw.c, R.raw.d, R.raw.d, R.raw.dm, R.raw.e, R.raw.em, R.raw.f, R.raw.g};
         for(int i = 0; i < chords.length; i++) {
-            copyRAWtoPhone(i, this.getBaseContext().getApplicationContext().getFilesDir().getPath());
+            copyRAWtoPhone(chords[i], this.getBaseContext().getApplicationContext().getFilesDir().getPath());
         }
     }
 
