@@ -1,6 +1,5 @@
 package com.example.vangogh;
 
-import android.Manifest;
 import android.app.Activity;
 
 import android.content.Context;
@@ -10,21 +9,29 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.os.ParcelFileDescriptor;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.*;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -93,8 +100,52 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-//        setSupportActionBar(toolbar);
+        toolbar = (Toolbar) findViewById(R.id.topAppBar);
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Do stuff here when clicking the menu button
+            }
+        });
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId())
+                {
+                    case R.id.action_db_view:
+
+                        break;
+
+                    case R.id.action_record_view:
+
+                        break;
+
+                    case R.id.action_settings:
+
+                        break;
+
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+
+//        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+//        NavController navController = navHostFragment.getNavController();
+//        NavigationView navView = findViewById(R.id.nav_view);
+//        NavigationUI.setupWithNavController(navView, navController);
+
+
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        NavigationUI.setupWithNavController(
+//                toolbar, navController, appBarConfiguration);
+
 
         requestPermissions();
 
@@ -196,82 +247,53 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-        String a = "a.wav";
-        File fileContents = new File(this.getFilesDir(), a);
-        try (FileOutputStream fos = this.openFileOutput(a, Context.MODE_PRIVATE)) {
-            fos.write(fileContents.toString().getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        String am = "am.wav";
-//        String fileContents1 = "Hello world!1";
-//        try (FileOutputStream fos = this.openFileOutput(am, Context.MODE_PRIVATE)) {
-//            fos.write(fileContents1.getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String bm = "bm.wav";
-//        String fileContents2 = "Hello world!2";
-//        try (FileOutputStream fos = this.openFileOutput(bm, Context.MODE_PRIVATE)) {
-//            fos.write(fileContents2.getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String c = "c.wav";
-//        String fileContents3 = "Hello world!3";
-//        try (FileOutputStream fos = this.openFileOutput(c, Context.MODE_PRIVATE)) {
-//            fos.write(fileContents3.getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String d = "d.wav";
-//        String fileContents4 = "Hello world!4";
-//        try (FileOutputStream fos = this.openFileOutput(d, Context.MODE_PRIVATE)) {
-//            fos.write(fileContents4.getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String dm = "dm.wav";
-//        String fileContents5 = "Hello world!5";
-//        try (FileOutputStream fos = this.openFileOutput(dm, Context.MODE_PRIVATE)) {
-//            fos.write(fileContents5.getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String echord = "e.wav";
-//        String fileContents6 = "Hello world!6";
-//        try (FileOutputStream fos = this.openFileOutput(echord, Context.MODE_PRIVATE)) {
-//            fos.write(fileContents6.getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String em = "em.wav";
-//        String fileContents7 = "Hello world!7";
-//        try (FileOutputStream fos = this.openFileOutput(em, Context.MODE_PRIVATE)) {
-//            fos.write(fileContents7.getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String f = "f.wav";
-//        String fileContents8 = "Hello world!8";
-//        try (FileOutputStream fos = this.openFileOutput(f, Context.MODE_PRIVATE)) {
-//            fos.write(fileContents8.getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String g = "g.wav";
-//        String fileContents9 = "Hello world!9";
-//        try (FileOutputStream fos = this.openFileOutput(g, Context.MODE_PRIVATE)) {
-//            fos.write(fileContents9.getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
 
 
 
 
     }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_app_bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_db_view:
+                Toast.makeText(this, "DB View selected", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+            // action with ID action_settings was selected
+            case R.id.action_settings:
+                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+            case R.id.action_record_view:
+                Toast.makeText(this, "Record View selected", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+            default:
+                break;
+        }
+
+//        return NavigationUI.onNavDestinationSelected(item, navController)
+//                || super.onOptionsItemSelected(item);
+
+        return true;
+    }
+
 
     private void removeAllFragments()
     {
