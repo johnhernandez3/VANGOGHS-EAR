@@ -250,7 +250,7 @@ def plot_audio(waveform, spectrogram):
 
 def sample_plot():
     # waveform=get_waveform("C:\\Users\\johnm\\git\\VANGOGHS-EAR\\Music_Analysis\\Megaman_ZX_-_Green_Grass_Gradiation_NITRO_Remix (1).wav")
-    waveform=get_waveform("C:\\Users\\johnm\\git\\VANGOGHS-EAR\\Music_Analysis\\ML\\sample\\Guitar_Only\\am\\am1.wav")
+    waveform=get_waveform("C:\\Users\\johnm\\git\\VANGOGHS-EAR\\Music_Analysis\\ML\\sample\\a.wav")
     plot_audio(waveform, spectrogram=get_spectrogram(waveform))
 
 def main():

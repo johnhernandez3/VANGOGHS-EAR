@@ -11,18 +11,30 @@ import java.io.IOException;
 
 public class PreProcessor {
 
-   public PreProcessor() {}
+    public PreProcessor() {}
 
-   JLibrosa jl = new JLibrosa();
+    JLibrosa jl = new JLibrosa();
 
 
-   public Complex[][] loadmusic(String filename) throws FileFormatNotSupportedException, IOException, WavFileException {
+    public float[] loadmusic(String filename) throws FileFormatNotSupportedException, IOException, WavFileException {
 
-      float[] load = jl.loadAndRead(filename, jl.getSampleRate(),jl.getNoOfFrames()/jl.getSampleRate());
-      float[][] plot = jl.generateMelSpectroGram(load, jl.getSampleRate(), jl.getN_fft(), jl.getN_mels(), jl.getHop_length());
-      //MFCC = Mel-frequency cepstral coefficients (MFCCs)
-      Complex[][] stft = jl.generateSTFTFeatures(load, jl.getSampleRate(),40);
-      return stft;
-   }
+        float[] load = jl.loadAndRead(filename, jl.getSampleRate(),jl.getNoOfFrames()/jl.getSampleRate());
+        return load;
+    }
+
+    public float[][] genMelSpectrogram(float[] load) {
+
+        float[][] plot = jl.generateMelSpectroGram(load, jl.getSampleRate(), jl.getN_fft(), jl.getN_mels(), jl.getHop_length());
+        return plot;
+
+    }
+
+    public Complex[][] generateSTFTFeatures(float[] load) {
+
+        //MFCC = Mel-frequency cepstral coefficients (MFCCs)
+        Complex[][] stft = jl.generateSTFTFeatures(load, jl.getSampleRate(),40);
+        return stft;
+
+    }
 
 }
