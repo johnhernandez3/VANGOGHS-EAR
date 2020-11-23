@@ -1,6 +1,5 @@
 package com.example.vangogh;
 
-import android.Manifest;
 import android.app.Activity;
 
 import android.content.Context;
@@ -10,24 +9,30 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.os.ParcelFileDescriptor;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentFactory;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.*;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 
-import java.io.ByteArrayOutputStream;
+import com.google.android.material.navigation.NavigationView;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -99,8 +104,52 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-//        setSupportActionBar(toolbar);
+        toolbar = (Toolbar) findViewById(R.id.topAppBar);
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Do stuff here when clicking the menu button
+            }
+        });
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId())
+                {
+                    case R.id.action_db_view:
+
+                        break;
+
+                    case R.id.action_record_view:
+
+                        break;
+
+                    case R.id.action_settings:
+
+                        break;
+
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+
+//        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+//        NavController navController = navHostFragment.getNavController();
+//        NavigationView navView = findViewById(R.id.nav_view);
+//        NavigationUI.setupWithNavController(navView, navController);
+
+
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        NavigationUI.setupWithNavController(
+//                toolbar, navController, appBarConfiguration);
+
 
         requestPermissions();
 
@@ -278,6 +327,47 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_app_bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_db_view:
+                Toast.makeText(this, "DB View selected", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+            // action with ID action_settings was selected
+            case R.id.action_settings:
+                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+            case R.id.action_record_view:
+                Toast.makeText(this, "Record View selected", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+            default:
+                break;
+        }
+
+//        return NavigationUI.onNavDestinationSelected(item, navController)
+//                || super.onOptionsItemSelected(item);
+
+        return true;
+    }
+
 
     private void removeAllFragments()
     {
