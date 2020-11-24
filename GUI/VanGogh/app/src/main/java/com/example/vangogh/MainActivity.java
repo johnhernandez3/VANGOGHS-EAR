@@ -245,15 +245,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
-
-
-
-
-
-
     }
-
 
 
     @Override
@@ -358,7 +350,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Asks for the permission that is missing, if it is denied it asks the user for permission
+     * Asks the user for IO device permissions such as accessing storage and the microphone
      */
 
     /**
