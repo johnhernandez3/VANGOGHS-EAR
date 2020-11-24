@@ -15,19 +15,19 @@
     tools:context=".MainActivity">
 <!--    android:background="@color/white"-->
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:background="@color/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:background="@color/colorPrimary"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
 
-        <com.google.android.material.appbar.MaterialToolbar
-            app:titleTextColor="@color/white"
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            app:menu="@menu/top_app_bar"
-            app:navigationIcon="@drawable/ic_nav_bar"
-            app:title="Main Menu" />
+<!--        <com.google.android.material.appbar.MaterialToolbar-->
+<!--            app:titleTextColor="@color/white"-->
+<!--            android:id="@+id/topAppBar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="40dp"-->
+<!--            app:menu="@menu/top_app_bar"-->
+<!--            app:navigationIcon="@drawable/ic_nav_bar"-->
+<!--            app:title="Main Menu" />-->
 
 <!--        <androidx.fragment.app.FragmentContainerView-->
 <!--            android:id="@+id/nav_host_fragment"-->
@@ -41,7 +41,7 @@
 <!--            android:layout_gravity="start"-->
 <!--            android:fitsSystemWindows="true" />-->
 
-    </com.google.android.material.appbar.AppBarLayout>
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
 
 
         <RelativeLayout

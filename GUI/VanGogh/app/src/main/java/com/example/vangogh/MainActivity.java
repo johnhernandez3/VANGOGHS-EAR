@@ -100,40 +100,40 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.topAppBar);
-        setSupportActionBar(toolbar);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Do stuff here when clicking the menu button
-            }
-        });
-
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                switch (item.getItemId())
-                {
-                    case R.id.action_db_view:
-
-                        break;
-
-                    case R.id.action_record_view:
-
-                        break;
-
-                    case R.id.action_settings:
-
-                        break;
-
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
+//        toolbar = (Toolbar) findViewById(R.id.topAppBar);
+//        setSupportActionBar(toolbar);
+//
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //Do stuff here when clicking the menu button
+//            }
+//        });
+//
+//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//
+//                switch (item.getItemId())
+//                {
+//                    case R.id.action_db_view:
+//
+//                        break;
+//
+//                    case R.id.action_record_view:
+//
+//                        break;
+//
+//                    case R.id.action_settings:
+//
+//                        break;
+//
+//                    default:
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
 
 //        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 //        NavController navController = navHostFragment.getNavController();
