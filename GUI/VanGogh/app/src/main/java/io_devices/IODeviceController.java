@@ -1,10 +1,16 @@
 package io_devices;
 
-public class IODeviceController
-{
-    public IODeviceController()
-    {
+import utils.Controller;
+import utils.Device;
 
+public class IODeviceController implements Controller
+{
+
+    Device dev;
+
+    public IODeviceController(Device dev)
+    {
+        this.dev = dev;
     }
 
 }

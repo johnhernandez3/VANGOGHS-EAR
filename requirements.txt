@@ -1,0 +1,7 @@
+audioread==2.1.8
+fastrlock==0.5
+funcsigs==1.0.2
+llvmlite==0.32.1
+numba==0.49.1
+numpy==1.18.5
+pkg-resources==0.0.0

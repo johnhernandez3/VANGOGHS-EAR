@@ -1,26 +1,24 @@
+import os, pathlib
+
+# from utils.settings import get_project_root, find
+# from utils.settings import *
+# from settings import *
+
 import tensorflow as tf
 import typing
 import matplotlib.pyplot as plt
 import numpy as np
+
+import os.path as path
+from pathlib import Path, PurePath
+import re
+
 import seaborn as sns
 
 
 from tensorflow.keras.layers.experimental import preprocessing
 from tensorflow.keras import layers
 from tensorflow.keras import models
-
-
-
-import os, sys, threading
-import os.path as path
-from pathlib import Path, PurePath
-import re
-from platform import system
-
-import inspect
-
-
-AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 ROOT_DIR = None
 
@@ -46,33 +44,18 @@ def setup():
     ROOT_DIR = os.path.dirname(os.path.abspath(filename))
     return ROOT_DIR
 
-def chords_files():
-    chord_path = Path(setup()) #may need to change this for *nix sys
-    chord_path = chord_path /'Guitar_Chords'
-
-    # if not chord_path.exists():
-    #     raise ValueError(f'Chords Database Directory not found!:{chord_path}')
-
-    filenames =  tf.io.gfile.glob(str(chord_path) + '/*/*')
-    filenames = tf.random.shuffle(filenames)
-
-    return filenames
-
 def chords_paths():
     '''
         Yields the paths to the Chord Classes if the subdirectory ~ML/Guitar_Chords/~
-        exists in the system. If the path does not exist, the system raises a ValueError exception.
+        exists in the system.
     '''
     chord_path = Path(setup()) #may need to change this for *nix sys
-    chord_path = chord_path / 'ML' / 'Guitar_Chords' 
-    if path.exists(chord_path):
-        if path.isdir(chord_path):
-            # this is the Guitar_Chords parent folder
-            for f in Path.iterdir(chord_path):
-                if f.is_dir():
-                    yield path.abspath(f)
-    else:
-        raise ValueError(f"Path:{chord_path}\nwas not found in the system!")
+    chord_path = chord_path / 'ML' / 'Guitar_Chords'
+    if path.isdir(chord_path):
+        # this is the Guitar_Chords parent folder
+        for f in Path.iterdir(chord_path):
+            if f.is_dir():
+                yield path.abspath(f)
         
     # path= find('Guitar_Chords', get_project_root())
     # return path
@@ -82,56 +65,23 @@ def chord_files(path=chords_paths(), chord_name='a'):
     # for chord_audio_path in findPattern(path, pattern=chord_name):
     #     yield chord_audio_path
     for chord in Path.iterdir(path):
-        print(chord)
         if chord.is_file():
-            print(chord.name)
-            yield chord.name
+            yield chord
+
 
 def  decode_audio(audio_binary):
     audio, _  = tf.audio.decode_wav(audio_binary)
     return tf.squeeze(audio, axis=-1)
 
-def extract_chord_class(chord_filename:str)->str:
-    pattern = r"""([abcdefg]|[ABCDEFG])[7]?[#]?(([M][a][j])|([M][i][n]))?"""
-    matcher = re.compile(pattern)
-    match = matcher.match(chord_filename)
-    if match is not None:
-        return match.string[match.start(0):match.end(0)]
-    return None
+def detect_chord_name(str_filename):
+
 
 def get_label(file_path):
-  file_path =tf.cast(file_path, tf.string)
-
-  parts = tf.strings.split(file_path, os.path.sep)
-
-  # Note: You'll use indexing here instead of tuple unpacking to enable this 
-  # to work in a TensorFlow graph.
-  return parts[-2] 
-
-# def get_label(file_path):
-#     '''
-#         TODO: Doing too many things in this method, refactor to only do a single operation'''
-    
-#     # if file_path.is_dir():
-#     #     for chord_audio in Path.iterdir(file_path):
-#     #         if chord_audio.is_file():
-#     #             yield extract_chord_class(PurePath(chord_audio).name)
-
-#     # if file_path.is_file():
-#     #             return extract_chord_class(PurePath(file_path).name)
-#     if file_path.is_file() or file_path.is_dir():
-#         return extract_chord_class(PurePath(file_path).name)
-#     else:
-#         raise ValueError(f"Invalid file path provided:{file_path}")
-
-def get_waveform_and_label(file_path):
-    print(type(file_path))
-    print(file_path)
-    label = get_label(file_path)
-    audio_binary = tf.io.read_file(file_path)
-    waveform = decode_audio(audio_binary)
-    return label, waveform
-
+    if file_path.is_file():
+        return PurePath(file_path).name
+    else:
+        raise ValueError(f"Could not find file:{file_path}")
+        # return None
 
 def get_spectrogram(waveform):
 
@@ -292,14 +242,6 @@ def train_model(train_dataset, validation_data, model, epochs=10):
         callbacks=tf.keras.callbacks.EarlyStopping(verbose=1,patience=2),
     )
     return history
-
-def plot_model_loss(history):
-    metrics = history.history
-    plt.plot(history.epoch, metrics['loss'], metrics['val_loss'])
-    plt.legend(['loss', 'val_loss'])
-    plt.show()
-
-
 
 def confusion_matrix(model, labels,y_true,y_pred):
 

@@ -16,6 +16,11 @@ public class ChordFactory {
     }
 
     //TODO: Filter out the non-existent chords for certain classes
+
+    /**
+     * Generates the valid chords our system accepts internally in the ChordFragment class
+     * @return
+     */
     public ArrayList<ChordModel> createChords()
     {
         ArrayList<ChordModel> chords = new ArrayList<>();
@@ -29,6 +34,21 @@ public class ChordFactory {
 
         return chords;
     }
+
+    public ArrayList<ChordModel> createValidInternalChords()
+    {
+        ArrayList<ChordModel> valid_chords = new ArrayList<>();
+
+        for(String chord: chord_names)
+        {
+            valid_chords.add(new ChordModel(chord, ""));
+            if(chord == "A" || chord == "B" || chord == "D" || chord == "E" )
+                valid_chords.add(new ChordModel(chord, "m"));
+        }
+
+        return valid_chords;
+    }
+
 
 
 }

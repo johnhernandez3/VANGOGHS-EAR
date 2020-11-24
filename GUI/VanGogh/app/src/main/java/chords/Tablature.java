@@ -2,6 +2,9 @@ package chords;
 
 import java.util.ArrayList;
 
+/**
+ * Class used to represent internally an ASCII Tablature for use in the TablatureFragment class
+ */
 public class Tablature
 {
     private final String[] GUITAR_STRINGS =  {"E", "A", "D", "G", "B","E"};
@@ -13,6 +16,10 @@ public class Tablature
         prepareFrets();
     }
 
+    /**
+     * String representation of a Tablature
+     * @return String representation of a Tablature
+     */
     @Override
     public String toString()
     {
@@ -35,6 +42,9 @@ public class Tablature
         return str_builder.toString();
     }
 
+    /**
+     * Generates the internal list of frets to be used when creating a Tablature instance.
+     */
     private void prepareFrets()
     {
         frets = new ArrayList<>();

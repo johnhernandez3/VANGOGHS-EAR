@@ -1,5 +1,8 @@
 package chords;
 
+/**
+ * Used for internal representation of Chord for processing incoming input from the user and Classifier requests.
+ */
 public class ChordModel
 {
     //TODO: Implement parameter checks to avoid parsing Null values
@@ -21,22 +24,43 @@ public class ChordModel
             this.setChordClass("");
     }
 
+    /**
+     *  Returns the internally stored Chord Class
+     * @return String representation of the class for this chord.
+     */
     public String getChordClass() {
         return this.chord_class;
     }
 
+    /**
+     *  Returns the internally stored Chord Name
+     * @return String representation of the name for this chord.
+     */
     public String getChordName(){
         return this.chord_name;
     }
 
+    /**
+     * Assigns the @param name for this instance of ChordModel
+     * @param name String representation  of the chord's name.
+     */
     public void setChordName(String name){
         this.chord_name = name;
     }
 
+
+    /**
+     * Assigns the @param clss for this instance of ChordModel
+     * @param clss String representation  of the chord's class.
+     */
     public void setChordClass(String clss){
         this.chord_class = clss;
     }
 
+    /**
+     * String representation of the ChordModel in the format of "Chord Name Chord Class"
+     * @return String representation of the ChordModel
+     */
     @Override
     public String toString()
     {
