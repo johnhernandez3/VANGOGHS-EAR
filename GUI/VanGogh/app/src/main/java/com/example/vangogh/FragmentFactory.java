@@ -30,6 +30,9 @@ public class FragmentFactory {
             case "CHORD":
                 frag = new ChordFragment();
                 break;
+            default:
+                frag = null;
+                break;
 
         }
 
