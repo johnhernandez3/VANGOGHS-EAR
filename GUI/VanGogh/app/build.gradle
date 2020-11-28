@@ -50,6 +50,10 @@ dependencies {
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation files('libs\\jlibrosa-master\\jlibrosa-master\\binaries\\jlibrosa-1.0.2.jar')
+     implementation files('libs\\jlibrosa-1.0.2-SNAPSHOT-jar-with-dependencies.jar')
+    //  implementation files('libs\\jlibrosa-1.0.2-SNAPSHOT-jar-with-dependencies.jar')
+    //  implementation files('libs\\jlibrosa-1.0.2-SNAPSHOT-jar-with-dependencies.jar')
+//    implementation files('libs\\jlibrosa-1.0.2.jar')
 
     def nav_version = "2.3.1"
 
