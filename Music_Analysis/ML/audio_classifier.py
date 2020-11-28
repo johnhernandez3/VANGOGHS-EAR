@@ -51,7 +51,7 @@ def setup():
 def labels():
     # labels = np.array(tf.io.gfile.listdir(str(chords_audio_files_path())))
     # return labels
-    return ['a','am','bm','c','d','dm','e','em','f','g']
+    return np.array(['a','am','bm','c','d','dm','e','em','f','g'])
 
 def get_label(file_path):
   parts = tf.strings.split(file_path, os.path.sep)
@@ -80,10 +80,11 @@ def split_files(files):
     return train, val, test
 
 def decode_audio(audio_binary):
-    audio, sample_rate = tf.audio.decode_wav(audio_binary,desired_samples=16000 ,desired_channels=1)
+    audio, sample_rate = tf.audio.decode_wav(audio_binary,desired_samples=16000)
 
-    print(type(audio))
+    # print(type(audio))
     print(audio.shape)
+    # print(audio.)
     # return audio
     return tf.squeeze(audio,axis=-1)
 
@@ -141,6 +142,9 @@ def audio_classifier_model(input_shape,norm_layer, num_labels=len(labels())):
     layers.Dropout(0.5),
     layers.Dense(num_labels),
 ])
+    
+    model.summary()
+
     model.compile(
     optimizer=tf.keras.optimizers.Adam(),
     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
@@ -155,6 +159,9 @@ def preprocess_dataset(files):
   output_ds = files_ds.map(get_waveform_and_label, num_parallel_calls=AUTOTUNE)
   output_ds = output_ds.map(
       get_spectrogram_and_label_id,  num_parallel_calls=AUTOTUNE)
+
+  for spectrogram, label_id in output_ds.take(len(output_ds)):
+      print("Spec Shape:",spectrogram.shape)
   return output_ds
 
 def prepare_ds(debug=False):
@@ -178,35 +185,38 @@ def prepare_ds(debug=False):
 
     # print(f"/n/nValidationDS:{val_ds}/n/n")
     test_ds = preprocess_dataset(test_files)
-
+    # train_ds = train_ds.batch(BATCHES)
+    # val_ds = val_ds.batch(BATCHES)
     return train_ds, val_ds, test_ds
+
+
 
 def create_model():
     batch_size = BATCHES
     train_ds, val_ds, test_ds =  prepare_ds()#prepare_ds(debug=True)
 
-    train_ds = train_ds.cache().prefetch(AUTOTUNE)
-    val_ds = val_ds.cache().prefetch(AUTOTUNE)
+    train_ds = train_ds.batch(BATCHES).cache().prefetch(AUTOTUNE)
+    val_ds = val_ds.batch(BATCHES).cache().prefetch(AUTOTUNE)
 
     # for k,v in train_ds:
     #     print(f"spectrogram:{k}\nlabel:{v}\n")
     # print()
-    for spec, _ in train_ds.take(1):
+    for spec, _ in val_ds.take(1):
         input_shape = spec.shape
     
 
     num_labels = len(labels())
 
     norm_layer = preprocessing.Normalization()
-    norm_layer.adapt(train_ds.map(lambda x,_ : x))
+    norm_layer.adapt(val_ds.map(lambda x,_ : x))
 
     print(f"Input Shape:{input_shape}\n Num Labels:{num_labels}\n Normalization Layer:{norm_layer}\n\n")
-    model = audio_classifier_model(input_shape, norm_layer, num_labels)
+    model = audio_classifier_model(input_shape=input_shape, norm_layer=norm_layer, num_labels=num_labels)
     
-    
+    # plot_with_labels(train_ds)
     model.summary()
     history = fit(model, train_ds, val_ds)
-    metrics(history)
+    # metrics(history)
     return model
 
 
@@ -235,6 +245,23 @@ def plot_spectrogram(spectrogram, ax):
     X = np.arange(72500, step=100)
     Y = range(height)
     ax.pcolormesh( X,Y, log_spec)
+    return ax
+
+def plot_with_labels(waveform_ds):
+    rows = 3
+    cols = 3
+    n = rows*cols
+    fig, axes = plt.subplots(rows, cols, figsize=(10, 12))
+    for i, (audio, label) in enumerate(waveform_ds.take(n)):
+        r = i // cols
+        c = i % cols
+        ax = axes[r][c]
+        ax = plot_spectrogram(audio.numpy(), ax)
+        ax.set_yticks(np.arange(-1.2, 1.2, 0.2))
+        label = label.numpy().decode('utf-8')
+        ax.set_title(label)
+
+    plt.show()
 
 def plot_audio(waveform, spectrogram):
     fig, axes = plt.subplots(2, figsize=(12, 8))
@@ -250,7 +277,7 @@ def plot_audio(waveform, spectrogram):
 
 def sample_plot():
     # waveform=get_waveform("C:\\Users\\johnm\\git\\VANGOGHS-EAR\\Music_Analysis\\Megaman_ZX_-_Green_Grass_Gradiation_NITRO_Remix (1).wav")
-    waveform=get_waveform("C:\\Users\\johnm\\git\\VANGOGHS-EAR\\Music_Analysis\\ML\\sample\\Guitar_Only\\am\\am1.wav")
+    waveform=get_waveform("C:\\Users\\johnm\\git\\VANGOGHS-EAR\\Music_Analysis\\ML\\sample\\a.wav")
     plot_audio(waveform, spectrogram=get_spectrogram(waveform))
 
 def main():

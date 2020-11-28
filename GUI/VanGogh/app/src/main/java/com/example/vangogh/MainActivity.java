@@ -20,11 +20,14 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.*;
 import androidx.navigation.NavController;
@@ -32,6 +35,8 @@ import androidx.navigation.Navigation;
 
 
 import com.google.android.material.navigation.NavigationView;
+
+import org.apache.commons.math3.exception.util.ExceptionContextProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,7 +48,7 @@ import java.util.Map;
 /**
  * Class for the Main View of the system and where the user will mainly interact
  */
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements AppBarConfiguration.OnNavigateUpListener
 {
 
     Map<String, Integer> permissions;
@@ -54,7 +59,7 @@ public class MainActivity extends AppCompatActivity
     Button dbview_button;
     Toolbar toolbar;
     private View view;
-
+    private AppBarConfiguration appBarConfiguration;
     private Uri selected_recording;
 
     private final String TAG = "MAIN";
@@ -63,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     private final int REQUEST_RECORD_AUDIO = 2;
     private final int REQUEST_ACCESS_MEDIA = 3;
     private final int ALL_REQ_PERMS = 2020;
-
+    private int clicks = 0;
     private static final String[] PERMISSIONS = {
             "RECORD_AUDIO",
             "READ_EXTERNAL_STORAGE",
@@ -100,52 +105,22 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        toolbar = (Toolbar) findViewById(R.id.topAppBar);
-//        setSupportActionBar(toolbar);
-//
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //Do stuff here when clicking the menu button
-//            }
-//        });
-//
-//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//
-//                switch (item.getItemId())
-//                {
-//                    case R.id.action_db_view:
-//
-//                        break;
-//
-//                    case R.id.action_record_view:
-//
-//                        break;
-//
-//                    case R.id.action_settings:
-//
-//                        break;
-//
-//                    default:
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
+        toolbar = (Toolbar) findViewById(R.id.topAppBar);
+        setSupportActionBar(toolbar);
 
-//        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-//        NavController navController = navHostFragment.getNavController();
-//        NavigationView navView = findViewById(R.id.nav_view);
-//        NavigationUI.setupWithNavController(navView, navController);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Do stuff here when clicking the menu button
+                if(clicks % 2 == 0)
+                    findViewById(R.id.fragment_layout).setVisibility(View.INVISIBLE);
+                else{
+                    findViewById(R.id.fragment_layout).setVisibility(View.VISIBLE);
+                }
 
-
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupWithNavController(
-//                toolbar, navController, appBarConfiguration);
-
+                clicks = clicks + 1 % 2;
+            }
+        });
 
         requestPermissions();
 
@@ -159,10 +134,10 @@ public class MainActivity extends AppCompatActivity
                 Log.d(TAG, "Entering On Checked Changed Listener");
                 if(isChecked)
                 {
-                    if(man.findFragmentByTag("AUDIO PLAYER")!=null) {
-                        //remove this one
-                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO PLAYER")).commit();
-                    }
+//                    if(man.findFragmentByTag("AUDIO PLAYER")!=null) {
+//                        //remove this one
+//                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO PLAYER")).commit();
+//                    }
 
 
 
@@ -211,14 +186,38 @@ public class MainActivity extends AppCompatActivity
                 if(isChecked)
                 {
                     Log.d(TAG, "Entered On Checked Flag");
+                    if(man.findFragmentByTag("CHORD") != null) {
+                        Log.d(TAG, "Swapped TAB with CHORD");
+                        swapFragments("TABLATURE", "CHORD");
+                    }
+                    else
+                    {
+                        FragmentFactory fragmentFactory = new FragmentFactory();
+                        FragmentManager manager = getSupportFragmentManager();
+//                        man = getSupportFragmentManager();
+                        // no fragment, lets add it manually
+                        //swapFragments("TABLATURE", "");
+//                        manager.beginTransaction().add(R.id.fragment_container_view, (TablatureFragment) FragmentFactory.createFragment("TABLATURE"),"TABLATURE"  );
+                        manager.beginTransaction().add(R.id.fragment_container_view, new TablatureFragment(),"TABLATURE"  ).commit();
 
-                    swapFragments("TABLATURE", "CHORD");
+                    }
                 }
                 else{
                     Log.d(TAG, "Failed On Checked Flag");
+                    if(man.findFragmentByTag("TABLATURE") != null) {
 
-                    swapFragments("CHORD", "TABLATURE");
-
+                        Log.d(TAG, "Swapped TAB with CHORD");
+                        swapFragments("CHORD", "TABLATURE");
+                    }
+                    else
+                    {
+                        FragmentFactory fragmentFactory = new FragmentFactory();
+                        FragmentManager manager = getSupportFragmentManager();
+                        // no fragment, lets add it manually
+//                        swapFragments("CHORD", "");
+//                        manager.beginTransaction().add(R.id.fragment_container_view, (ChordFragment) FragmentFactory.createFragment("CHORD"),"CHORD"  );
+                        manager.beginTransaction().add(R.id.fragment_container_view, new ChordFragment(), "CHORD").commit();
+                    }
                 }
 
             }
@@ -247,6 +246,11 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void setupActionBar(NavController navController, AppBarConfiguration appBarConfiguration)
+    {
+//        setupActionBarWithNavController(navController, appBarConfiguration);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -259,11 +263,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
 
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.action_db_view:
+
+                try{
+                    final Intent intent = new Intent(this, DatabaseView.class);
+                    startActivity(intent);
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
                 Toast.makeText(this, "DB View selected", Toast.LENGTH_SHORT)
                         .show();
                 break;
@@ -303,11 +315,20 @@ public class MainActivity extends AppCompatActivity
     private void swapFragments(String incoming, String outgoing)
     {
         FragmentManager man = this.getSupportFragmentManager();
-
-        if(incoming.isEmpty() && outgoing.isEmpty() || outgoing.isEmpty())
+        Fragment incoming_fragment = FragmentFactory.createFragment(incoming);
+        if(incoming.isEmpty() && outgoing.isEmpty())
         {
             // Do Nothing
             return;
+        }
+
+        if(outgoing.isEmpty())
+        {
+//            if(incoming_fragment != null && !incoming.isEmpty())
+//            {
+                man.beginTransaction().add(R.id.fragment_container_view,incoming_fragment, incoming).commit();
+                return;
+//            }
         }
 
         if(incoming.isEmpty())
@@ -320,14 +341,14 @@ public class MainActivity extends AppCompatActivity
         {
             //remove this one
             man.beginTransaction().remove(man.findFragmentByTag(outgoing)).commit();
-            return;
+
         }
 
-        Fragment incoming_fragment = FragmentFactory.createFragment(incoming);
+
         if(incoming_fragment != null)
         {
             man.beginTransaction().add(R.id.fragment_container_view,incoming_fragment, incoming).commit();
-            return;
+
         }
 
         else{
@@ -335,6 +356,7 @@ public class MainActivity extends AppCompatActivity
             throw new IllegalStateException("Invalid fragment created for swapping views:"+ incoming);
         }
 
+        return;
     }
 
     /**

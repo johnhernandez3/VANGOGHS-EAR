@@ -15,104 +15,111 @@
     tools:context=".MainActivity">
 <!--    android:background="@color/white"-->
 
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:background="@color/colorPrimary"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
-
-<!--        <com.google.android.material.appbar.MaterialToolbar-->
-<!--            app:titleTextColor="@color/white"-->
-<!--            android:id="@+id/topAppBar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="40dp"-->
-<!--            app:menu="@menu/top_app_bar"-->
-<!--            app:navigationIcon="@drawable/ic_nav_bar"-->
-<!--            app:title="Main Menu" />-->
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_host_fragment"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:fitsSystemWindows="true" />
-
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+                <com.google.android.material.appbar.AppBarLayout
+                    android:background="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                        <com.google.android.material.appbar.MaterialToolbar
+                            android:id="@+id/topAppBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            app:menu="@menu/top_app_bar"
+                            app:navigationIcon="@drawable/ic_nav_bar"
+                            app:title="Main Menu"
+                            app:titleTextColor="@color/white" />
+
+                        <androidx.fragment.app.FragmentContainerView
+                            android:id="@+id/nav_host_fragment"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content" >
+
+
+
+                        </androidx.fragment.app.FragmentContainerView>
+
+
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <FrameLayout
+                    android:id="@+id/fragment_container_view"
+                    android:layout_width="400dp"
+                    android:layout_height="400dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="19dp"
+                    android:layout_marginBottom="3dp"
+                    android:orientation="horizontal" />
+
+                <FrameLayout
+
+                    android:id="@+id/audio_fragment_container_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_frags"
+                    android:layout_width="112dp"
+                    android:layout_height="72dp"
+                    android:layout_above="@+id/dbview_button"
+                    android:layout_marginEnd="312dp"
+                    android:layout_marginBottom="26dp"
+                    android:textOff="Tablature"
+                    android:textOn="Chord Diagram" />
+
+                <ToggleButton
+                    android:id="@+id/record_show_button"
+                    android:layout_width="112dp"
+                    android:layout_height="72dp"
+
+                    android:layout_above="@+id/toggle_frags"
+                    android:layout_marginEnd="73dp"
+                    android:layout_marginBottom="11dp"
+                    android:textOff="Record"
+                    android:textOn="Hide" />
 
                 <Button
                     android:id="@+id/dbview_button"
                     android:layout_width="112dp"
-                    android:layout_height="71dp"
-                    android:layout_below="@+id/find_button"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginEnd="299dp"
+                    android:layout_height="72dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="190dp"
+                    android:layout_marginBottom="345dp"
                     android:text="DBView" />
 
                 <Button
                     android:id="@+id/find_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Select File" />
+                    android:layout_above="@+id/record_show_button"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="Select File" />
 
-
-                <FrameLayout
-                    android:id="@+id/audio_fragment_container_view"
+                <RelativeLayout
+                    android:id="@+id/fragment_layout"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="217dp"
-                    android:layout_marginBottom="0dp"
-                    android:orientation="horizontal" />
+                    android:layout_height="wrap_content">
 
-                <FrameLayout
-                    android:id="@+id/fragment_container_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal" />
 
-                <ToggleButton
-                    android:id="@+id/record_show_button"
-                    android:layout_width="122dp"
-                    android:layout_height="75dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="7dp"
-                    android:layout_marginEnd="145dp"
-                    android:textOff="Record"
-                    android:textOn="Hide" />
 
-                <ToggleButton
-                    android:id="@+id/toggle_frags"
-                    android:layout_width="114dp"
-                    android:layout_height="59dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginEnd="12dp"
-                    android:textOff="Tablature"
-                    android:textOn="Chord Diagram" />
+
+                </RelativeLayout>
+
 
         </RelativeLayout>
 
 
-
-
-<!--</LinearLayout>-->
-
 </androidx.drawerlayout.widget.DrawerLayout>
+
+
+
