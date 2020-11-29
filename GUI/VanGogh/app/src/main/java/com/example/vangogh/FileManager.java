@@ -2,12 +2,16 @@ package com.example.vangogh;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 //import android.os.FileUtils;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -319,23 +323,37 @@ public class FileManager extends Activity implements IODeviceManager
 
     public void writeChordsToFilesDir() throws IOException {
         int chords[] = {R.raw.a, R.raw.am, R.raw.bm, R.raw.c, R.raw.d, R.raw.d, R.raw.dm, R.raw.e, R.raw.em, R.raw.f, R.raw.g};
-        for(int i = 0; i < chords.length; i++) {
-            copyRAWtoPhone(chords[i], this.getBaseContext().getApplicationContext().getFilesDir().toPath().toString());
-        }
+//        for(int i = 0; i < chords.length; i++) {
+            copyRAWtoPhone(chords[0], "/data/data/com.example.vangogh/files/a.wav");
+            File findFile = new File("/data/data/com.example.vangogh/files/a.wav");
+            if(findFile.exists()) Log.d(TAG, "writeChordsToFilesDir: File Found!");
+//        }
     }
 
     private void copyRAWtoPhone(int id, String path) throws IOException {
-        InputStream in = getResources().openRawResource(id);
-        FileOutputStream fos = new FileOutputStream(path);
-        byte[] buff = new byte[1024];
-        int read = 0;
-        try{
-            while ((read = in.read(buff)) > 0) {
-                fos.write(buff, 0, read);
-            }
-        } finally {
-            in.close();
-            fos.close();
+        // Add a specific media item.
+        ContentResolver resolver = getApplicationContext()
+                .getContentResolver();
+
+// Find all audio files on the primary external storage device.
+        Uri audioCollection;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            audioCollection = MediaStore.Audio.Media
+                    .getContentUri(MediaStore.getVersion(this));
+        } else {
+            audioCollection = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         }
+
+// Publish a new song.
+        ContentValues newSongDetails = new ContentValues();
+        newSongDetails.put(MediaStore.Audio.Media.DISPLAY_NAME,
+                "a.wav");
+
+
+
+// Keeps a handle to the new song's URI in case we need to modify it
+// later.
+//        Uri myFavoriteSongUri = resolver
+//                .insert(audioCollection, newSongDetails);
     }
 }
