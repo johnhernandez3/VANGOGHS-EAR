@@ -23,54 +23,28 @@ public class DatabaseView extends Activity {
 
     //Create variable
     MusicDataBase myMusic;
-    Button db_button;
-    Button db_button2;
     Button view_button;
     Button del_button;
     Button view2_button;
-    Button del2_button;
-    EditText editSongName, editTextId, editTextChord, editTextId2;
+    EditText editSongName;
+    String[] chords = {"a", "am", "bm", "c", "d", "dm", "e", "em", "f", "g"};
 
-    public HashMap<String, String> chordsmap = new HashMap<>();
+    public HashMap<String, Integer> chordsmap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.database_layout);
         myMusic = new MusicDataBase(this);
-        editTextId = (EditText) findViewById(R.id.editTextTextId);
-        editTextId2 = (EditText) findViewById(R.id.editTextTextId2);
         editSongName = (EditText) findViewById(R.id.editTextTextSongName);
-        editTextChord = (EditText) findViewById(R.id.editTextTextChord);
 
-
-        db_button = (Button) findViewById(R.id.db_button);
-        db_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isInsert = myMusic.insertData(editSongName.getText().toString(), 1);
-                if (isInsert) {
-                    Toast.makeText(DatabaseView.this,"Data Inserted", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(DatabaseView.this,"Data Not Inserted", Toast.LENGTH_LONG).show();
-                }
+        List<String> chord = myMusic.getAllID2();
+        if(!(chord.size() > 0)) {
+            boolean[] inserted = new boolean[10];
+            for(int i = 0; i < inserted.length; i++) {
+                inserted[i] = myMusic.insertData(chords[i], 2);
             }
-        });
-
-        db_button2 = (Button) findViewById(R.id.db_button2);
-        db_button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isInsert = myMusic.insertData(editTextChord.getText().toString(), 2);
-                if (isInsert) {
-                    Toast.makeText(DatabaseView.this,"Data Inserted", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(DatabaseView.this,"Data Not Inserted", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        }
 
         view_button = (Button) findViewById(R.id.viewtablature_button);
         view_button.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +65,6 @@ public class DatabaseView extends Activity {
                         buff.append("\nSongName: " + res.get(i) + "\n\n");
                     }
                 }
-
                 showMessage("Tablatures", buff.toString());
             }
         });
@@ -108,11 +81,8 @@ public class DatabaseView extends Activity {
 
                 StringBuffer buff = new StringBuffer();
                 for(int i = 0; i < res.size(); i++) {
-                    if(i%2 == 0) {
-                        buff.append("Id: " + res.get(i));
-                    }
-                    else {
-                        buff.append("\nChords: " + res.get(i) + "\n\n");
+                    if(i%2 != 0) {
+                        buff.append(res.get(i) + "\n\n");
                     }
                 }
 
@@ -124,21 +94,7 @@ public class DatabaseView extends Activity {
         del_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Integer delRows = myMusic.deleteData(editTextId.getText().toString());
-                if(delRows > 0)  {
-                    Toast.makeText(DatabaseView.this,"Data Deleted", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(DatabaseView.this,"Data Not Deleted", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        del2_button = (Button) findViewById(R.id.del_button2);
-        del2_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Integer delRows = myMusic.deleteChordData(editTextId2.getText().toString());
+                Integer delRows = myMusic.deleteData(editSongName.getText().toString());
                 if(delRows > 0)  {
                     Toast.makeText(DatabaseView.this,"Data Deleted", Toast.LENGTH_LONG).show();
                 }
@@ -168,15 +124,15 @@ public class DatabaseView extends Activity {
     /**
      * Gets the chordsmap in the system
      */
-    public HashMap<String, String> getChordsmap() {
-        chordsmap.put("a", "a.wav");
-        chordsmap.put("am", "am.wav");
-        chordsmap.put("bm", "bm.wav");
-        chordsmap.put("c", "c.wav");
-        chordsmap.put("d", "d.wav");
-        chordsmap.put("dm", "dm.wav");
-        chordsmap.put("e", "e.wav");
-        chordsmap.put("em", "em.wav");
+    public HashMap<String, Integer> getChordsmap() {
+        chordsmap.put("a", R.raw.a);
+        chordsmap.put("am", R.raw.am);
+        chordsmap.put("bm", R.raw.bm);
+        chordsmap.put("c", R.raw.c);
+        chordsmap.put("d", R.raw.d);
+        chordsmap.put("dm", R.raw.dm);
+        chordsmap.put("e", R.raw.e);
+        chordsmap.put("em", R.raw.em);
         return this.chordsmap;
     }
 

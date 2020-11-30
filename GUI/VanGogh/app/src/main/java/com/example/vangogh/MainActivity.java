@@ -39,10 +39,14 @@ import com.google.android.material.navigation.NavigationView;
 import org.apache.commons.math3.exception.util.ExceptionContextProvider;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 /**
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
     TablatureFragment tablature_fragment;
     AudioRecorder audio_fragment;
     ChordFragment chord_fragment;
+    FileManager fm;
     ToggleButton toggle_frags ;
     Button dbview_button;
     Toolbar toolbar;
@@ -244,6 +249,25 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                 startActivity(intent);
             }
         });
+
+//        fm = new FileManager();
+//        try {
+//            fm.writeChordsToFilesDir();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        String a = "a.wav";
+//        File fileContents = new File(this.getFilesDir(), a);
+//        try (FileOutputStream fos = this.openFileOutput(a, Context.MODE_PRIVATE)) {
+//            fos.write(Files.readAllBytes(fileContents.toPath()));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+
+
+
+
+
     }
 
     private void setupActionBar(NavController navController, AppBarConfiguration appBarConfiguration)
@@ -462,6 +486,20 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
             }
         }
     }
+
+
+//    public byte[] filetobytearray(File file) throws FileNotFoundException, IOException{
+//        byte[] bArr = new byte[(int) file.length()];
+//        ByteArrayOutputStream bAos = new ByteArrayOutputStream();
+//        FileInputStream fis = new FileInputStream(file);
+//        int read;
+//        while((read = fis.read(bArr)) != -1) {
+//            bAos.write(bArr, 0, read);
+//        }
+//        fis.close();
+//        bAos.close();
+//        return bAos.toByteArray();
+//    }
 
 
 
