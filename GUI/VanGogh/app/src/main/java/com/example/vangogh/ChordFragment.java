@@ -88,12 +88,11 @@ public class ChordFragment extends Fragment
                     try {
 
                         //getChordsmap() expects a lowercase key!
-                        String chord_filename = dbview.getChordsmap().get(currchord.toLowerCase());
-                        Log.d(TAG, "From dbview chordsmap received: " + chord_filename);
-                        File chord = getChordFile(chord_filename);
-                        ap = new AudioPlayer(Uri.fromFile(chord), context);
-                        Log.d(TAG, "audioplayer received: " + Uri.fromFile(chord));
-
+//                        String chord_filename = ;
+//                        Log.d(TAG, "From dbview chordsmap received: " + chord_filename);
+//                        File chord = getChordFile(chord_filename);
+                        ap = new AudioPlayer(dbview.getChordsmap().get(currchord.toLowerCase()), context);
+//                        Log.d(TAG, "audioplayer received: " + Uri.fromFile(chord));
                         if(ap != null && man.findFragmentByTag("AUDIO PLAYER IN CHORDS") == null)
                             man.beginTransaction().add(R.id.new_audio_fragment_container_view, ap, "AUDIO PLAYER IN CHORDS").commit();/**/
                     }catch(Exception e)

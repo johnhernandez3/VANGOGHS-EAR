@@ -27,6 +27,8 @@ public class AudioPlayer extends Fragment {
 
     // String used for debugging with LogCat utility
     private static  final String TAG = "AUDIO PLAYER";
+    private static int id;
+    private boolean idChecker = false;
 
     //GUI Elements for interacting with the audio file
     private Button play, stop,pause,forward,back;
@@ -59,6 +61,12 @@ public class AudioPlayer extends Fragment {
         this(file);
         this.context = context;
 
+    }
+
+    public AudioPlayer(int id, Context context) {
+        this.id = id;
+        this.context = context;
+        this.idChecker = true;
     }
 
 
@@ -104,7 +112,11 @@ public class AudioPlayer extends Fragment {
 
 //        player = new MediaPlayer();
         Log.d(TAG, "Creating Media Player with file:" + file);
-        player = MediaPlayer.create(this.getActivity().getBaseContext(),file);
+        if(idChecker) {
+            player = MediaPlayer.create(this.getActivity().getBaseContext(), id);
+        } else {
+            player = MediaPlayer.create(this.getActivity().getBaseContext(),file);
+        }
 //        player.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).setUsage(AudioAttributes.USAGE_MEDIA).build());
 
         try {

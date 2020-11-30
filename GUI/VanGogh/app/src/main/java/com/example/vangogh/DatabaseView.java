@@ -29,7 +29,7 @@ public class DatabaseView extends Activity {
     EditText editSongName;
     String[] chords = {"a", "am", "bm", "c", "d", "dm", "e", "em", "f", "g"};
 
-    public HashMap<String, String> chordsmap = new HashMap<>();
+    public HashMap<String, Integer> chordsmap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,15 +124,15 @@ public class DatabaseView extends Activity {
     /**
      * Gets the chordsmap in the system
      */
-    public HashMap<String, String> getChordsmap() {
-        chordsmap.put("a", "a.wav");
-        chordsmap.put("am", "am.wav");
-        chordsmap.put("bm", "bm.wav");
-        chordsmap.put("c", "c.wav");
-        chordsmap.put("d", "d.wav");
-        chordsmap.put("dm", "dm.wav");
-        chordsmap.put("e", "e.wav");
-        chordsmap.put("em", "em.wav");
+    public HashMap<String, Integer> getChordsmap() {
+        chordsmap.put("a", R.raw.a);
+        chordsmap.put("am", R.raw.am);
+        chordsmap.put("bm", R.raw.bm);
+        chordsmap.put("c", R.raw.c);
+        chordsmap.put("d", R.raw.d);
+        chordsmap.put("dm", R.raw.dm);
+        chordsmap.put("e", R.raw.e);
+        chordsmap.put("em", R.raw.em);
         return this.chordsmap;
     }
 
