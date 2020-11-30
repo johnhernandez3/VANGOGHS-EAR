@@ -171,11 +171,11 @@ public class FileManager extends Activity implements IODeviceManager
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
         startActivityForResult(intent, REQUEST_CHOOSER);
-        try {
-            writeChordsToFilesDir();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            writeChordsToFilesDir();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     
@@ -325,7 +325,7 @@ public class FileManager extends Activity implements IODeviceManager
         int chords[] = {R.raw.a, R.raw.am, R.raw.bm, R.raw.c, R.raw.d, R.raw.d, R.raw.dm, R.raw.e, R.raw.em, R.raw.f, R.raw.g};
 //        for(int i = 0; i < chords.length; i++) {
             copyRAWtoPhone(chords[0], "/data/data/com.example.vangogh/files/a.wav");
-            File findFile = new File("/data/data/com.example.vangogh/files/a.wav");
+            File findFile = new File(this.context.getFilesDir(), "a.wav");
             if(findFile.exists()) Log.d(TAG, "writeChordsToFilesDir: File Found!");
 //        }
     }
@@ -353,7 +353,7 @@ public class FileManager extends Activity implements IODeviceManager
 
 // Keeps a handle to the new song's URI in case we need to modify it
 // later.
-//        Uri myFavoriteSongUri = resolver
-//                .insert(audioCollection, newSongDetails);
+        Uri myFavoriteSongUri = resolver
+                .insert(audioCollection, newSongDetails);
     }
 }
