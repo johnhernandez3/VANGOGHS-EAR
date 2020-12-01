@@ -119,16 +119,7 @@ public class AudioPlayer extends Fragment {
         }
 //        player.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).setUsage(AudioAttributes.USAGE_MEDIA).build());
 
-        try {
-//            player.setDataSource(this.getActivity().getApplicationContext(), R.raw.g);
-//            if(player != null)
-//                player.start();
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-            Log.e(TAG,"Error while trying to open URI:"+file);
-            Log.e(TAG, "Error Encountered:" + e);
-        }
+    
 
         // Set callback listener for events on the update button
         play.setOnClickListener(new View.OnClickListener(){
