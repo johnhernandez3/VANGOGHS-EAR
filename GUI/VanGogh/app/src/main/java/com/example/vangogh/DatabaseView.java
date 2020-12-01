@@ -104,6 +104,7 @@ public class DatabaseView extends Activity {
             }
         });
 
+        editSongName.setText("");
 
 
     }

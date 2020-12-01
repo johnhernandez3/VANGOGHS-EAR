@@ -1,6 +1,7 @@
 
 package com.example.vangogh;
 
+import android.util.Log;
 import android.util.Pair;
 
 import com.jlibrosa.audio.JLibrosa;
@@ -9,16 +10,20 @@ import com.jlibrosa.audio.wavFile.WavFileException;
 
 import org.apache.commons.math3.complex.Complex;
 import org.jetbrains.annotations.NotNull;
+import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
+import org.tensorflow.lite.support.common.FileUtil;
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 public class PreProcessor {
 
     public JLibrosa jl = new JLibrosa();
+    public Interpreter interpret;
 
     public PreProcessor() {}
 
@@ -36,16 +41,21 @@ public class PreProcessor {
 
     public float[][] genMelSpectrogram(float[] load) {
 
-        float[][] plot = jl.generateMelSpectroGram(load, jl.getSampleRate(), jl.getN_fft(), jl.getN_mels(), jl.getHop_length());
-        return plot;
+        return jl.generateMelSpectroGram(load, jl.getSampleRate(), jl.getN_fft(), jl.getN_mels(), jl.getHop_length());
 
     }
 
     public Complex[][] generateSTFTFeatures(float[] load) {
 
         //MFCC = Mel-frequency cepstral coefficients (MFCCs)
-        Complex[][] stft = jl.generateSTFTFeatures(load, jl.getSampleRate(),40);
-        return stft;
+        return jl.generateSTFTFeatures(load, jl.getSampleRate(),40);
+
+    }
+
+    public float[] generatemeanMFCCval(float[][] melSpecVals) {
+
+        //Mean of MFCC using Mel-Spectrogram Values
+        return jl.generateMeanMFCCFeatures(melSpecVals, 40, jl.getN_fft());
 
     }
 
@@ -71,11 +81,34 @@ public class PreProcessor {
         return (Pair[]) p.toArray();
     }
 
-    public Object InterpreterBuilder(File tensorFile, Object input) {
-        Object output = new Object();
-        try(Interpreter interpret = new Interpreter(tensorFile)) {
-            interpret.run(input, output);
+    public String InterpreterBuilder(File tensorFile, float[][] melSpec) {
+        String output = new String();
+        int imgTensorIndex = 0, probTensorIndex = 0;
+        try {
+            interpret = new Interpreter(tensorFile);
+            DataType imgDataType = interpret.getInputTensor(imgTensorIndex).dataType();
+            int[] inArray = interpret.getInputTensor(imgTensorIndex).shape();
+            int[] outArray = interpret.getOutputTensor(probTensorIndex).shape();
+            DataType probDataType = interpret.getOutputTensor(probTensorIndex).dataType();
+            ByteBuffer byteBuffer = ByteBuffer.allocate(4 * melSpec.length * melSpec[0].length);
+
+            for(int i = 0; i < melSpec.length; i++) {
+                float[] arrVal = melSpec[i];
+                int[] inShapeDim = {1, 1, melSpec[0].length, 1};
+                TensorBuffer inTnsorBuffer = TensorBuffer.createDynamic(imgDataType);
+                inTnsorBuffer.loadArray(arrVal, inShapeDim);
+                ByteBuffer valInBuffer = inTnsorBuffer.getBuffer();
+                byteBuffer.put(valInBuffer);
+            }
+
+            byteBuffer.rewind();
+            TensorBuffer outTensorBuffer = TensorBuffer.createFixedSize(outArray, probDataType);
+
+            interpret.run(byteBuffer, outTensorBuffer.getBuffer());
             interpret.close();
+        } catch(Exception e) {
+            Log.e("TAG", "Error preparing FileManager:" + e);
+            e.printStackTrace();
         }
         return output;
     }
