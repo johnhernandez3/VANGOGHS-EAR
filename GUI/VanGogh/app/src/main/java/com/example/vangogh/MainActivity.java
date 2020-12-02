@@ -197,12 +197,9 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                     }
                     else
                     {
-                        FragmentFactory fragmentFactory = new FragmentFactory();
                         FragmentManager manager = getSupportFragmentManager();
-//                        man = getSupportFragmentManager();
+
                         // no fragment, lets add it manually
-                        //swapFragments("TABLATURE", "");
-//                        manager.beginTransaction().add(R.id.fragment_container_view, (TablatureFragment) FragmentFactory.createFragment("TABLATURE"),"TABLATURE"  );
                         manager.beginTransaction().add(R.id.fragment_container_view, new TablatureFragment(),"TABLATURE"  ).commit();
 
                     }
@@ -219,8 +216,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                         FragmentFactory fragmentFactory = new FragmentFactory();
                         FragmentManager manager = getSupportFragmentManager();
                         // no fragment, lets add it manually
-//                        swapFragments("CHORD", "");
-//                        manager.beginTransaction().add(R.id.fragment_container_view, (ChordFragment) FragmentFactory.createFragment("CHORD"),"CHORD"  );
                         manager.beginTransaction().add(R.id.fragment_container_view, new ChordFragment(), "CHORD").commit();
                     }
                 }
@@ -250,30 +245,10 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
             }
         });
 
-//        fm = new FileManager();
-//        try {
-//            fm.writeChordsToFilesDir();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        String a = "a.wav";
-//        File fileContents = new File(this.getFilesDir(), a);
-//        try (FileOutputStream fos = this.openFileOutput(a, Context.MODE_PRIVATE)) {
-//            fos.write(Files.readAllBytes(fileContents.toPath()));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-
-
-
-
 
     }
 
-    private void setupActionBar(NavController navController, AppBarConfiguration appBarConfiguration)
-    {
-//        setupActionBarWithNavController(navController, appBarConfiguration);
-    }
+
 
 
     @Override
@@ -348,11 +323,8 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
 
         if(outgoing.isEmpty())
         {
-//            if(incoming_fragment != null && !incoming.isEmpty())
-//            {
                 man.beginTransaction().add(R.id.fragment_container_view,incoming_fragment, incoming).commit();
                 return;
-//            }
         }
 
         if(incoming.isEmpty())
@@ -372,7 +344,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
         if(incoming_fragment != null)
         {
             man.beginTransaction().add(R.id.fragment_container_view,incoming_fragment, incoming).commit();
-
         }
 
         else{
@@ -462,7 +433,8 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         //Receives the URI of selected file from FileManager class
@@ -486,20 +458,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
             }
         }
     }
-
-
-//    public byte[] filetobytearray(File file) throws FileNotFoundException, IOException{
-//        byte[] bArr = new byte[(int) file.length()];
-//        ByteArrayOutputStream bAos = new ByteArrayOutputStream();
-//        FileInputStream fis = new FileInputStream(file);
-//        int read;
-//        while((read = fis.read(bArr)) != -1) {
-//            bAos.write(bArr, 0, read);
-//        }
-//        fis.close();
-//        bAos.close();
-//        return bAos.toByteArray();
-//    }
 
 
 

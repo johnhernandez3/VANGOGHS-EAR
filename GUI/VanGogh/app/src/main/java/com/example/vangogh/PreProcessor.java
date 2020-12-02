@@ -81,13 +81,15 @@ public class PreProcessor {
         return (Pair[]) p.toArray();
     }
 
-    public String InterpreterBuilder(File tensorFile, float[][] melSpec) {
-        String output = new String();
-        int imgTensorIndex = 0, probTensorIndex = 0;
-        try {
-            interpret = new Interpreter(tensorFile);
-            DataType imgDataType = interpret.getInputTensor(imgTensorIndex).dataType();
-            int[] inArray = interpret.getInputTensor(imgTensorIndex).shape();
+    public ByteBuffer createTensors(Interpreter interpreter,float[][] melSpec)
+    {
+        
+        int imgTensorIndex = 0;
+        int probTensorIndex = 0;
+    
+        DataType  imgDataType = interpreter.getInputTensor(imgTensorIndex).dataType(); 
+
+        int[] inArray = interpret.getInputTensor(imgTensorIndex).shape();
             int[] outArray = interpret.getOutputTensor(probTensorIndex).shape();
             DataType probDataType = interpret.getOutputTensor(probTensorIndex).dataType();
             ByteBuffer byteBuffer = ByteBuffer.allocate(4 * melSpec.length * melSpec[0].length);
@@ -104,10 +106,38 @@ public class PreProcessor {
             byteBuffer.rewind();
             TensorBuffer outTensorBuffer = TensorBuffer.createFixedSize(outArray, probDataType);
 
+            return byteBuffer;
+    }
+
+
+    public String InterpreterBuilder(File tensorFile, float[][] melSpec) {
+        String output = new String();
+        int imgTensorIndex = 0, probTensorIndex = 0;
+        try {
+            interpret = new Interpreter(tensorFile);
+            DataType imgDataType = interpret.getInputTensor(imgTensorIndex).dataType();
+            int[] inArray = interpret.getInputTensor(imgTensorIndex).shape();
+            int[] outArray = interpret.getOutputTensor(probTensorIndex).shape();
+            DataType probDataType = interpret.getOutputTensor(probTensorIndex).dataType();
+            ByteBuffer byteBuffer = this.createTensors(interpret, melSpec);
+            // ByteBuffer byteBuffer = ByteBuffer.allocate(4 * melSpec.length * melSpec[0].length);
+
+            // for(int i = 0; i < melSpec.length; i++) {
+            //     float[] arrVal = melSpec[i];
+            //     int[] inShapeDim = {1, 1, melSpec[0].length, 1};
+            //     TensorBuffer inTnsorBuffer = TensorBuffer.createDynamic(imgDataType);
+            //     inTnsorBuffer.loadArray(arrVal, inShapeDim);
+            //     ByteBuffer valInBuffer = inTnsorBuffer.getBuffer();
+            //     byteBuffer.put(valInBuffer);
+            // }
+
+            // byteBuffer.rewind();
+            TensorBuffer outTensorBuffer = TensorBuffer.createFixedSize(outArray, probDataType);
+
             interpret.run(byteBuffer, outTensorBuffer.getBuffer());
             interpret.close();
         } catch(Exception e) {
-            Log.e("TAG", "Error preparing FileManager:" + e);
+            Log.e("TAG", "Error preparing Interpreter and Tensors:" + e);
             e.printStackTrace();
         }
         return output;
