@@ -564,17 +564,17 @@ public class Microphone implements Device
             MAX_RESULTS,
             Comparator<Recognition> { lhs, rhs -> // Intentionally reversed to put high confidence at the head of the queue.
                     java.lang.Float.compare(rhs.getConfidence(), lhs.getConfidence())
-            })
+            });
     for (Map.Entry<String, Float> entry : labelProb) {
         pq.add(Recognition("" + entry.getKey(), entry.getKey(), entry.getValue()));
     }
 
-        ArrayList<Recognition> recognitions = new ArrayList();
+    ArrayList<Recognition> recognitions = new ArrayList();
     int recognitionsSize = Math.min(pq.size(), MAX_RESULTS);
     for (int i = 0; i < recognitionsSize ; i++) {
         recognitions.add(pq.poll());
     }
-    return recognitions
+    return recognitions;
 }
 
 
