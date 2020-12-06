@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -158,6 +159,8 @@ public class AudioRecorder extends Fragment
                             Log.d(TAG, "Button clicks:"+mic_button_clicks);
                             mic.start_recording_wav();
                             Toast.makeText(getActivity(), "Starting Mic Recording", Toast.LENGTH_SHORT).show();
+
+                            mic.stop_recording_wav(context);
                         }catch  (Exception e)
                         {
                             e.printStackTrace();
