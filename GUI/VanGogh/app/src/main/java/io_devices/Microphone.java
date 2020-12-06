@@ -8,6 +8,8 @@ import android.os.Environment;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.example.vangogh.DatabaseView;
+import com.example.vangogh.Recognition;
 import com.jlibrosa.audio.JLibrosa;
 import com.jlibrosa.audio.wavFile.WavFileException;
 
@@ -38,7 +40,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import utils.Device;
-import utils.MapEntryComparator;
+//import utils.MapEntryComparator;
 
 /**
  * Class for representing the IO Device of a Microphone for the AudioRecorder class.
@@ -51,7 +53,7 @@ public class Microphone implements Device
     private AudioRecord wav_recorder;
 
     private File  directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/recordings/");
-    private String AUDIO_RECORDER_FOLDER = "AudioRecorder";
+    private String AUDIO_RECORDER_FOLDER = "a";
     private long recording_time = 0;
     private Timer timer;
 
@@ -162,7 +164,7 @@ public class Microphone implements Device
         }
 
         File tempFile = new File(filepath, TEMP_FILE_FORMAT);
-        if (tempFile.exists()) tempFile.delete();
+//        if (tempFile.exists()) tempFile.delete();
 
         return file.getAbsolutePath() + "/" + TEMP_FILE_FORMAT;
     }
@@ -200,7 +202,7 @@ public class Microphone implements Device
         }
     }
 
-    public boolean stop_recording_wav( Context context){
+    public boolean stop_recording_wav(Context context){
         /*mediaRecorder?.stop()
         mediaRecorder?.release()
         */
@@ -220,7 +222,7 @@ public class Microphone implements Device
         deleteTempFile();
         initRecorder();
 
-//        classifyRecording(fileName, context);
+        classifyRecording(fileName, context);
 
         return !isRecording;
 
@@ -381,59 +383,72 @@ public class Microphone implements Device
     private String getRecordingTime() {return recording_timeString;}
 
 
-    private void classifyRecording(String fileName, Context context)
+    public void classifyRecording(final String fileName, final Context context)
     {
 
-        Runnable loadRunnable =  new  Runnable( {
-            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-            // Creates a toast pop-up.
-            // This is to know if this runnable is running on UI thread or not!
-            try {
-                SharedPreferences sharedPreferences = null;
-
-
-                sharedPreferences = context.getSharedPreferences(GENRE_PREFERENCES, Context.MODE_PRIVATE);
-
-
-                String audioFilePath = fileName;
-
+        final Thread theed = new Thread();
+        Runnable loadrun = new Runnable() {
+            @Override
+            public void run() {
+                theed.setPriority(Thread.NORM_PRIORITY);
+                // Creates a toast pop-up.
+                // This is to know if this runnable is running on UI thread or not!
                 try {
-
-                    int defaultSampleRate =  -1; //-1 value implies the method to use default sample rate
-
-                    int defaultAudioDuration = -1 ; //-1 value implies the method to process complete audio duration
+//                    SharedPreferences sharedPreferences = null;
 
 
-                    JLibrosa jLibrosa = new JLibrosa();
-                    float audioFeatureValues[] = jLibrosa.loadAndRead(audioFilePath, defaultSampleRate, defaultAudioDuration)
-                    ArrayList<Float> audioFeatureValuesList = jLibrosa.loadAndReadAsList(
-                            audioFilePath,
-                            defaultSampleRate,
-                            defaultAudioDuration
-                    );
+//                    sharedPreferences = context.getSharedPreferences(Context.MODE_PRIVATE);
 
 
-                    ArrayList<List<Float>> splitSongs  = splitSongs(audioFeatureValuesList, 0.5);
+                    String audioFilePath = fileName;
 
-                    ArrayList<String> predictionList  = new ArrayList<String>();
-                    for(int i=0; i <  splitSongs.size(); i++){
-                        float audioArr [] =(float[]) splitSongs[i].toArray();
+                    try {
 
-                        float melSpectrogram[][]=
-                        jLibrosa.generateMelSpectroGram(audioArr, 22050, 1024, 128, 256)
+                        int defaultSampleRate =  -1; //-1 value implies the method to use default sample rate
+
+                        int defaultAudioDuration = -1 ; //-1 value implies the method to process complete audio duration
 
 
-                        String prediction  = loadModelAndMakePredictions(melSpectrogram, context);
-                        predictionList.add(prediction);
+                        JLibrosa jLibrosa = new JLibrosa();
+                        float audioFeatureValues[] = jLibrosa.loadAndRead(audioFilePath, defaultSampleRate, defaultAudioDuration);
+                        ArrayList<Float> audioFeatureValuesList = jLibrosa.loadAndReadAsList(
+                                audioFilePath,
+                                defaultSampleRate,
+                                defaultAudioDuration
+                        );
+
+
+                        ArrayList<List<Float>> splitSongs  = splitSongs(audioFeatureValuesList, 0.5);
+
+                        ArrayList<String> predictionList  = new ArrayList<String>();
+                        for(int i=0; i <  splitSongs.size(); i++){
+                            float[][] audioArr = (float[][]) splitSongs.get(i).toArray();
+
+                            float melSpectrogram[][]=
+                                    jLibrosa.generateMelSpectroGram(audioArr[i], 22050, 1024, 128, 256);
+
+
+                            String prediction  = loadModelAndMakePredictions(melSpectrogram, context);
+                            predictionList.add(prediction);
 //                        println("test");
-                    }
+                        }
+                        StringBuffer buff = new StringBuffer();
+                        for(int i = 0; i < predictionList.size(); i++) {
+                            buff.append(predictionList.get(i) + "\n\n");
+                        }
+                        DatabaseView dbview = new DatabaseView();
+
+                        dbview.showMessage("Interpreted", buff.toString());
+
+
 
 //                    println(predictionList.groupingBy { it }.eachCount().filter { it.value > 1 })
 
 //                    List predList = predictionList.groupingBy { it }.eachCount();
-                    Map predList = predictionList.stream().collect(Collectors.toMap(Function.identity(), e-> 1,Math::addExact));
+                        //TODO Sort if you want to
+//                        Map predList = predictionList.stream().collect(Collectors.toMap(Function.identity(), e-> 1,Math::addExact));
 //                    List sortedPredList = predList.entrySet().sortedByDescending { it.value }.associate { it.toPair()};
-                    String sortedPredList = predList.entrySet().stream().sorted(new MapEntryComparator()).iterator().next();
+//                        String sortedPredList = predList.entrySet().stream().sorted(new MapEntryComparator()).iterator().next();
 //                    String predValue = sortedPredList.entrySet().iterator().next();
 //
 //                     SharedPreferences.Editor  editor = sharedPreferences.edit();
@@ -441,19 +456,20 @@ public class Microphone implements Device
 //                    editor.commit();
 
 
-                }
-                catch(WavFileException e){
+                    }
+                    catch(WavFileException e){
+                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage());
+                    }
+
+
+                } catch (Exception e) {
                     e.printStackTrace();
-                   Log.e(TAG, e.getMessage());
                 }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        });
+        };
 
-        Thread predictionThread = new  Thread(loadRunnable);
+        Thread predictionThread = new  Thread(loadrun);
         predictionThread.start();
 
     }
@@ -507,7 +523,7 @@ public class Microphone implements Device
 
     //val inpBuffer: ByteBuffer? = convertBitmapToByteBuffer(bitmp)
     TensorBuffer outputTensorBuffer =
-            TensorBuffer.createFixedSize(probabilityShape, probabilityDataType)
+            TensorBuffer.createFixedSize(probabilityShape, probabilityDataType);
     //run the predictions with input and output buffer tensors to get probability values across the labels
     tflite.run(byteBuffer, outputTensorBuffer.getBuffer());
 
@@ -516,7 +532,7 @@ public class Microphone implements Device
     String ASSOCIATED_AXIS_LABELS = "labels.txt";
         List<String> associatedAxisLabels  = null ;
     try {
-        associatedAxisLabels = FileUtil.loadLabels(context, ASSOCIATED_AXIS_LABELS)
+        associatedAxisLabels = FileUtil.loadLabels(context, ASSOCIATED_AXIS_LABELS);
     } catch ( IOException e) {
         Log.e("tfliteSupport", "Error reading label file", e);
     }
@@ -535,10 +551,10 @@ public class Microphone implements Device
 
         //function to retrieve the top K probability values, in this case 'k' value is 1.
         //retrieved values are storied in 'Recognition' object with label details.
-        List<Recognition> resultPrediction  = getTopKProbability(floatMap);
+//        List<Recognition> resultPrediction  = getTopKProbability(floatMap);
 
         //get the top 1 prediction from the retrieved list of top predictions
-        predictedResult = getPredictedValue(resultPrediction);
+//        predictedResult = getPredictedValue(resultPrediction);
 
     }
     return predictedResult;
@@ -557,25 +573,25 @@ public class Microphone implements Device
 
 
     /** Gets the top-k results.  */
-    protected List<Recognition> getTopKProbability(Map<String, Float> labelProb ) {
-    // Find the best classifications.
-    int MAX_RESULTS = 1;
-    PriorityQueue<Recognition>  pq = new PriorityQueue(
-            MAX_RESULTS,
-            Comparator<Recognition> { lhs, rhs -> // Intentionally reversed to put high confidence at the head of the queue.
-                    java.lang.Float.compare(rhs.getConfidence(), lhs.getConfidence())
-            });
-    for (Map.Entry<String, Float> entry : labelProb) {
-        pq.add(Recognition("" + entry.getKey(), entry.getKey(), entry.getValue()));
-    }
+//    protected List<Recognition> getTopKProbability(Map<String, Float> labelProb ) {
+//    // Find the best classifications.
+//    int MAX_RESULTS = 1;
+//    PriorityQueue<Recognition>  pq = new PriorityQueue(
+//            MAX_RESULTS,
+//            Comparator<Recognition> { lhs, rhs -> // Intentionally reversed to put high confidence at the head of the queue.
+//                    java.lang.Float.compare(rhs.getConfidence(), lhs.getConfidence())
+//            })
+//    for (Map.Entry<String, Float> entry : labelProb) {
+//        pq.add(Recognition("" + entry.getKey(), entry.getKey(), entry.getValue()));
+//    }
 
-    ArrayList<Recognition> recognitions = new ArrayList();
-    int recognitionsSize = Math.min(pq.size(), MAX_RESULTS);
-    for (int i = 0; i < recognitionsSize ; i++) {
-        recognitions.add(pq.poll());
-    }
-    return recognitions;
-}
+//        ArrayList<Recognition> recognitions = new ArrayList();
+//    int recognitionsSize = Math.min(pq.size(), MAX_RESULTS);
+//    for (int i = 0; i < recognitionsSize ; i++) {
+//        recognitions.add(pq.poll());
+//    }
+//    return recognitions
+//}
 
 
 

@@ -110,7 +110,7 @@ public class PreProcessor {
     }
 
 
-    public String InterpreterBuilder(File tensorFile, float[][] melSpec) {
+    public String InterpreterBuilder(File tensorFile, float[][] melSpec) throws Exception {
         String output = new String();
         int imgTensorIndex = 0, probTensorIndex = 0;
         try {
