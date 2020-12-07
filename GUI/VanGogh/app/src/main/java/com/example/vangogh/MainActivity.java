@@ -139,10 +139,12 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                 Log.d(TAG, "Entering On Checked Changed Listener");
                 if(isChecked)
                 {
-//                    if(man.findFragmentByTag("AUDIO PLAYER")!=null) {
-//                        //remove this one
-//                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO PLAYER")).commit();
-//                    }
+                    //TODO: If there is a crash by fragment here, then comment it out again!
+                    // Possible Bug here!
+                    if(man.findFragmentByTag("AUDIO PLAYER")!=null) {
+                        //remove this one
+                        man.beginTransaction().remove(man.findFragmentByTag("AUDIO PLAYER")).commit();
+                    }
 
 
 
@@ -290,9 +292,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
             default:
                 break;
         }
-
-//        return NavigationUI.onNavDestinationSelected(item, navController)
-//                || super.onOptionsItemSelected(item);
 
         return true;
     }

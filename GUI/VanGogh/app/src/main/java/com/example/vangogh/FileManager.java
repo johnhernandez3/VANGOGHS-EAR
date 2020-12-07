@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 //import android.os.FileUtils;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ListView;
@@ -20,8 +21,10 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.database.MusicDataBase;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -110,6 +113,43 @@ public class FileManager extends Activity implements IODeviceManager
         Uri path = Uri.parse(getAbsoluteProjectPath());
 
         return path;
+    }
+
+    public File getChordsLabelsFile(){
+        String res = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecorder/recordings/labels.txt";
+        File labels = new File(res);
+        return labels;
+    }
+
+    public boolean writeToLabelsFile(List<String> predictions, String filepath)
+    {
+        Log.d(TAG, "Labels file with path:"+filepath+"\n received!");
+        File labels = new File(filepath);
+        FileWriter fr ;
+        BufferedWriter br;
+        if(labels.exists())
+        {
+            Log.e(TAG, "Labels file with path:"+filepath+"\n already exists!");
+            return false;
+        }
+        try {
+            fr = new FileWriter(labels);
+            br = new BufferedWriter(fr);
+
+            for (String str : predictions) {
+                try {
+                    br.write(str);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 
 

@@ -9,6 +9,7 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.example.vangogh.DatabaseView;
+import com.example.vangogh.FileManager;
 import com.example.vangogh.Recognition;
 import com.jlibrosa.audio.JLibrosa;
 import com.jlibrosa.audio.wavFile.WavFileException;
@@ -34,6 +35,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Function;
@@ -52,8 +54,8 @@ public class Microphone implements Device
     private MediaRecorder recorder;
     private AudioRecord wav_recorder;
 
-    private File  directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/recordings/");
-    private String AUDIO_RECORDER_FOLDER = "a";
+    private File  directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecorder/recordings/");
+    private String AUDIO_RECORDER_FOLDER = "recordings";
     private long recording_time = 0;
     private Timer timer;
 
@@ -79,7 +81,7 @@ public class Microphone implements Device
     {
         try{
             // create a File object for the parent directory
-            File recorderDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/soundrecorder/");
+            File recorderDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/audiorecorder/recordings/");
             // have the object build the directory structure, if needed.
             recorderDirectory.mkdirs();
         }catch (Exception e){
@@ -88,7 +90,7 @@ public class Microphone implements Device
 
         if(directory.exists()){
             int count = directory.listFiles().length;
-            output = Environment.getExternalStorageDirectory().getAbsolutePath() + "/soundrecorder/recording"+count+".mp3";
+            output = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecorder/recordings/recording"+count+".mp3";
         }
 
         buffer_size = AudioRecord.getMinBufferSize(RECORDER_SAMPLERATE,RECORDER_CHANNELS,RECORDER_AUDIO_ENCODING)*3;
@@ -163,10 +165,10 @@ public class Microphone implements Device
             file.mkdirs();
         }
 
-        File tempFile = new File(filepath, TEMP_FILE_FORMAT);
-//        if (tempFile.exists()) tempFile.delete();
+       File tempFile = new File(filepath, TEMP_FILE_FORMAT);
+       if (tempFile.exists()) tempFile.delete();
 
-        return file.getAbsolutePath() + "/" + TEMP_FILE_FORMAT;
+       return file.getAbsolutePath() + "/" + TEMP_FILE_FORMAT;
     }
 
 
@@ -202,10 +204,9 @@ public class Microphone implements Device
         }
     }
 
-    public boolean stop_recording_wav(Context context){
-        /*mediaRecorder?.stop()
-        mediaRecorder?.release()
-        */
+    public boolean stop_recording_wav(Context context)
+    {
+        
         if (null != wav_recorder) {
             isRecording = false;
             int i = wav_recorder.getState();
@@ -342,7 +343,7 @@ public class Microphone implements Device
 
         if(directory.exists()){
             int count = directory.listFiles().length;
-            output = Environment.getExternalStorageDirectory().getAbsolutePath() + "/soundrecorder/recording"+count+".mp3";
+            output = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecorder/recording"+count+".mp3";
         }
 
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -394,10 +395,6 @@ public class Microphone implements Device
                 // Creates a toast pop-up.
                 // This is to know if this runnable is running on UI thread or not!
                 try {
-//                    SharedPreferences sharedPreferences = null;
-
-
-//                    sharedPreferences = context.getSharedPreferences(Context.MODE_PRIVATE);
 
 
                     String audioFilePath = fileName;
@@ -421,16 +418,24 @@ public class Microphone implements Device
                         ArrayList<List<Float>> splitSongs  = splitSongs(audioFeatureValuesList, 0.5);
 
                         ArrayList<String> predictionList  = new ArrayList<String>();
-                        for(int i=0; i <  splitSongs.size(); i++){
-                            float[][] audioArr = (float[][]) splitSongs.get(i).toArray();
+                        for(int i=0; i <  splitSongs.size(); i++)
+                        {
+                           Float[] audio_obj_arr = splitSongs.get(i).toArray(new Float[splitSongs.get(i).size()]);
+
+                           Float[] audioArr = (Float[])audio_obj_arr;
+                           float[] intermediate = new float[audioArr.length];
+
+                           for(int j=0;  j < audioArr.length; j++)
+                           {
+                               intermediate[j] = audioArr[j].floatValue();
+                           }
 
                             float melSpectrogram[][]=
-                                    jLibrosa.generateMelSpectroGram(audioArr[i], 22050, 1024, 128, 256);
-
+                                    jLibrosa.generateMelSpectroGram(intermediate, 22050, 1024, 128, 256);
 
                             String prediction  = loadModelAndMakePredictions(melSpectrogram, context);
                             predictionList.add(prediction);
-//                        println("test");
+
                         }
                         StringBuffer buff = new StringBuffer();
                         for(int i = 0; i < predictionList.size(); i++) {
@@ -440,20 +445,10 @@ public class Microphone implements Device
 
                         dbview.showMessage("Interpreted", buff.toString());
 
+                        FileManager fm = new FileManager();
+                        fm.writeToLabelsFile(predictionList, getLabelsFilePath());
 
-
-//                    println(predictionList.groupingBy { it }.eachCount().filter { it.value > 1 })
-
-//                    List predList = predictionList.groupingBy { it }.eachCount();
-                        //TODO Sort if you want to
-//                        Map predList = predictionList.stream().collect(Collectors.toMap(Function.identity(), e-> 1,Math::addExact));
-//                    List sortedPredList = predList.entrySet().sortedByDescending { it.value }.associate { it.toPair()};
-//                        String sortedPredList = predList.entrySet().stream().sorted(new MapEntryComparator()).iterator().next();
-//                    String predValue = sortedPredList.entrySet().iterator().next();
-//
-//                     SharedPreferences.Editor  editor = sharedPreferences.edit();
-//                    editor.putString(fileName, predValue);
-//                    editor.commit();
+                        //TODO:Now we can call the ChordFragment's class
 
 
                     }
@@ -469,12 +464,20 @@ public class Microphone implements Device
             }
         };
 
+        //Start the new prediction thread here!
         Thread predictionThread = new  Thread(loadrun);
         predictionThread.start();
 
     }
 
-    protected String loadModelAndMakePredictions(float meanMFCCValues[][] , Context context) throws IOException {
+    public String getLabelsFilePath()
+    {
+        return directory.getAbsolutePath() +"labels.txt";
+    }
+
+
+    protected String loadModelAndMakePredictions(float meanMFCCValues[][] , Context context) throws IOException
+    {
 
 
 
@@ -530,7 +533,7 @@ public class Microphone implements Device
 
     //Code to transform the probability predictions into label values
     String ASSOCIATED_AXIS_LABELS = "labels.txt";
-        List<String> associatedAxisLabels  = null ;
+        List<String> associatedAxisLabels  = new ArrayList<>() ;
     try {
         associatedAxisLabels = FileUtil.loadLabels(context, ASSOCIATED_AXIS_LABELS);
     } catch ( IOException e) {
@@ -551,10 +554,10 @@ public class Microphone implements Device
 
         //function to retrieve the top K probability values, in this case 'k' value is 1.
         //retrieved values are storied in 'Recognition' object with label details.
-//        List<Recognition> resultPrediction  = getTopKProbability(floatMap);
+        List<Recognition> resultPrediction  = getTopKProbability(floatMap);
 
         //get the top 1 prediction from the retrieved list of top predictions
-//        predictedResult = getPredictedValue(resultPrediction);
+        predictedResult = getPredictedValue(resultPrediction);
 
     }
     return predictedResult;
@@ -562,7 +565,8 @@ public class Microphone implements Device
 }
 
     private String getModelPath() {
-        String res = "";
+        //TODO: ADD FILE PATH FOR TFLITE MODEL!
+        String res = "model.tflite";
         return res;
     }
     public String  getPredictedValue(List<Recognition> predictedList) {
@@ -573,25 +577,33 @@ public class Microphone implements Device
 
 
     /** Gets the top-k results.  */
-//    protected List<Recognition> getTopKProbability(Map<String, Float> labelProb ) {
-//    // Find the best classifications.
-//    int MAX_RESULTS = 1;
-//    PriorityQueue<Recognition>  pq = new PriorityQueue(
-//            MAX_RESULTS,
-//            Comparator<Recognition> { lhs, rhs -> // Intentionally reversed to put high confidence at the head of the queue.
-//                    java.lang.Float.compare(rhs.getConfidence(), lhs.getConfidence())
-//            })
-//    for (Map.Entry<String, Float> entry : labelProb) {
-//        pq.add(Recognition("" + entry.getKey(), entry.getKey(), entry.getValue()));
-//    }
+    protected List<Recognition> getTopKProbability(Map<String, Float> labelProb ) {
+    // Find the best classifications.
+    int MAX_RESULTS = 1;
+    int current = 5;
+    Map.Entry<String, Float> current_max = labelProb.entrySet().iterator().next();
 
-//        ArrayList<Recognition> recognitions = new ArrayList();
-//    int recognitionsSize = Math.min(pq.size(), MAX_RESULTS);
-//    for (int i = 0; i < recognitionsSize ; i++) {
-//        recognitions.add(pq.poll());
-//    }
-//    return recognitions
-//}
+    Stack<Map.Entry<String,Float>> recogs = new Stack<>();
+
+    for (Map.Entry<String, Float> entry : labelProb.entrySet()) {
+
+        if(entry.getValue() > current_max.getValue()) {
+            recogs.push(entry);
+            current_max = entry;
+        }
+
+    }
+
+    ArrayList<Recognition> recognitions = new ArrayList();
+    for(Map.Entry<String, Float>entry : recogs)
+    {
+        if(current > 1)
+            recognitions.add(new Recognition(entry.getKey(), entry.getKey(), entry.getValue()));
+        current--;
+    }
+
+    return recognitions;
+}
 
 
 

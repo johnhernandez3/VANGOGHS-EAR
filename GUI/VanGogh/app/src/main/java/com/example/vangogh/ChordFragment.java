@@ -43,6 +43,7 @@ public class ChordFragment extends Fragment
     private final String TAG = "CHORD FRAG";
     private final int DIAGRAM_WIDTH = 200;
     private final int DIAGRAM_HEIGHT = 200;
+
     public String currchord = "";
     private DatabaseView dbview;
     private AudioPlayer ap;
@@ -59,6 +60,15 @@ public class ChordFragment extends Fragment
 
     Context context;
 
+    public ChordFragment(String chord)
+    {
+        this.currchord = chord;
+    }
+
+    public ChordFragment() {
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -71,41 +81,55 @@ public class ChordFragment extends Fragment
         update_btn = (Button) view.findViewById(R.id.update_chord);
         chord_view = (ImageView) view.findViewById(R.id.chord_view);
 
+
         final FragmentManager man = this.getActivity().getSupportFragmentManager();
 
+        if(currchord.isEmpty()) {
+            // Set callback listener for events on the update button
+            update_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        // Set callback listener for events on the update button
-        update_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
-            {
-
-                if(validateChord(editText.getText().toString())) {
-                    Log.d(TAG, "editText received: " + editText.getText().toString());
-                    currchord = editText.getText().toString();
-                    drawChords(currchord);
-                    dbview = new DatabaseView();
-                    try {
-
-                        //getChordsmap() expects a lowercase key!
-//                        String chord_filename = ;
-//                        Log.d(TAG, "From dbview chordsmap received: " + chord_filename);
-//                        File chord = getChordFile(chord_filename);
-                        ap = new AudioPlayer(dbview.getChordsmap().get(currchord.toLowerCase()), context);
+                    if (validateChord(editText.getText().toString())) {
+                        Log.d(TAG, "editText received: " + editText.getText().toString());
+                        currchord = editText.getText().toString();
+                        drawChords(currchord);
+                        dbview = new DatabaseView();
+                        try {
+                          //getChordsmap() expects a lowercase key!
+                            ap = new AudioPlayer(dbview.getChordsmap().get(currchord.toLowerCase()), context);
 //                        Log.d(TAG, "audioplayer received: " + Uri.fromFile(chord));
-                        if(ap != null && man.findFragmentByTag("AUDIO PLAYER IN CHORDS") == null)
-                            man.beginTransaction().add(R.id.new_audio_fragment_container_view, ap, "AUDIO PLAYER IN CHORDS").commit();/**/
-                    }catch(Exception e)
-                    {
-                        Log.e(TAG, "Current Chord stored:" + currchord);
-                        e.printStackTrace();
+                            if (ap != null && man.findFragmentByTag("AUDIO PLAYER IN CHORDS") == null)
+                                man.beginTransaction().add(R.id.new_audio_fragment_container_view, ap, "AUDIO PLAYER IN CHORDS").commit();/**/
+                        } catch (Exception e) {
+                            Log.e(TAG, "Current Chord stored:" + currchord);
+                            e.printStackTrace();
+                        }
+
                     }
-
+                    editText.setText("");
                 }
-                editText.setText("");
-            }
 
-        });
+            });
+        }
+
+        else{
+            //We were called with a chord as an argument
+            if(validateChord(currchord.toLowerCase()))
+            {
+                try{
+                    drawChords(currchord);
+                    ap = new AudioPlayer(dbview.getChordsmap().get(currchord.toLowerCase()), context);
+                    if (ap != null && man.findFragmentByTag("AUDIO PLAYER IN CHORDS") == null)
+                        man.beginTransaction().add(R.id.new_audio_fragment_container_view, ap, "AUDIO PLAYER IN CHORDS").commit();
+
+                }catch(Exception e)
+                {
+                    Log.e(TAG, "Current Chord stored:" + currchord);
+                    e.printStackTrace();
+                }
+            }
+        }
 
         return view;
     }

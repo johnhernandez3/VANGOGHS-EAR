@@ -18,10 +18,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 
+import java.io.File;
+import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 
 import io_devices.Microphone;
 
@@ -147,12 +151,12 @@ public class AudioRecorder extends Fragment
                 switch(mic_button_clicks)
                 {
                     case 0:
-                        todays_date = new Date();
-                        SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd-hh:mm:ss");
-                        Output_File = OutputFilePath(ft.format(todays_date));//TODO: fix this, possible race-condition
+//                        todays_date = new Date();
+//                        SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd-hh:mm:ss");
+//                        Output_File = OutputFilePath(ft.format(todays_date));//TODO: fix this, possible race-condition
 //                        mic =  new Microphone(Output_File);
                         mic = new Microphone();
-                        Log.d(TAG, "File:"+OutputFilePath(ft.format(todays_date)));
+//                        Log.d(TAG, "File:"+OutputFilePath(ft.format(todays_date)));
 
                         microphone_button.setText("Stop");
                         try {
@@ -160,7 +164,7 @@ public class AudioRecorder extends Fragment
                             mic.start_recording_wav();
                             Toast.makeText(getActivity(), "Starting Mic Recording", Toast.LENGTH_SHORT).show();
 
-                            mic.stop_recording_wav(context);
+//                            mic.stop_recording_wav(context);
                         }catch  (Exception e)
                         {
                             e.printStackTrace();
@@ -174,24 +178,19 @@ public class AudioRecorder extends Fragment
                         try {
                             Log.d(TAG, "Button clicks:"+mic_button_clicks);
                             mic.stop_recording_wav(context);
-                        //SAVE file to Media Store Audio section
-                            ContentValues cv =  new ContentValues();
-                            cv.put(MediaStore.MediaColumns.TITLE,"Sample Audio Recording");
-                            cv.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis());
-                            cv.put(MediaStore.Audio.Media.DATA, Output_File);
-                            cv.put(MediaStore.MediaColumns.MIME_TYPE, "audio/3gp");
-                            Uri uri = MediaStore.Audio.Media.getContentUri(Output_File);
-//                            cv.put(MediaStore.Audio.Media.IS_PENDING, 1);
+                            FragmentManager frag_man = getParentFragmentManager();
+                            Fragment frag = frag_man.findFragmentById(R.id.fragment_container_view);
+                            if(frag != null)
+                            {
+                                //Chords is present then
+                                //Open file and feed it
+                                Scanner fr = new Scanner(new File(mic.getLabelsFilePath()));
+                                String first_chord = fr.nextLine();
+                                Log.e(TAG, "Current Read Label:"+first_chord);
+                                frag_man.beginTransaction().add(R.id.fragment_container_view, new ChordFragment(first_chord) , "CHORDS");
+                            }
 
-//                            Uri audioCollection = MediaStore.Audio.Media.getContentUri(
-//                                    MediaStore.VOLUME_EXTERNAL_PRIMARY);
 
-                            ContentResolver resolver = getActivity().getContentResolver();
-                            Uri new_uri = resolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cv);
-                            Toast.makeText(getActivity(),  "Stopping Mic Recording", Toast.LENGTH_SHORT).show();
-                            cv.clear();
-//                            cv.put(MediaStore.Audio.Media.IS_PENDING, 0);
-                            resolver.update(uri, cv, null,null);
                         }catch  (Exception e)
                         {
                             e.printStackTrace();

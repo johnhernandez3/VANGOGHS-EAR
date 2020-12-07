@@ -1,14 +1,15 @@
 package com.example.vangogh;
 
-public class Recognition {
+public class Recognition
+{
 
-    private String id = null;
-    private String title = null;
-    private float confidence;
+    private String id = "";
+    private String chordname = "";
+    private float confidence= 0.00f;
 
-    public Recognition(String id, String title, float confidence) {
+    public Recognition(String id, String chordname, float confidence) {
         this.id = id;
-        this.title = title;
+        this.chordname = chordname;
         this.confidence = confidence;
     }
 
@@ -17,7 +18,7 @@ public class Recognition {
     }
 
     public String getTitle() {
-        return title;
+        return chordname;
     }
 
     public float getConfidence() {
