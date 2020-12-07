@@ -565,7 +565,6 @@ public class Microphone implements Device
 }
 
     private String getModelPath() {
-        //TODO: ADD FILE PATH FOR TFLITE MODEL!
         String res = "model.tflite";
         return res;
     }
