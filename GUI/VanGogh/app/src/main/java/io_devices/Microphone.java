@@ -444,12 +444,12 @@ public class Microphone implements Device
                         for(int i = 0; i < predictionList.size(); i++) {
                             buff.append(predictionList.get(i) + "\n\n");
                         }
-                        DatabaseView dbview = new DatabaseView();
+//                        DatabaseView dbview = new DatabaseView();
+//
+//                        dbview.showMessage("Interpreted", buff.toString());
 
-                        dbview.showMessage("Interpreted", buff.toString());
-
-                        FileManager fm = new FileManager();
-                        fm.writeToLabelsFile(predictionList, getLabelsFilePath());
+//                        FileManager fm = new FileManager();
+                        FileManager.writeToLabelsFile(predictionList, getLabelsFilePath());
 
                         //TODO:Now we can call the ChordFragment's class
 

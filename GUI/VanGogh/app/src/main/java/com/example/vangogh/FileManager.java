@@ -28,6 +28,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io_devices.IODeviceManager;
@@ -121,15 +122,18 @@ public class FileManager extends Activity implements IODeviceManager
         return labels;
     }
 
-    public boolean writeToLabelsFile(List<String> predictions, String filepath)
+    public static boolean writeToLabelsFile(List<String> predictions, String filepath)
     {
         Log.d(TAG, "Labels file with path:"+filepath+"\n received!");
+        Log.d(TAG, "Received predictions:" + Arrays.toString(predictions.toArray(new String[predictions.size()])));
         File labels = new File(filepath);
         FileWriter fr ;
         BufferedWriter br;
         if(labels.exists())
         {
             Log.e(TAG, "Labels file with path:"+filepath+"\n already exists!");
+            labels.delete();
+//            labels = new File(filepath);
             return false;
         }
         try {
@@ -144,10 +148,13 @@ public class FileManager extends Activity implements IODeviceManager
                     e.printStackTrace();
                 }
             }
+            br.close();
+            fr.close();
         }catch (Exception e)
         {
             e.printStackTrace();
         }
+
 
         return true;
     }
