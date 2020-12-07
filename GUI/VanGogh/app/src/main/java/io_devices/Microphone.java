@@ -416,13 +416,16 @@ public class Microphone implements Device
 
 
                         ArrayList<List<Float>> splitSongs  = splitSongs(audioFeatureValuesList, 0.5);
+                        ArrayList<Float[]> temp = new ArrayList<Float[]>();
 
                         ArrayList<String> predictionList  = new ArrayList<String>();
                         for(int i=0; i <  splitSongs.size(); i++)
                         {
-                           Float[] audio_obj_arr = splitSongs.get(i).toArray(new Float[splitSongs.get(i).size()]);
+//                           Float[] audio_obj_arr =
 
-                           Float[] audioArr = (Float[])audio_obj_arr;
+                            temp.add(splitSongs.get(i).toArray(new Float[splitSongs.get(i).size()]));
+
+                           Float[] audioArr = temp.get(i);
                            float[] intermediate = new float[audioArr.length];
 
                            for(int j=0;  j < audioArr.length; j++)
