@@ -482,8 +482,6 @@ public class Microphone implements Device
     protected String loadModelAndMakePredictions(float meanMFCCValues[][] , Context context) throws IOException
     {
 
-
-
         String predictedResult = "unknown";
 
 
@@ -512,13 +510,13 @@ public class Microphone implements Device
 
 
 
-        //The for at the end is the amount of bytes that a float occupies in Java
+        //The 4 at the end is the amount of bytes that a float occupies in Java
         // taken from the mfcc mean array
-        ByteBuffer byteBuffer  = ByteBuffer.allocate(4*meanMFCCValues.length* meanMFCCValues[0].length);
-
+//        ByteBuffer byteBuffer  = ByteBuffer.allocate(4*meanMFCCValues.length* meanMFCCValues[0].length);
+        ByteBuffer byteBuffer  = ByteBuffer.allocate(63984);
     for(int i= 0;i <  meanMFCCValues.length; i++){
-        float valArray[] = meanMFCCValues[i];
-        int inpShapeDim[] = {1,1,meanMFCCValues[0].length,1};
+        float[] valArray= meanMFCCValues[i];
+        int[] inpShapeDim = {1,1,meanMFCCValues[0].length,1};
         TensorBuffer valInTnsrBuffer = TensorBuffer.createDynamic(imageDataType);
         valInTnsrBuffer.loadArray(valArray, inpShapeDim);
         ByteBuffer  valInBuffer = valInTnsrBuffer.getBuffer();

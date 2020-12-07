@@ -1,7 +1,4 @@
 package chords;
-
-import com.dqt.libs.chorddroid.classes.Chord;
-
 import java.util.ArrayList;
 
 public class ChordFactory {
@@ -39,13 +36,22 @@ public class ChordFactory {
     {
         ArrayList<ChordModel> valid_chords = new ArrayList<>();
 
-        for(String chord: chord_names)
-        {
-            valid_chords.add(new ChordModel(chord, ""));
-            if(chord == "A" || chord == "B" || chord == "D" || chord == "E" )
-                valid_chords.add(new ChordModel(chord, "m"));
-        }
-
+//        for(String chord: chord_names)
+//        {
+//            valid_chords.add(new ChordModel(chord, ""));
+//            if(chord == "A" || chord == "B" || chord == "D" || chord == "E" )
+//                valid_chords.add(new ChordModel(chord, "m"));
+//        }
+        valid_chords.add(new ChordModel("A",""));
+        valid_chords.add(new ChordModel("A","m"));
+        valid_chords.add(new ChordModel("B","m"));
+        valid_chords.add(new ChordModel("C",""));
+        valid_chords.add(new ChordModel("D",""));
+        valid_chords.add(new ChordModel("D","m"));
+        valid_chords.add(new ChordModel("E",""));
+        valid_chords.add(new ChordModel("E","m"));
+        valid_chords.add(new ChordModel("F",""));
+        valid_chords.add(new ChordModel("G",""));
         return valid_chords;
     }
 

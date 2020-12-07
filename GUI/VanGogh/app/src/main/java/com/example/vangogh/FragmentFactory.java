@@ -8,12 +8,6 @@ import java.util.Map;
 
 public class FragmentFactory {
 
-//    public List<Map.Entry<String, Fragment>> fragmentEntries()
-//    {
-//        ChordFragment
-//    }
-
-
     public static Fragment createFragment(String type)
     {
         Fragment frag = null;
