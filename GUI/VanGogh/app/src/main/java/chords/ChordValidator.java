@@ -146,10 +146,6 @@ public class ChordValidator
         Matcher target = pattern.matcher(concatenated_string);
 
         //This implementation causes a bug where even just having one character will short circuit
-//        if(target.find())
-//        {
-//            return true;
-//        }
         if(target.matches())
             return true;
         return false;
@@ -189,13 +185,13 @@ public class ChordValidator
             int end = target.end();
             String intermediate = concatenated_string.substring(start,end);
             System.out.println(intermediate);
-            res = new ChordModel(extractChordName(intermediate),
-                    extractChordClass(intermediate));
+            res = new ChordModel(extractChordName(intermediate).toUpperCase(),
+                    extractChordClass(intermediate).toLowerCase());
         }
         else{
             //invalid chord
             res = new ChordModel("Z", "Z");
-            throw new IllegalArgumentException("Invalid Chord Detected!");
+//            throw new IllegalArgumentException("Invalid Chord Detected!");
         }
         return res;
     }

@@ -42,24 +42,6 @@ public class Tablature
     @Override
     public String toString()
     {
-        //TODO: String representation of a Tablature
-//        String repr = "";
-        // StringBuilder str_builder = new StringBuilder();
-
-        // for(String g_string: GUITAR_STRINGS)
-        // {
-        //     str_builder.append(g_string);
-        //     for(int i : frets)
-        //     {
-        //         str_builder.append("-");
-        //         str_builder.append("|");
-        //     }
-        //     str_builder.append("-");
-        //     str_builder.append("\n");
-        // }
-
-        // return str_builder.toString();
-        
         return ChordToTab.convertChords(chords);
     }
 
@@ -69,7 +51,6 @@ public class Tablature
     private void prepareFrets()
     {
         frets = new ArrayList<>();
-        //TODO: May be wrong here on the frets existing on a guitar...
         for(int i=1; i < 13; i++)
         {
             frets.add(i);

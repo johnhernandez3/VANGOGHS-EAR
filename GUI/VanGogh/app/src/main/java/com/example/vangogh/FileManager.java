@@ -21,15 +21,20 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.database.MusicDataBase;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import io_devices.IODeviceManager;
 import utils.Controller;
@@ -41,20 +46,27 @@ import utils.Device;
  */
 public class FileManager extends Activity implements IODeviceManager
 {
+    private boolean isTablatureReq = false;
     private String CHORD_DIR = "chords";
     private static final int FILE_SELECTED_CODE = 0;
     private static final String TAG = "FILE MANAGER";
     private static final int REQUEST_CHOOSER = 1234;
-
+    private static final int REQUEST_TAB = 5678;
     private static final int REQUEST_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 3;
-    private FileArrayAdapter files_adapter;
+//    private FileArrayAdapter files_adapter;
     private ArrayList<String> files = new ArrayList<>();
 
     private Uri selected_file;
-//    Context context;
 
     private Context context;
+
+    public FileManager(Context context, boolean isTablatureReq)
+    {
+        this(context);
+        this.isTablatureReq = isTablatureReq;
+    }
+
 
     public FileManager(Context context)
     {
@@ -66,14 +78,6 @@ public class FileManager extends Activity implements IODeviceManager
         this.context = this.getBaseContext();
     }
 
-
-    private void testFilenames()
-    {
-        files.add("A");
-        files.add("AB");
-        files.add("B");
-        files.add("O");
-    }
 
     /**
      * Generates the Output File Path for the Audio Recorder to store recorded audio.
@@ -103,16 +107,13 @@ public class FileManager extends Activity implements IODeviceManager
     public String getAbsoluteProjectPath()
     {
         String path_str = this.getExternalFilesDir(null).getAbsolutePath().toString();
-
         return path_str;
     }
 
 
     public Uri getAbsoluteProjectPathURI()
     {
-
         Uri path = Uri.parse(getAbsoluteProjectPath());
-
         return path;
     }
 
@@ -122,6 +123,28 @@ public class FileManager extends Activity implements IODeviceManager
         return labels;
     }
 
+    public  ArrayList<String> readFromLabelsFile(Uri filepath) throws FileNotFoundException
+    {
+        ArrayList<String> data = new ArrayList<>();
+        try {
+            InputStream in = this.context.getContentResolver().openInputStream(filepath);
+
+
+            BufferedReader r = new BufferedReader(new InputStreamReader(in));
+
+            for (String line; (line = r.readLine()) != null; ) {
+                data.add(line);
+            }
+
+        }catch (Exception e) {
+                e.printStackTrace();
+        }
+
+        Log.d(TAG, "Read data:" + Arrays.toString(data.toArray(new String[data.size()])));
+        return data;
+    }
+
+
     public static boolean writeToLabelsFile(List<String> predictions, String filepath)
     {
         Log.d(TAG, "Labels file with path:"+filepath+"\n received!");
@@ -129,11 +152,11 @@ public class FileManager extends Activity implements IODeviceManager
         File labels = new File(filepath);
         FileWriter fr ;
         BufferedWriter br;
+
         if(labels.exists())
         {
             Log.e(TAG, "Labels file with path:"+filepath+"\n already exists!");
             labels.delete();
-//            labels = new File(filepath);
             return false;
         }
         try {
@@ -170,11 +193,6 @@ public class FileManager extends Activity implements IODeviceManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.file_manager);
 
-        testFilenames();
-        files_adapter = new FileArrayAdapter(this, files);
-        ListView list_view = (ListView) findViewById(R.id.files_list) ;
-        list_view.setAdapter(files_adapter);
-
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED ) {
             //If not ask the user for the permission
@@ -182,16 +200,8 @@ public class FileManager extends Activity implements IODeviceManager
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);
         }
         else {
-            Log.e(TAG, "PERMISSION GRANTED");
+            Log.d(TAG, "PERMISSION GRANTED");
 
-            try {
-//                setupMediaRecorder(this.OutputFilePath());
-//                recorder.prepare();
-            } catch(Exception e)
-            {
-                Log.e(TAG, "Error preparing FileManager:" + e);
-                e.printStackTrace();
-            }
         }
 
         if (checkSelfPermission(
@@ -202,15 +212,6 @@ public class FileManager extends Activity implements IODeviceManager
         }
         else {
             Log.d(TAG, "PERMISSION GRANTED");
-
-            try {
-//                setupMediaRecorder(this.OutputFilePath());
-//                recorder.prepare();
-            } catch(Exception e)
-            {
-                Log.e(TAG, "Error preparing FileManager:" + e);
-                e.printStackTrace();
-            }
         }
 
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -218,11 +219,7 @@ public class FileManager extends Activity implements IODeviceManager
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
         startActivityForResult(intent, REQUEST_CHOOSER);
-//        try {
-//            writeChordsToFilesDir();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
     }
 
     
@@ -264,6 +261,28 @@ public class FileManager extends Activity implements IODeviceManager
     {
         switch(requestCode)
         {
+            case REQUEST_TAB:
+                Uri tab_uri = data.getData();
+
+
+
+//                selected_file=tab_uri;
+//                String tab_path = tab_uri.getPath();
+
+//                Log.d(TAG, "File Path: "+ tab_path);
+                //process the file or pass it to data
+//                files.add(tab_uri.toString());
+
+                Intent tab_files_d = new Intent();
+
+                tab_files_d.putExtra("file", tab_uri);
+//                Log.d(TAG, "File URI:" +  tab_uri.toString());
+                setResult(Activity.RESULT_OK, tab_files_d);
+                finish();
+                super.onActivityResult(REQUEST_TAB, resultCode,tab_files_d);
+
+                break;
+
             case FILE_SELECTED_CODE:
 
                 break;
@@ -276,7 +295,7 @@ public class FileManager extends Activity implements IODeviceManager
                 String path = uri.getPath();
                 Log.d(TAG, "File Path: "+ path);
                 //process the file or pass it to data
-                files.add(uri.toString());
+//                files.add(uri.toString());
                 Intent files_d = new Intent();
                 files_d.putExtra("file", uri.toString());
                 setResult(Activity.RESULT_OK, files_d);
@@ -370,19 +389,19 @@ public class FileManager extends Activity implements IODeviceManager
 
     public void writeChordsToFilesDir() throws IOException {
         int chords[] = {R.raw.a, R.raw.am, R.raw.bm, R.raw.c, R.raw.d, R.raw.d, R.raw.dm, R.raw.e, R.raw.em, R.raw.f, R.raw.g};
-//        for(int i = 0; i < chords.length; i++) {
             copyRAWtoPhone(chords[0], "/data/data/com.example.vangogh/files/a.wav");
             File findFile = new File(this.context.getFilesDir(), "a.wav");
             if(findFile.exists()) Log.d(TAG, "writeChordsToFilesDir: File Found!");
-//        }
+
     }
 
-    private void copyRAWtoPhone(int id, String path) throws IOException {
+    private void copyRAWtoPhone(int id, String path) throws IOException
+    {
         // Add a specific media item.
         ContentResolver resolver = getApplicationContext()
                 .getContentResolver();
 
-// Find all audio files on the primary external storage device.
+        // Find all audio files on the primary external storage device.
         Uri audioCollection;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             audioCollection = MediaStore.Audio.Media
@@ -391,15 +410,13 @@ public class FileManager extends Activity implements IODeviceManager
             audioCollection = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         }
 
-// Publish a new song.
+        // Publish a new song.
         ContentValues newSongDetails = new ContentValues();
-        newSongDetails.put(MediaStore.Audio.Media.DISPLAY_NAME,
-                "a.wav");
+        newSongDetails.put(MediaStore.Audio.Media.DISPLAY_NAME, "a.wav");
 
 
-
-// Keeps a handle to the new song's URI in case we need to modify it
-// later.
+        // Keeps a handle to the new song's URI in case we need to modify it
+        // later.
         Uri myFavoriteSongUri = resolver
                 .insert(audioCollection, newSongDetails);
     }

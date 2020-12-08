@@ -1,5 +1,6 @@
 package com.example.vangogh;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,10 +24,26 @@ public class TablatureFragment extends Fragment
     View view;
     Button load_btn;
     TextView tablature_text;
+    boolean receivedTab = false;
+    private String saved_tab;
+
+    public TablatureFragment(String tablature)
+    {
+        this(new ArrayList<>());
+        receivedTab = true;
+        this.saved_tab = tablature;
+
+    }
+
+
 
     public TablatureFragment(ArrayList<ChordModel> chords)
     {
-        this.chords = chords;
+        if(chords != null)
+            this.chords = chords;
+        else{
+            this.chords = new ArrayList<>();
+        }
     }
 
     public TablatureFragment()
@@ -52,7 +69,7 @@ public class TablatureFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                if(chords.isEmpty())
+                if(chords.isEmpty() &&!receivedTab)
                     setEmptyTablature();
                 else{
                     setSavedTablature();
@@ -64,6 +81,12 @@ public class TablatureFragment extends Fragment
         return view;
     }
 
+    private void loadTablature()
+    {
+
+    }
+
+
     private void setEmptyTablature()
     {
         tab = new Tablature();//create empty tablature
@@ -73,9 +96,17 @@ public class TablatureFragment extends Fragment
 
     private void setSavedTablature()
     {
-        tab = new Tablature(this.chords);
-        tablature_text.setText(tab.toString());
+        if(this.receivedTab)
+        {
+            tablature_text.setText(this.saved_tab);
+        }
+        else {
+            tab = new Tablature(this.chords);
+            tablature_text.setText(tab.toString());
+        }
     }
+
+
 
 
 

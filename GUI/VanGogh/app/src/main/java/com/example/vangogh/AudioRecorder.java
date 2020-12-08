@@ -182,6 +182,7 @@ public class AudioRecorder extends Fragment
                             Fragment frag = frag_man.findFragmentById(R.id.fragment_container_view);
                             if(frag != null)
                             {
+                                //TODO: Fix this so we can see the first label inside the ChordFragment view
                                 //Chords is present then
                                 //Open file and feed it
                                 Scanner fr = new Scanner(new File(mic.getLabelsFilePath()));

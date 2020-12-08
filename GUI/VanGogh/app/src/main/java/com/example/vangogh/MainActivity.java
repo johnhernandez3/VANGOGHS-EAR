@@ -43,10 +43,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import chords.ChordToTab;
 
 
 /**
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
     private View view;
     private AppBarConfiguration appBarConfiguration;
     private Uri selected_recording;
+    private String selected_tablature;
 
     private final String TAG = "MAIN";
     private final int REQUEST_READ_STORAGE = 0;
@@ -231,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
             public void onClick(View v)
             {
 
-                searchForFile();
+                searchForFile(true);//testing tablature load
             }
 
         });
@@ -356,12 +360,21 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
     /**
      * Generates an intent for the FileManager activity and awaits a result with code 1234 for a file URI.
      */
-    public void searchForFile()
+    public void searchForFile(boolean tabRequest)
     {
-        // Asks FileManager to be initialized and awaits the result of selected file
-        Intent intent = new Intent(this, FileManager.class);
+        if(tabRequest)
+        {
+            Intent intent = new Intent(this, FileManager.class);
 
-        startActivityForResult(intent,1234);
+            startActivityForResult(intent,5678);
+        }
+
+        else {
+            // Asks FileManager to be initialized and awaits the result of selected file
+            Intent intent = new Intent(this, FileManager.class);
+
+            startActivityForResult(intent, 1234);
+        }
 
     }
 
@@ -451,6 +464,36 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                 man.beginTransaction().add(R.id.fragment_container_view, audio_player, "AUDIO PLAYER").commit();
 
 
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                // there's no result
+            }
+        }
+
+        if (requestCode == 5678) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("file");
+                Log.d(TAG, "Received Intent URI:"+ result);
+                Uri uri = Uri.parse(result);
+                selected_tablature = result;
+
+                Log.d(TAG, "Saved PATH of selected recording:"+result);
+
+                FragmentManager man = this.getSupportFragmentManager();
+                FileManager fm = new FileManager(this);
+                try {
+                    ArrayList<String> predicted_chords =
+                            fm.readFromLabelsFile(uri);
+//                String predicted_tablature = ChordToTab.totalTablature(ChordToTab.constructTab(predicted_chords.toArray(new String[predicted_chords.size()])));
+                    String predicted_tablature = ChordToTab.convertStringChords(predicted_chords);
+                    TablatureFragment tab_frag = new TablatureFragment(predicted_tablature);
+
+                    removeAllFragments();
+
+                    man.beginTransaction().add(R.id.fragment_container_view, tab_frag, "TABLATURE").commit();
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
