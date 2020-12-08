@@ -1,212 +1,218 @@
-// package com.example.vangogh;
+ package com.example.vangogh;
 
-// import android.app.Activity;
-// import android.graphics.RectF;
+ import android.app.Activity;
+ import android.graphics.RectF;
 
-// import java.io.IOException;
-// import java.nio.MappedByteBuffer;
-// import java.util.List;
+ import org.tensorflow.lite.DataType;
+ import org.tensorflow.lite.Interpreter;
+ import org.tensorflow.lite.gpu.GpuDelegate;
+ import org.tensorflow.lite.support.common.FileUtil;
+ import org.tensorflow.lite.support.common.TensorOperator;
 
-// //import org.tensorflow.lite.DataType;
-// //import org.tensorflow.lite.Interpreter;
-// ////import org.tensorflow.lite.examples.classification.env.Logger;
-// ////import org.tensorflow.lite.examples.classification.tflite.Classifier.Device;
-// //import org.tensorflow.lite.gpu.GpuDelegate;
-// //import org.tensorflow.lite.support.common.FileUtil;
-// //import org.tensorflow.lite.support.common.TensorOperator;
+ import java.io.IOException;
+ import java.nio.MappedByteBuffer;
+ import java.util.List;
 
-// public abstract class Classifier {
+ //import org.tensorflow.lite.DataType;
+ //import org.tensorflow.lite.Interpreter;
+ ////import org.tensorflow.lite.examples.classification.env.Logger;
+ ////import org.tensorflow.lite.examples.classification.tflite.Classifier.Device;
+ //import org.tensorflow.lite.gpu.GpuDelegate;
+ //import org.tensorflow.lite.support.common.FileUtil;
+ //import org.tensorflow.lite.support.common.TensorOperator;
 
-//    public Classifier() {
+ public abstract class Classifier {
 
-//    }
+    public Classifier() {
 
-//    public enum Device{CPU,GPU};
+    }
 
-// //    protected Interpreter tflite;
-//    private List<String> labels;
+    public enum Device{CPU,GPU};
 
-//    /** Number of results to show in the UI. */
-//    private static final int MAX_RESULTS = 3;
+     protected Interpreter tflite;
+    private List<String> labels;
 
-//    /** The loaded TensorFlow Lite model. */
-//    private MappedByteBuffer tfliteModel;
+    /** Number of results to show in the UI. */
+    private static final int MAX_RESULTS = 3;
 
-//    /** Options for configuring the Interpreter. */
-// //    private final Interpreter.Options tfliteOptions = new Interpreter.Options();
+    /** The loaded TensorFlow Lite model. */
+    private MappedByteBuffer tfliteModel;
 
-//    /** Output probability TensorBuffer. */
-// //    private final TensorBuffer outputProbabilityBuffer;
+    /** Options for configuring the Interpreter. */
+ //    private final Interpreter.Options tfliteOptions = new Interpreter.Options();
 
-//    /** Optional GPU delegate for acceleration. */
-//    // TODO: Declare a GPU delegate
-//    private GpuDelegate gpuDelegate = null;
-// //
-// //    protected Classifier(Activity activity, Device device, int numThreads) throws IOException {
-// //
-// //        // TODO: Create a TFLite interpreter instance
-// //        tflite = new Interpreter(tfliteModel, tfliteOptions);
-// //    }
-// //
-//    /** Closes the interpreter and model to release resources. */
-//    public void close() {
-//        if (tflite != null) {
-//            // TODO: Close the interpreter
-//            tflite.close();
-//            tflite = null;
-//        }
-//        // TODO: Close the GPU delegate
-//        if (gpuDelegate != null) {
-//            gpuDelegate.close();
-//            gpuDelegate = null;
-//        }
+    /** Output probability TensorBuffer. */
+ //    private final TensorBuffer outputProbabilityBuffer;
 
-//        tfliteModel = null;
-//    }
+    /** Optional GPU delegate for acceleration. */
+    // TODO: Declare a GPU delegate
+    private GpuDelegate gpuDelegate = null;
+ //
+ //    protected Classifier(Activity activity, Device device, int numThreads) throws IOException {
+ //
+ //        // TODO: Create a TFLite interpreter instance
+ //        tflite = new Interpreter(tfliteModel, tfliteOptions);
+ //    }
+ //
+    /** Closes the interpreter and model to release resources. */
+    public void close() {
+        if (tflite != null) {
+            // TODO: Close the interpreter
+            tflite.close();
+            tflite = null;
+        }
+        // TODO: Close the GPU delegate
+        if (gpuDelegate != null) {
+            gpuDelegate.close();
+            gpuDelegate = null;
+        }
 
-//    /** An immutable result returned by a Classifier describing what was recognized. */
-//    public static class Recognition
-//    {
-//        /**
-//         * A unique identifier for what has been recognized. Specific to the class, not the instance of
-//         * the object.
-//         */
-//        private final String id;
+        tfliteModel = null;
+    }
 
-//        /** Display name for the recognition. */
-//        private final String title;
+    /** An immutable result returned by a Classifier describing what was recognized. */
+    public static class Recognition
+    {
+        /**
+         * A unique identifier for what has been recognized. Specific to the class, not the instance of
+         * the object.
+         */
+        private final String id;
 
-//        /**
-//         * A sortable score for how good the recognition is relative to others. Higher should be better.
-//         */
-//        private final Float confidence;
+        /** Display name for the recognition. */
+        private final String title;
 
-//        /** Optional location within the source image for the location of the recognized object. */
-//        private RectF location;
+        /**
+         * A sortable score for how good the recognition is relative to others. Higher should be better.
+         */
+        private final Float confidence;
 
-//        public Recognition(
-//                final String id, final String title, final Float confidence, final RectF location) {
-//            this.id = id;
-//            this.title = title;
-//            this.confidence = confidence;
-//            this.location = location;
-//        }
+        /** Optional location within the source image for the location of the recognized object. */
+        private RectF location;
 
-//        public String getId() {
-//            return id;
-//        }
+        public Recognition(
+                final String id, final String title, final Float confidence, final RectF location) {
+            this.id = id;
+            this.title = title;
+            this.confidence = confidence;
+            this.location = location;
+        }
 
-//        public String getTitle() {
-//            return title;
-//        }
+        public String getId() {
+            return id;
+        }
 
-//        public Float getConfidence() {
-//            return confidence;
-//        }
+        public String getTitle() {
+            return title;
+        }
 
-//        public RectF getLocation() {
-//            return new RectF(location);
-//        }
+        public Float getConfidence() {
+            return confidence;
+        }
 
-//        public void setLocation(RectF location) {
-//            this.location = location;
-//        }
+        public RectF getLocation() {
+            return new RectF(location);
+        }
 
-//        @Override
-//        public String toString() {
-//            String resultString = "";
-//            if (id != null) {
-//                resultString += "[" + id + "] ";
-//            }
+        public void setLocation(RectF location) {
+            this.location = location;
+        }
 
-//            if (title != null) {
-//                resultString += title + " ";
-//            }
+        @Override
+        public String toString() {
+            String resultString = "";
+            if (id != null) {
+                resultString += "[" + id + "] ";
+            }
 
-//            if (confidence != null) {
-//                resultString += String.format("(%.1f%%) ", confidence * 100.0f);
-//            }
+            if (title != null) {
+                resultString += title + " ";
+            }
 
-//            if (location != null) {
-//                resultString += location + " ";
-//            }
+            if (confidence != null) {
+                resultString += String.format("(%.1f%%) ", confidence * 100.0f);
+            }
 
-//            return resultString.trim();
-//        }
-//    }
+            if (location != null) {
+                resultString += location + " ";
+            }
 
-//    /**
-//     * Creates a classifier with the provided configuration.
-//     *
-//     * @param activity The current Activity.
-//     * @param device The device to use for classification.
-//     * @param numThreads The number of threads to use for classification.
-//     * @return A classifier with the desired configuration.
-//     */
-//    public static MusicalChordClassifierNet create(Activity activity, Device device, int numThreads)
-//            throws IOException {
+            return resultString.trim();
+        }
+    }
 
-//        return new MusicalChordClassifierNet(activity, device, numThreads);
-//    }
+    /**
+     * Creates a classifier with the provided configuration.
+     *
+     * @param activity The current Activity.
+     * @param device The device to use for classification.
+     * @param numThreads The number of threads to use for classification.
+     * @return A classifier with the desired configuration.
+     */
+    public static MusicalChordClassifierNet create(Activity activity, Device device, int numThreads)
+            throws IOException {
 
-//    /** Initializes a {@code Classifier}. */
-//    protected Classifier(Activity activity, Device device, int numThreads) throws IOException {
-//        tfliteModel = FileUtil.loadMappedFile(activity, getModelPath());
-//        switch (device) {
-//            case GPU:
-//                // TODO: Create a GPU delegate instance and add it to the interpreter options
-// //                gpuDelegate = new GpuDelegate();
-// //                tfliteOptions.addDelegate(gpuDelegate);
-//                break;
-//            case CPU:
-//                break;
-//        }
-// //        tfliteOptions.setNumThreads(numThreads);
-// //        // TODO: Create a TFLite interpreter instance
-// //        tflite = new Interpreter(tfliteModel, tfliteOptions);
+        return new MusicalChordClassifierNet(activity, device, numThreads);
+    }
 
-//        // Loads labels out from the label file.
-//        labels = FileUtil.loadLabels(activity, getLabelPath());
+    /** Initializes a {@code Classifier}. */
+    protected Classifier(Activity activity, Device device, int numThreads) throws IOException {
+        tfliteModel = FileUtil.loadMappedFile(activity, getModelPath());
+        switch (device) {
+            case GPU:
+                // TODO: Create a GPU delegate instance and add it to the interpreter options
+ //                gpuDelegate = new GpuDelegate();
+ //                tfliteOptions.addDelegate(gpuDelegate);
+                break;
+            case CPU:
+                break;
+        }
+ //        tfliteOptions.setNumThreads(numThreads);
+ //        // TODO: Create a TFLite interpreter instance
+ //        tflite = new Interpreter(tfliteModel, tfliteOptions);
 
-//        // Reads type and shape of input and output tensors, respectively.
-//        int imageTensorIndex = 0;
-// //        int[] imageShape = tflite.getInputTensor(imageTensorIndex).shape(); // {1, height, width, 3}
-// //        imageSizeY = imageShape[1];
-// //        imageSizeX = imageShape[2];
-//        DataType imageDataType = tflite.getInputTensor(imageTensorIndex).dataType();
-//        int probabilityTensorIndex = 0;
-//        int[] probabilityShape =
-//                tflite.getOutputTensor(probabilityTensorIndex).shape(); // {1, NUM_CLASSES}
-//        DataType probabilityDataType = tflite.getOutputTensor(probabilityTensorIndex).dataType();
+        // Loads labels out from the label file.
+        labels = FileUtil.loadLabels(activity, getLabelPath());
 
-//        // Creates the input tensor.
-// //        inputImageBuffer = new TensorImage(imageDataType);
+        // Reads type and shape of input and output tensors, respectively.
+        int imageTensorIndex = 0;
+ //        int[] imageShape = tflite.getInputTensor(imageTensorIndex).shape(); // {1, height, width, 3}
+ //        imageSizeY = imageShape[1];
+ //        imageSizeX = imageShape[2];
+        DataType imageDataType = tflite.getInputTensor(imageTensorIndex).dataType();
+        int probabilityTensorIndex = 0;
+        int[] probabilityShape =
+                tflite.getOutputTensor(probabilityTensorIndex).shape(); // {1, NUM_CLASSES}
+        DataType probabilityDataType = tflite.getOutputTensor(probabilityTensorIndex).dataType();
 
-//        // Creates the output tensor and its processor.
-// //        outputProbabilityBuffer = TensorBuffer.createFixedSize(probabilityShape, probabilityDataType);
+        // Creates the input tensor.
+ //        inputImageBuffer = new TensorImage(imageDataType);
 
-//        // Creates the post processor for the output probability.
-// //        probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
+        // Creates the output tensor and its processor.
+ //        outputProbabilityBuffer = TensorBuffer.createFixedSize(probabilityShape, probabilityDataType);
 
-// //        LOGGER.d("Created a Tensorflow Lite Image Classifier.");
-//    }
+        // Creates the post processor for the output probability.
+ //        probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
 
-//    /** Gets the name of the model file stored in Assets. */
-//    protected abstract String getModelPath();
+ //        LOGGER.d("Created a Tensorflow Lite Image Classifier.");
+    }
 
-//    /** Gets the name of the label file stored in Assets. */
-//    protected abstract String getLabelPath();
+    /** Gets the name of the model file stored in Assets. */
+    protected abstract String getModelPath();
 
-//    /** Gets the TensorOperator to nomalize the input image in preprocessing. */
-//    protected abstract TensorOperator getPreprocessNormalizeOp();
+    /** Gets the name of the label file stored in Assets. */
+    protected abstract String getLabelPath();
 
-//    /**
-//     * Gets the TensorOperator to dequantize the output probability in post processing.
-//     *
-//     * <p>For quantized model, we need de-quantize the prediction with NormalizeOp (as they are all
-//     * essentially linear transformation). For float model, de-quantize is not required. But to
-//     * uniform the API, de-quantize is added to float model too. Mean and std are set to 0.0f and
-//     * 1.0f, respectively.
-//     */
-//    protected abstract TensorOperator getPostprocessNormalizeOp();
-// }
+    /** Gets the TensorOperator to nomalize the input image in preprocessing. */
+    protected abstract TensorOperator getPreprocessNormalizeOp();
+
+    /**
+     * Gets the TensorOperator to dequantize the output probability in post processing.
+     *
+     * <p>For quantized model, we need de-quantize the prediction with NormalizeOp (as they are all
+     * essentially linear transformation). For float model, de-quantize is not required. But to
+     * uniform the API, de-quantize is added to float model too. Mean and std are set to 0.0f and
+     * 1.0f, respectively.
+     */
+    protected abstract TensorOperator getPostprocessNormalizeOp();
+ }

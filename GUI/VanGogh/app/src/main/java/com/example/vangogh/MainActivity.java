@@ -2,7 +2,6 @@ package com.example.vangogh;
 
 import android.app.Activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
@@ -20,36 +19,20 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavDestination;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.*;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 
-import com.google.android.material.navigation.NavigationView;
-
-import org.apache.commons.math3.exception.util.ExceptionContextProvider;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import chords.ChordToTab;
+import utils.FragmentFactory;
 
 
 /**
@@ -253,8 +236,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
 
 
     }
-
-
 
 
     @Override

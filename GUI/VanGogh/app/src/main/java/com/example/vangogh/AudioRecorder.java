@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import androidx.fragment.app.FragmentManager;
 import java.io.File;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -180,15 +183,20 @@ public class AudioRecorder extends Fragment
                             mic.stop_recording_wav(context);
                             FragmentManager frag_man = getParentFragmentManager();
                             Fragment frag = frag_man.findFragmentById(R.id.fragment_container_view);
+                            Intent intent = new Intent();
                             if(frag != null)
                             {
                                 //TODO: Fix this so we can see the first label inside the ChordFragment view
                                 //Chords is present then
                                 //Open file and feed it
-                                Scanner fr = new Scanner(new File(mic.getLabelsFilePath()));
-                                String first_chord = fr.nextLine();
-                                Log.e(TAG, "Current Read Label:"+first_chord);
-                                frag_man.beginTransaction().add(R.id.fragment_container_view, new ChordFragment(first_chord) , "CHORDS");
+                                FileManager fm = new FileManager(getActivity());
+                                Uri uri = Uri.fromFile(new File(mic.getLabelsFilePath()));
+                                ArrayList<String> labels = fm.readFromLabelsFile(uri);
+//                                Scanner fr = new Scanner();
+//                                String first_chord = fr.nextLine();
+                                Log.e(TAG, "Current Read Label:"+ Arrays.toString(new String[labels.size()]));
+                                frag_man.beginTransaction().add(R.id.fragment_container_view, new ChordFragment(labels.get(0)) , "CHORDS").commit();
+
                             }
 
 

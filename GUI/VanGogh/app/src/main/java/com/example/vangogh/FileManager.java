@@ -10,14 +10,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-//import android.os.FileUtils;
+
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
+
 
 import com.example.database.MusicDataBase;
 
@@ -25,8 +24,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +32,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
+
 
 import io_devices.IODeviceManager;
 import utils.Controller;
@@ -54,7 +52,7 @@ public class FileManager extends Activity implements IODeviceManager
     private static final int REQUEST_TAB = 5678;
     private static final int REQUEST_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 3;
-//    private FileArrayAdapter files_adapter;
+
     private ArrayList<String> files = new ArrayList<>();
 
     private Uri selected_file;
@@ -123,6 +121,8 @@ public class FileManager extends Activity implements IODeviceManager
         return labels;
     }
 
+    //TODO: Fix Read bug where the InputStreams reads even commas as one single line
+    // Implement something to split the line by "," like Python's split(",") method.
     public  ArrayList<String> readFromLabelsFile(Uri filepath) throws FileNotFoundException
     {
         ArrayList<String> data = new ArrayList<>();
@@ -133,7 +133,8 @@ public class FileManager extends Activity implements IODeviceManager
             BufferedReader r = new BufferedReader(new InputStreamReader(in));
 
             for (String line; (line = r.readLine()) != null; ) {
-                data.add(line);
+               String[] split_str =  line.split(",");
+                data.addAll(Arrays.asList(split_str));
             }
 
         }catch (Exception e) {
@@ -263,15 +264,6 @@ public class FileManager extends Activity implements IODeviceManager
         {
             case REQUEST_TAB:
                 Uri tab_uri = data.getData();
-
-
-
-//                selected_file=tab_uri;
-//                String tab_path = tab_uri.getPath();
-
-//                Log.d(TAG, "File Path: "+ tab_path);
-                //process the file or pass it to data
-//                files.add(tab_uri.toString());
 
                 Intent tab_files_d = new Intent();
 

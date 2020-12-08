@@ -37,6 +37,16 @@
         android:layout_marginBottom="17dp"
         android:text="Update" />
 
+    <Button
+        android:id="@+id/load_chords"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="60dp"
+        android:text="Load" />
+
     <FrameLayout
         android:id="@+id/new_audio_fragment_container_view"
         android:layout_width="wrap_content"

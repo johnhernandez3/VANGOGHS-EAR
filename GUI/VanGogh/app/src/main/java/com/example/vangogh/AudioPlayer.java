@@ -99,6 +99,7 @@ public class AudioPlayer extends Fragment {
         // Loads the base view XML file
         view = inflater.inflate(R.layout.audio_player_layout, container , false);
 
+        handler = new Handler();
         // Bind Java Objects to XML Layout Views
 
         play = (Button) view.findViewById(R.id.play);

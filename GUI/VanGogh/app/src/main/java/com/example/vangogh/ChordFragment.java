@@ -1,6 +1,8 @@
 package com.example.vangogh;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -31,6 +33,7 @@ import java.util.Objects;
 
 import chords.ChordFactory;
 import chords.ChordModel;
+import chords.ChordToTab;
 import chords.ChordValidator;
 
 /**
@@ -39,7 +42,7 @@ import chords.ChordValidator;
 public class ChordFragment extends Fragment
 {
     int fret_position = 0; // from 0 to 12
-
+    private String selected_chords="";
     private final String TAG = "CHORD FRAG";
     private final int DIAGRAM_WIDTH = 200;
     private final int DIAGRAM_HEIGHT = 200;
@@ -53,7 +56,7 @@ public class ChordFragment extends Fragment
     private ChordValidator chord_validator;
 
     //GUI Components for binding the Frontend
-    Button update_btn;
+    Button update_btn, load_btn;
     View view;
     ImageView chord_view;
     EditText editText;
@@ -69,6 +72,27 @@ public class ChordFragment extends Fragment
 
     }
 
+    /**
+     * Generates an intent for the FileManager activity and awaits a result with code 1234 for a file URI.
+     */
+    public void searchForFile(boolean tabRequest)
+    {
+        if(tabRequest)
+        {
+            Intent intent = new Intent(this.getActivity(), FileManager.class);
+
+            startActivityForResult(intent,5678);
+        }
+
+        else {
+            // Asks FileManager to be initialized and awaits the result of selected file
+            Intent intent = new Intent(this.getActivity(), FileManager.class);
+
+            startActivityForResult(intent, 1234);
+        }
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -79,11 +103,20 @@ public class ChordFragment extends Fragment
         // Bind Java Objects to XML Layout Views
         editText = (EditText) view.findViewById(R.id.chord_input);
         update_btn = (Button) view.findViewById(R.id.update_chord);
+        load_btn = (Button) view.findViewById(R.id.load_chords);
         chord_view = (ImageView) view.findViewById(R.id.chord_view);
 
 
         final FragmentManager man = this.getActivity().getSupportFragmentManager();
 
+        load_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                searchForFile(true);
+            }
+
+        });
         if(currchord.isEmpty()) {
             // Set callback listener for events on the update button
             update_btn.setOnClickListener(new View.OnClickListener() {
@@ -186,7 +219,10 @@ public class ChordFragment extends Fragment
     private void drawChords(String chordName, int width, int height)
     {
         Log.d(TAG, "Processing chord:"+chordName);
-        if(validateChord(chordName)) {
+        this.chord_factory = new ChordFactory();
+        this.chord_validator = new ChordValidator(this.chord_factory.createValidInternalChords());
+        ChordModel ch_model = this.chord_validator.extractChord(chordName);
+        if(validateChord(ch_model.toString())) {
             // Prepare data
             Resources resources = this.getResources();
             int transpose = 0; // transpose distance (-12 to 12)
@@ -216,6 +252,54 @@ public class ChordFragment extends Fragment
     private void drawChords(String chordName)
     {
         this.drawChords(chordName, DIAGRAM_WIDTH, DIAGRAM_HEIGHT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Receives the URI of selected file from FileManager class
+        if (requestCode == 1234) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("file");
+                Uri uri = Uri.parse(result);
+//                selected_chords = uri;
+                Log.d(TAG, "Saved URI of selected recording:"+uri);
+
+
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                // there's no result
+            }
+        }
+
+        if (requestCode == 5678) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("file");
+                Log.d(TAG, "Received Intent URI:"+ result);
+                Uri uri = Uri.parse(result);
+                selected_chords = result;
+
+                Log.d(TAG, "Saved PATH of selected recording:"+result);
+
+                FileManager fm = new FileManager(this.getActivity());
+                try {
+                    ArrayList<String> predicted_chords = fm.readFromLabelsFile(uri);
+                    if(predicted_chords.size() > 0) {
+                        Log.e(TAG,"Passing in Draw:"+predicted_chords.get(0));
+                        this.drawChords(predicted_chords.get(0));
+                    }
+
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 
 }

@@ -569,6 +569,8 @@ public class Microphone implements Device
         String res = "model.tflite";
         return res;
     }
+
+
     public String  getPredictedValue(List<Recognition> predictedList) {
         Recognition top1PredictedValue  = predictedList.get(0);
     return top1PredictedValue.getTitle();

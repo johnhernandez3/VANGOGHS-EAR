@@ -13,7 +13,7 @@ public class ChordModel
     {
         //Verify value of chord name is not null
         if(chord_name != null)
-            this.setChordName(chord_name);
+            this.setChordName(chord_name.toUpperCase());
         else
             this.setChordName("");
 
