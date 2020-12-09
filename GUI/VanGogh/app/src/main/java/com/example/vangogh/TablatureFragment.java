@@ -2,6 +2,7 @@ package com.example.vangogh;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,7 @@ public class TablatureFragment extends Fragment
 
         // Bind Java Objects to XML Layout Views
         tablature_text = (TextView) view.findViewById(R.id.tablature_text);
+        tablature_text.setMovementMethod(new ScrollingMovementMethod());
         load_btn = (Button) view.findViewById(R.id.load_tablature);
 
 

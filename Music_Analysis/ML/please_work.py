@@ -265,9 +265,9 @@ plt.ylabel('Label')
 plt.show()
 
 model_path = Path(setup())
-model_path = model_path / 'Saved_Model'
+model_path = model_path / 'Test_Saved_Model'
 
-model.save(model_path/'chords_classifier_model')
+model.save(model_path/'test_chords_classifier_model')
 
 
 # sample_file = data_dir/'a/a.wav'

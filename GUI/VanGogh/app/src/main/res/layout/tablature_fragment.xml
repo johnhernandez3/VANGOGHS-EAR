@@ -15,6 +15,7 @@
 
     <TextView
         android:id="@+id/tablature_text"
+        android:scrollbars="vertical"
         android:layout_width="266dp"
         android:layout_height="305dp"
         android:layout_alignParentStart="true"
