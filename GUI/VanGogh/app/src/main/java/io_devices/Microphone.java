@@ -7,6 +7,7 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.vangogh.DatabaseView;
 import com.example.vangogh.FileManager;
@@ -61,6 +62,7 @@ public class Microphone implements Device
 
     private int RECORDER_BITS = 16;
     private int RECORDER_SAMPLERATE = 16000;
+    private int CONVERT_TO_MB = 1024 * 1024;
 
 
     private String recording_timeString="";
@@ -701,7 +703,13 @@ public class Microphone implements Device
         }
     }
 
-
+    public void checkBytes(String filePath, Context context) {
+        File stopThis = new File(filePath);
+        if(stopThis.length()/CONVERT_TO_MB > 41) {
+            Toast.makeText(context,"File Size Too Big!", Toast.LENGTH_LONG).show();
+            return;
+        }
+    }
 
 
 }

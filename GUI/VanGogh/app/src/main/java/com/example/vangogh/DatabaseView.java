@@ -94,8 +94,10 @@ public class DatabaseView extends Activity {
         del_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                File filetoDelete = new File(editSongName.getText().toString() + ".txt");
+                boolean deleted = filetoDelete.delete();
                 Integer delRows = myMusic.deleteData(editSongName.getText().toString());
-                if(delRows > 0)  {
+                if(delRows > 0 && deleted)  {
                     Toast.makeText(DatabaseView.this,"Data Deleted", Toast.LENGTH_LONG).show();
                 }
                 else {

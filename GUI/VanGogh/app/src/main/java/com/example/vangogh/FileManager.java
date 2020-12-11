@@ -379,37 +379,4 @@ public class FileManager extends Activity implements IODeviceManager
         return false;
     }
 
-    public void writeChordsToFilesDir() throws IOException {
-        int chords[] = {R.raw.a, R.raw.am, R.raw.bm, R.raw.c, R.raw.d, R.raw.d, R.raw.dm, R.raw.e, R.raw.em, R.raw.f, R.raw.g};
-            copyRAWtoPhone(chords[0], "/data/data/com.example.vangogh/files/a.wav");
-            File findFile = new File(this.context.getFilesDir(), "a.wav");
-            if(findFile.exists()) Log.d(TAG, "writeChordsToFilesDir: File Found!");
-
-    }
-
-    private void copyRAWtoPhone(int id, String path) throws IOException
-    {
-        // Add a specific media item.
-        ContentResolver resolver = getApplicationContext()
-                .getContentResolver();
-
-        // Find all audio files on the primary external storage device.
-        Uri audioCollection;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            audioCollection = MediaStore.Audio.Media
-                    .getContentUri(MediaStore.getVersion(this));
-        } else {
-            audioCollection = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        }
-
-        // Publish a new song.
-        ContentValues newSongDetails = new ContentValues();
-        newSongDetails.put(MediaStore.Audio.Media.DISPLAY_NAME, "a.wav");
-
-
-        // Keeps a handle to the new song's URI in case we need to modify it
-        // later.
-        Uri myFavoriteSongUri = resolver
-                .insert(audioCollection, newSongDetails);
-    }
 }
