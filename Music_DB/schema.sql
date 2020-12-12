@@ -1,2 +1,0 @@
-create table music(mid serial primary key not null, songname varchar(127) not null, songartist varchar(127) not null);
-create table chord(cid serial primary key not null, chordname varchar(127) not null);

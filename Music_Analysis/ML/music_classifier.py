@@ -1,8 +1,5 @@
 import os, pathlib
 
-# from utils.settings import get_project_root, find
-# from utils.settings import *
-# from settings import *
 
 import tensorflow as tf
 import typing
@@ -49,16 +46,13 @@ def chords_paths():
         Yields the paths to the Chord Classes if the subdirectory ~ML/Guitar_Chords/~
         exists in the system.
     '''
-    chord_path = Path(setup()) #may need to change this for *nix sys
+    chord_path = Path(setup()) 
     chord_path = chord_path / 'ML' / 'Guitar_Chords'
     if path.isdir(chord_path):
         # this is the Guitar_Chords parent folder
         for f in Path.iterdir(chord_path):
             if f.is_dir():
                 yield path.abspath(f)
-        
-    # path= find('Guitar_Chords', get_project_root())
-    # return path
 
 def chord_files(path=chords_paths(), chord_name='a'):
 
@@ -89,7 +83,6 @@ def get_spectrogram(waveform):
     # zero_padding = tf.zeros([16000] -  tf.shape(waveform), dtype=tf.float32)
     # if tf.shape(waveform) > 0:
     waveform = tf.cast(waveform, tf.float32)
-    # equal_length = tf.concat([waveform, zero_padding],0)
     spectrogram = tf.signal.stft( waveform, frame_length=255,frame_step=128)
     return spectrogram
     # else:
@@ -199,7 +192,6 @@ def init_training():
     train, val, test = filenames_to_tensor_slices(train),filenames_to_tensor_slices(val),filenames_to_tensor_slices(test),
     train_ds = train.map(get_waveform_and_label, num_parallel_calls=AUTOTUNE)
     train_ds = train_ds.map(get_spectrogram_and_label_id,num_parallel_calls=AUTOTUNE)
-    # train_ds = get_spectrogram_and_label_id(decode_audio(train),)
     val_ds = preprocess_dataset(val)
     test_ds = preprocess_dataset(test)
 
