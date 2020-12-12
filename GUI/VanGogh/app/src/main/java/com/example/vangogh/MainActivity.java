@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import chords.ChordToTab;
+import io_devices.Microphone;
 import utils.FragmentFactory;
 
 
@@ -218,7 +219,18 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
             public void onClick(View v)
             {
 
-                searchForFile(true);//testing tablature load
+                searchForFile(true,false);//testing tablature load
+            }
+
+        });
+
+        Button analyze_file_btn = (Button) findViewById(R.id.analyze_audio_button);
+        analyze_file_btn.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+
+                searchForFile(true,true);//testing tablature load
             }
 
         });
@@ -341,8 +353,14 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
     /**
      * Generates an intent for the FileManager activity and awaits a result with code 1234 for a file URI.
      */
-    public void searchForFile(boolean tabRequest)
+    public void searchForFile(boolean tabRequest, boolean wavFileRequest)
     {
+        if(wavFileRequest)
+        {
+            Intent intent = new Intent(this, FileManager.class);
+
+            startActivityForResult(intent,3333);
+        }
         if(tabRequest)
         {
             Intent intent = new Intent(this, FileManager.class);
@@ -378,7 +396,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
         requestPermissions((String[])permissions.keySet().toArray(new String[permissions.keySet().size()]),ALL_REQ_PERMS);
     }
 
-    //TODO: Fix Permissions Request for File Storage and Audio Recording
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[] , int grantResults[])
     {
@@ -429,6 +446,24 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 3333) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("file");
+                Uri uri = Uri.parse(result);
+                selected_recording = uri;
+                Log.d(TAG, "Saved URI of selected recording:"+uri);
+                Microphone mic = new Microphone();
+                mic.classifyRecording(result, this.getApplicationContext());
+
+                Log.e(TAG, "Creating Labels txt file!");
+                Toast.makeText(this, "Processing WAV File!", Toast.LENGTH_SHORT).show();
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                // there's no result
+            }
+        }
 
         //Receives the URI of selected file from FileManager class
         if (requestCode == 1234) {

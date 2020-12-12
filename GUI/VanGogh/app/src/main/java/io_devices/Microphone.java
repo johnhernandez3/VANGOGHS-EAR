@@ -176,6 +176,7 @@ public class Microphone implements Device
         byte data[] = new byte[buffer_size];
         String filename = getTempFilename();
         FileOutputStream os = null;
+
         try {
             os = new  FileOutputStream(filename);
         } catch (FileNotFoundException e) {
@@ -343,7 +344,7 @@ public class Microphone implements Device
 
         if(directory.exists()){
             int count = directory.listFiles().length;
-            output = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecorder/recording"+count+".mp3";
+            output = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recordings/recording"+count+".mp3";
         }
 
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);

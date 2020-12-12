@@ -47,6 +47,7 @@
 
 
 
+
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <FrameLayout
@@ -57,7 +58,10 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginEnd="19dp"
                     android:layout_marginBottom="3dp"
-                    android:orientation="horizontal" />
+                    android:orientation="horizontal" >
+
+
+                </FrameLayout>
 
                 <FrameLayout
 
@@ -91,6 +95,14 @@
                     android:textOff="Record"
                     android:textOn="Hide" />
 
+                <Button
+                    android:id="@+id/analyze_audio_button"
+                    android:layout_width="112dp"
+                    android:layout_height="72dp"
+
+
+                    android:layout_alignParentEnd="true"
+                    android:text="Analyze" />
                 <Button
                     android:id="@+id/dbview_button"
                     android:layout_width="112dp"

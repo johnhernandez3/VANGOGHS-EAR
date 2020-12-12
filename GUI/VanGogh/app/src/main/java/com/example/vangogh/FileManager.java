@@ -268,15 +268,26 @@ public class FileManager extends Activity implements IODeviceManager
                 Intent tab_files_d = new Intent();
 
                 tab_files_d.putExtra("file", tab_uri);
-//                Log.d(TAG, "File URI:" +  tab_uri.toString());
                 setResult(Activity.RESULT_OK, tab_files_d);
                 finish();
                 super.onActivityResult(REQUEST_TAB, resultCode,tab_files_d);
 
                 break;
 
-            case FILE_SELECTED_CODE:
+            case 3333:
+                Uri wav_uri = data.getData();
+                Log.d(TAG, "File URI:" +  wav_uri.toString());
+                selected_file=wav_uri;
+                String wav_path = wav_uri.getPath();
+                Log.d(TAG, "File Path: "+ wav_path);
+                //process the file or pass it to data
+//                files.add(uri.toString());
+                Intent wav_files_d = new Intent();
+                wav_files_d.putExtra("file", wav_uri.toString());
+                setResult(Activity.RESULT_OK, wav_files_d);
+                finish();
 
+                super.onActivityResult(3333, resultCode,wav_files_d);
                 break;
 
             case REQUEST_CHOOSER:
@@ -287,7 +298,6 @@ public class FileManager extends Activity implements IODeviceManager
                 String path = uri.getPath();
                 Log.d(TAG, "File Path: "+ path);
                 //process the file or pass it to data
-//                files.add(uri.toString());
                 Intent files_d = new Intent();
                 files_d.putExtra("file", uri.toString());
                 setResult(Activity.RESULT_OK, files_d);
