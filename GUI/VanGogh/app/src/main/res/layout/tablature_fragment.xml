@@ -15,16 +15,16 @@
 
     <TextView
         android:id="@+id/tablature_text"
-        android:scrollbars="vertical"
-        android:layout_width="266dp"
-        android:layout_height="305dp"
+        android:layout_width="223dp"
+        android:layout_height="231dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="71dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="73dp"
-        android:text="PLACE HOLDER">
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="165dp"
+        android:layout_marginEnd="95dp"
+        android:scrollbars="vertical"
+        android:text="Tablature appears here">
 
     </TextView>
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.example.vangogh;
 
 import android.app.Activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
     TablatureFragment tablature_fragment;
     AudioRecorder audio_fragment;
     ChordFragment chord_fragment;
+    DatabaseView dbview;
     FileManager fm;
     ToggleButton toggle_frags ;
     Button dbview_button;
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dbview = new DatabaseView();
         toolbar = (Toolbar) findViewById(R.id.topAppBar);
         setSupportActionBar(toolbar);
 
@@ -274,6 +277,19 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                 Toast.makeText(this, "Record View selected", Toast.LENGTH_SHORT)
                         .show();
                 break;
+            case R.id.action_help:
+                //TODO Write long msg
+                showMessage("Help:",
+                        "Select File:\nSelect text file to load tablature\n\n" +
+                                "Record:\nReveals button to record\n" +
+                                "Press 'Start' to start\nPress 'Stop' to stop, unless 5 minutes pass\n\n" +
+                                "Tablature:\nReveals tablature viewer where you can load tablatures to see them\n" +
+                                "Tablature also reveals Chord Diagram to view and listen to chords\n\n" +
+                                "Chord Diagram:\nType name of chord to listen to chord\n" +
+                                "Press 'Pause' to press play to listen to the recording again\n\n" +
+                                "DBView:\nGoes to a different screen to view chords and tablatures\n" +
+                                "You can also delete tablatures");
+                break;
             default:
                 break;
         }
@@ -363,13 +379,8 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
      * Asks the user for IO device permissions such as accessing storage and the microphone
      */
 
-    /**
-     * When activity requires a permission
-     * @param requestCode an int that identifies the type of permission that is being asked
-     * @param permissions string array of the permissions being asked
-     * @param grantResults int array with numbers if it has a 0, it is denied the result, else anything different,
-     * it is granted
-     */
+
+
     /**
      * Asks the user for IO device permissions such as accessing storage and the microphone
      */
@@ -378,6 +389,13 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
         requestPermissions((String[])permissions.keySet().toArray(new String[permissions.keySet().size()]),ALL_REQ_PERMS);
     }
 
+    /**
+     * When activity requires a permission
+     * @param requestCode an int that identifies the type of permission that is being asked
+     * @param permissions string array of the permissions being asked
+     * @param grantResults int array with numbers if it has a 0, it is denied the result, else anything different,
+     * it is granted
+     */
     //TODO: Fix Permissions Request for File Storage and Audio Recording
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[] , int grantResults[])
@@ -480,6 +498,19 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                 //Write your code if there's no result
             }
         }
+    }
+
+    /**
+     * Shows messages on a separate window
+     * @param title the title of the message that is demonstrated on the window
+     * @param msg the message demonstrated on the window
+     */
+    public void showMessage(String title, String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(msg);
+        builder.show();
     }
 
 

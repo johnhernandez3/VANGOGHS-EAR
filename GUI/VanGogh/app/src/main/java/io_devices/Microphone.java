@@ -9,6 +9,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.database.MusicDataBase;
 import com.example.vangogh.DatabaseView;
 import com.example.vangogh.FileManager;
 import com.example.vangogh.Recognition;
@@ -54,9 +55,10 @@ public class Microphone implements Device
     private final String TAG  = "MIC";
     private MediaRecorder recorder;
     private AudioRecord wav_recorder;
+    private MusicDataBase mydb;
 
     private File  directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecorder/recordings/");
-    private String AUDIO_RECORDER_FOLDER = "recordings";
+    private String AUDIO_RECORDER_FOLDER = "audiorecorder/recordings";
     private long recording_time = 0;
     private Timer timer;
 
@@ -225,7 +227,15 @@ public class Microphone implements Device
         deleteTempFile();
         initRecorder();
 
-        classifyRecording(fileName, context);
+
+
+        //TODO Test checkBytes
+        if(!checkBytes(fileName, context)) {
+            classifyRecording(fileName, context);
+            mydb = new MusicDataBase(context);
+            mydb.insertData(fileName.substring(fileName.lastIndexOf("/") + 1, fileName.lastIndexOf(".")), 1);
+        }
+
 
         return !isRecording;
 
@@ -236,7 +246,9 @@ public class Microphone implements Device
         String filepath = Environment.getExternalStorageDirectory().getPath();
         File file = new File(filepath, AUDIO_RECORDER_FOLDER);
 
-        if(!file.exists())file.mkdirs();
+        if(!file.exists()) {
+            file.mkdirs();
+        }
         return file.getAbsolutePath().toString() + "/" + SystemClock.currentThreadTimeMillis() + AUDIO_FILE_FORMAT ;
     }
 
@@ -345,7 +357,7 @@ public class Microphone implements Device
 
         if(directory.exists()){
             int count = directory.listFiles().length;
-            output = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecorder/recording"+count+".mp3";
+            output = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecorder/recordings/recording"+count+".mp3";
         }
 
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -447,7 +459,7 @@ public class Microphone implements Device
                             buff.append(predictionList.get(i) + "\n\n");
                         }
 
-                        FileManager.writeToLabelsFile(predictionList, getLabelsFilePath());
+                        FileManager.writeToLabelsFile(predictionList, getLabelsFilePath() + fileName.substring(fileName.lastIndexOf("/"), fileName.lastIndexOf(".")) + ".txt");
 
                         //TODO:Now we can call the ChordFragment's class
 
@@ -473,7 +485,11 @@ public class Microphone implements Device
 
     public String getLabelsFilePath()
     {
-        return directory.getAbsolutePath() +"labels.txt";
+        return directory.getAbsolutePath().substring(0, getLabelsDirectoryFilePath().lastIndexOf("/recordings"));
+    }
+
+    public String getLabelsDirectoryFilePath() {
+        return directory.getAbsolutePath();
     }
 
 
@@ -699,11 +715,26 @@ public class Microphone implements Device
         }
     }
 
-    public void checkBytes(String filePath, Context context) {
+    public boolean checkBytes(String filePath, Context context) {
         File stopThis = new File(filePath);
-        if(stopThis.length()/CONVERT_TO_MB > 41) {
+        long fileSize = stopThis.length();
+        if(fileSize/CONVERT_TO_MB > 41) {
             Toast.makeText(context,"File Size Too Big!", Toast.LENGTH_LONG).show();
-            return;
+            return true;
+        }
+        return false;
+    }
+
+    public void fileLogic(String fileName, Context context) {
+
+        copyWaveFile(getTempFilename(), fileName);
+        deleteTempFile();
+        initRecorder();
+
+        if(!checkBytes(fileName, context)) {
+            classifyRecording(fileName, context);
+            mydb = new MusicDataBase(context);
+            mydb.insertData(fileName.substring(fileName.lastIndexOf("/") + 1, fileName.lastIndexOf(".")), 1);
         }
     }
 

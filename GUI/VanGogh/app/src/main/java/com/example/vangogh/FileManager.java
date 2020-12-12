@@ -301,13 +301,6 @@ public class FileManager extends Activity implements IODeviceManager
 
     }
 
-    public List getAllChords()
-    {
-        MusicDataBase music_database = new MusicDataBase(this);
-
-        return music_database.getAllID2();
-    }
-
 
     /**
      * Generates the Output File Path for the Audio Recorder to store recorded audio.

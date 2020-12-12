@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +47,11 @@ public class AudioRecorder extends Fragment
     private final int REQUEST_READ_STORAGE = 0;
     private final int REQUEST_WRITE_STORAGE = 1;
     private final int REQUEST_RECORD_AUDIO = 2;
+
+    // Variables for auto-stopping recording
+    private Handler handler;
+    private float start_time;
+    private boolean setText = false;
 
     // String used to store the File being recorded from Mic
     String Output_File = "Sample_File";
@@ -142,6 +149,7 @@ public class AudioRecorder extends Fragment
         }
 
         context = this.getActivity().getApplication().getBaseContext();
+        handler = new Handler();
 
 
         view = inflater.inflate(R.layout.audio_recorder_fragment, container , false);
@@ -166,8 +174,13 @@ public class AudioRecorder extends Fragment
                             Log.d(TAG, "Button clicks:"+mic_button_clicks);
                             mic.start_recording_wav();
                             Toast.makeText(getActivity(), "Starting Mic Recording", Toast.LENGTH_SHORT).show();
-
-//                            mic.stop_recording_wav(context);
+                            //TODO Test this
+                            start_time = SystemClock.elapsedRealtime();
+                            handler.postDelayed(Timer,100);
+                            if(setText) {
+                                mic.stop_recording_wav(context);
+                                microphone_button.setText("Start");
+                            }
                         }catch  (Exception e)
                         {
                             e.printStackTrace();
@@ -263,6 +276,18 @@ public class AudioRecorder extends Fragment
         }
 
     }
+
+    private Runnable Timer = new Runnable() {
+        @Override
+        public void run() {
+            if(SystemClock.elapsedRealtime() - start_time >= 300000) {
+                setText = true;
+                mic.stop_recording_wav(context);
+                microphone_button.setText("Start");
+            }
+
+        }
+    };
 
 
 }

@@ -46,7 +46,7 @@ public class MusicDataBase extends SQLiteOpenHelper {
     /**
      * Inserts data into the desired table created in the database
      * @param DATA String representing the value inserted into the table
-     * @param i decides which table is having data inserted
+     * @param table decides which table is having data inserted
      * @return is true if the data was inserted and false if it was not
      */
     public boolean insertData(String DATA, int table) {

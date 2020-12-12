@@ -19,10 +19,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io_devices.Microphone;
+
 public class DatabaseView extends Activity {
 
     //Create variable
     MusicDataBase myMusic;
+    Microphone microphone;
     Button view_button;
     Button del_button;
     Button view2_button;
@@ -35,6 +38,7 @@ public class DatabaseView extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.database_layout);
+        microphone = new Microphone();
         myMusic = new MusicDataBase(this);
         editSongName = (EditText) findViewById(R.id.editTextTextSongName);
 
@@ -58,11 +62,8 @@ public class DatabaseView extends Activity {
 
                 StringBuffer buff = new StringBuffer();
                 for(int i = 0; i < res.size(); i++) {
-                    if(i%2 == 0) {
-                        buff.append("Id: " + res.get(i));
-                    }
-                    else {
-                        buff.append("\nSongName: " + res.get(i) + "\n\n");
+                    if(i%2 != 0) {
+                        buff.append("\nTablature Name: " + res.get(i) + "\n\n");
                     }
                 }
                 showMessage("Tablatures", buff.toString());
@@ -94,13 +95,25 @@ public class DatabaseView extends Activity {
         del_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File filetoDelete = new File(editSongName.getText().toString() + ".txt");
+                //TODO Test this
+                File filetoDelete = new File(microphone.getLabelsDirectoryFilePath() + "/" + editSongName.getText().toString() + ".wav");
+                File tablaturetoDelete = new File(microphone.getLabelsFilePath() + "/" + editSongName.getText().toString() + ".txt");
                 boolean deleted = filetoDelete.delete();
+                boolean deleted2 = tablaturetoDelete.delete();
                 Integer delRows = myMusic.deleteData(editSongName.getText().toString());
-                if(delRows > 0 && deleted)  {
+                if(delRows > 0 && deleted && deleted2)  {
                     Toast.makeText(DatabaseView.this,"Data Deleted", Toast.LENGTH_LONG).show();
-                }
-                else {
+                } else if(delRows > 0 && deleted && !deleted2) {
+                    Toast.makeText(DatabaseView.this, "Tablature Not Deleted Please Erase " + editSongName.getText().toString() + ".txt", Toast.LENGTH_SHORT).show();
+                } else if(delRows > 0 && !deleted && !deleted2) {
+                    Toast.makeText(DatabaseView.this, "Only Rows Deleted Please Erase " + editSongName.getText().toString() + ".txt and " + editSongName.getText().toString() + ".wav", Toast.LENGTH_SHORT).show();
+                } else if(delRows > 0 && !deleted && deleted2) {
+                    Toast.makeText(DatabaseView.this, "Wav File Not Deleted Please Erase " + editSongName.getText().toString() + ".wav", Toast.LENGTH_SHORT).show();
+                } else if(!(delRows > 0) && deleted && !deleted2) {
+                    Toast.makeText(DatabaseView.this, "Data does not exist and Tablature Not Deleted Please Erase " + editSongName.getText().toString() + ".txt", Toast.LENGTH_SHORT).show();
+                } else if(!(delRows > 0) && !deleted && deleted2) {
+                    Toast.makeText(DatabaseView.this, "Data does not exist and Wav File Not Deleted Please Erase " + editSongName.getText().toString() + ".wav", Toast.LENGTH_SHORT).show();
+                } else {
                     Toast.makeText(DatabaseView.this,"Data Not Deleted", Toast.LENGTH_LONG).show();
                 }
             }
