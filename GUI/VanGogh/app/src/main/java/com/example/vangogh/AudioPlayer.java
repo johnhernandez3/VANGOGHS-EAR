@@ -103,22 +103,18 @@ public class AudioPlayer extends Fragment {
         // Bind Java Objects to XML Layout Views
 
         play = (Button) view.findViewById(R.id.play);
-//        stop = (Button) view.findViewById(R.id.stop);
         pause = (Button) view.findViewById(R.id.pause);
-//        back = (Button) view.findViewById(R.id.back);
-//        forward = (Button) view.findViewById(R.id.forward);
+
 
         seekbar = (SeekBar)  view.findViewById(R.id.seekbar);
         seekbar.setClickable(false);
 
-//        player = new MediaPlayer();
-        Log.d(TAG, "Creating Media Player with file:" + file);
+
         if(idChecker) {
             player = MediaPlayer.create(this.getActivity().getBaseContext(), id);
         } else {
             player = MediaPlayer.create(this.getActivity().getBaseContext(),file);
         }
-//        player.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).setUsage(AudioAttributes.USAGE_MEDIA).build());
 
     
 
@@ -152,7 +148,7 @@ public class AudioPlayer extends Fragment {
                 seekbar.setProgress((int) start_time);
                 handler.postDelayed(UpdateSongTime, 100);
                 play.setEnabled(false);
-//                stop.setEnabled(true);
+
                 pause.setEnabled(true);
                 Toast.makeText(getActivity().getBaseContext(), "Starting audio playback", Toast.LENGTH_SHORT).show();
 
@@ -160,20 +156,6 @@ public class AudioPlayer extends Fragment {
 
         });
 
-//        stop.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v)
-//            {
-//
-//                Toast.makeText(getActivity().getBaseContext(), "Stopping audio playback", Toast.LENGTH_SHORT).show();
-//
-//                play.setEnabled(false);
-//                stop.setEnabled(false);
-//                pause.setEnabled(false);
-//                player.stop();
-//            }
-//
-//        });
 
         pause.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -183,28 +165,11 @@ public class AudioPlayer extends Fragment {
                 player.pause();
                 play.setEnabled(true);
                 pause.setEnabled(false);
-//                stop.setEnabled(false);
             }
 
         });
 
-//        back.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v)
-//            {
-//                //TODO: Implement backwards logic
-//            }
-//
-//        });
-//
-//        forward.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v)
-//            {
-//                //TODO: Implement fast forward logic
-//            }
-//
-//        });
+
 
         return view;
     }

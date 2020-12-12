@@ -13,14 +13,6 @@
  import java.nio.MappedByteBuffer;
  import java.util.List;
 
- //import org.tensorflow.lite.DataType;
- //import org.tensorflow.lite.Interpreter;
- ////import org.tensorflow.lite.examples.classification.env.Logger;
- ////import org.tensorflow.lite.examples.classification.tflite.Classifier.Device;
- //import org.tensorflow.lite.gpu.GpuDelegate;
- //import org.tensorflow.lite.support.common.FileUtil;
- //import org.tensorflow.lite.support.common.TensorOperator;
-
  public abstract class Classifier {
 
     public Classifier() {
@@ -47,13 +39,7 @@
     /** Optional GPU delegate for acceleration. */
     // TODO: Declare a GPU delegate
     private GpuDelegate gpuDelegate = null;
- //
- //    protected Classifier(Activity activity, Device device, int numThreads) throws IOException {
- //
- //        // TODO: Create a TFLite interpreter instance
- //        tflite = new Interpreter(tfliteModel, tfliteOptions);
- //    }
- //
+
     /** Closes the interpreter and model to release resources. */
     public void close() {
         if (tflite != null) {
@@ -160,41 +146,21 @@
         tfliteModel = FileUtil.loadMappedFile(activity, getModelPath());
         switch (device) {
             case GPU:
-                // TODO: Create a GPU delegate instance and add it to the interpreter options
- //                gpuDelegate = new GpuDelegate();
- //                tfliteOptions.addDelegate(gpuDelegate);
                 break;
             case CPU:
                 break;
         }
- //        tfliteOptions.setNumThreads(numThreads);
- //        // TODO: Create a TFLite interpreter instance
- //        tflite = new Interpreter(tfliteModel, tfliteOptions);
 
         // Loads labels out from the label file.
         labels = FileUtil.loadLabels(activity, getLabelPath());
 
         // Reads type and shape of input and output tensors, respectively.
         int imageTensorIndex = 0;
- //        int[] imageShape = tflite.getInputTensor(imageTensorIndex).shape(); // {1, height, width, 3}
- //        imageSizeY = imageShape[1];
- //        imageSizeX = imageShape[2];
         DataType imageDataType = tflite.getInputTensor(imageTensorIndex).dataType();
         int probabilityTensorIndex = 0;
         int[] probabilityShape =
                 tflite.getOutputTensor(probabilityTensorIndex).shape(); // {1, NUM_CLASSES}
         DataType probabilityDataType = tflite.getOutputTensor(probabilityTensorIndex).dataType();
-
-        // Creates the input tensor.
- //        inputImageBuffer = new TensorImage(imageDataType);
-
-        // Creates the output tensor and its processor.
- //        outputProbabilityBuffer = TensorBuffer.createFixedSize(probabilityShape, probabilityDataType);
-
-        // Creates the post processor for the output probability.
- //        probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
-
- //        LOGGER.d("Created a Tensorflow Lite Image Classifier.");
     }
 
     /** Gets the name of the model file stored in Assets. */

@@ -160,6 +160,7 @@ public class FileManager extends Activity implements IODeviceManager
             labels.delete();
             return false;
         }
+
         try {
             fr = new FileWriter(labels);
             br = new BufferedWriter(fr);
@@ -202,12 +203,10 @@ public class FileManager extends Activity implements IODeviceManager
         }
         else {
             Log.d(TAG, "PERMISSION GRANTED");
-
         }
 
         if (checkSelfPermission(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
-            //If not ask the user for the permission
              requestPermissions(
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
         }
@@ -281,7 +280,7 @@ public class FileManager extends Activity implements IODeviceManager
                 String wav_path = wav_uri.getPath();
                 Log.d(TAG, "File Path: "+ wav_path);
                 //process the file or pass it to data
-//                files.add(uri.toString());
+
                 Intent wav_files_d = new Intent();
                 wav_files_d.putExtra("file", wav_uri.toString());
                 setResult(Activity.RESULT_OK, wav_files_d);

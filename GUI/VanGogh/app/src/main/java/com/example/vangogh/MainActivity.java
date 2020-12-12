@@ -44,18 +44,13 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
 {
 
     Map<String, Integer> permissions;
-    TablatureFragment tablature_fragment;
+
     AudioRecorder audio_fragment;
-    ChordFragment chord_fragment;
-    DatabaseView dbview;
-    FileManager fm;
     ToggleButton toggle_frags ;
     Button dbview_button;
     Toolbar toolbar;
-    private View view;
-    private AppBarConfiguration appBarConfiguration;
     private Uri selected_recording;
-    private String selected_tablature;
+
 
     private final String TAG = "MAIN";
     private final int REQUEST_READ_STORAGE = 0;
@@ -100,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbview = new DatabaseView();
         toolbar = (Toolbar) findViewById(R.id.topAppBar);
         setSupportActionBar(toolbar);
 
@@ -140,16 +134,11 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
 
 
                     Log.d(TAG, "Entered On Checked Flag");
-                    //TODO: Fix Bug here with the permissions, refuses to ask or verify that they were granted
-                    // Fails to add audio recorder frag as a consequence
-//                    if(checkSelfPermission("RECORD AUDIO") == PackageManager.PERMISSION_GRANTED) {
+
                         Log.d(TAG, "Adding Audio Recorder Fragment");
                         audio_fragment = new AudioRecorder();
                         man.beginTransaction().add(R.id.audio_fragment_container_view, audio_fragment, "AUDIO RECORDER").commit();
-//                    }else{
-//                        // Ask for record permissions here
-//                        requestPermissions( new String[]{"RECORD AUDIO"}, REQUEST_RECORD_AUDIO);
-//                    }
+
                 }
                 else{
                     Log.d(TAG, "Failed On Checked Flag");
@@ -170,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
 
             }
         });
-
 
         toggle_frags = (ToggleButton) findViewById(R.id.toggle_frags);
 
@@ -227,17 +215,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
 
         });
 
-        Button analyze_file_btn = (Button) findViewById(R.id.analyze_audio_button);
-        analyze_file_btn.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-
-                searchForFile(true,true);//testing tablature load
-            }
-
-        });
-
 
 //        final Intent intent = new Intent(this, DatabaseView.class);
 //        dbview_button = (Button) findViewById(R.id.dbview_button);
@@ -263,8 +240,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-
 
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
@@ -299,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                                 "Tablature also reveals Chord Diagram to view and listen to chords\n\n" +
                                 "Chord Diagram:\nType name of chord to listen to chord\n" +
                                 "Press 'Pause' to press play to listen to the recording again\n\n" +
-                                "DBView:\nGoes to a different screen to view chords and tablatures\n" +
+                                "Analyze:\nSelect WAV files to turn into tablatures\n" +
                                 "You can also delete tablatures");
                 break;
             default:
@@ -376,12 +351,14 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
             Intent intent = new Intent(this, FileManager.class);
 
             startActivityForResult(intent,3333);
+            return;
         }
         if(tabRequest)
         {
             Intent intent = new Intent(this, FileManager.class);
 
             startActivityForResult(intent,5678);
+            return;
         }
 
         else {
@@ -468,14 +445,13 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                 selected_recording = uri;
                 Log.d(TAG, "Saved URI of selected recording:"+uri);
                 Microphone mic = new Microphone();
-                mic.classifyRecording(result, this.getApplicationContext());
+                mic.classifyRecording(selected_recording.getPath(), this.getApplication().getApplicationContext());
 
                 Log.e(TAG, "Creating Labels txt file!");
                 Toast.makeText(this, "Processing WAV File!", Toast.LENGTH_SHORT).show();
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                // there's no result
             }
         }
 
@@ -488,12 +464,8 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                 Log.d(TAG, "Saved URI of selected recording:"+uri);
                 FragmentManager man = this.getSupportFragmentManager();
                 AudioPlayer audio_player = new AudioPlayer(selected_recording);
-
                 removeAllFragments();
-
                 man.beginTransaction().add(R.id.fragment_container_view, audio_player, "AUDIO PLAYER").commit();
-
-
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 // there's no result
@@ -505,7 +477,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                 String result=data.getStringExtra("file");
                 Log.d(TAG, "Received Intent URI:"+ result);
                 Uri uri = Uri.parse(result);
-                selected_tablature = result;
 
                 Log.d(TAG, "Saved PATH of selected recording:"+result);
 
@@ -514,7 +485,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                 try {
                     ArrayList<String> predicted_chords =
                             fm.readFromLabelsFile(uri);
-//                String predicted_tablature = ChordToTab.totalTablature(ChordToTab.constructTab(predicted_chords.toArray(new String[predicted_chords.size()])));
                     String predicted_tablature = ChordToTab.convertStringChords(predicted_chords);
                     TablatureFragment tab_frag = new TablatureFragment(predicted_tablature);
 

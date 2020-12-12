@@ -184,7 +184,6 @@ public class Microphone implements Device
         try {
             os = new  FileOutputStream(filename);
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         int read = 0;
@@ -461,8 +460,6 @@ public class Microphone implements Device
 
                         FileManager.writeToLabelsFile(predictionList, getLabelsFilePath() + fileName.substring(fileName.lastIndexOf("/"), fileName.lastIndexOf(".")) + ".txt");
 
-                        //TODO:Now we can call the ChordFragment's class
-
 
                     }
                     catch(WavFileException e){
@@ -526,7 +523,6 @@ public class Microphone implements Device
 
         //The 4 at the end is the amount of bytes that a float occupies in Java
         // taken from the mfcc mean array
-//        ByteBuffer byteBuffer  = ByteBuffer.allocate(4*meanMFCCValues.length* meanMFCCValues[0].length);
         ByteBuffer byteBuffer  = ByteBuffer.allocate(63984);
     for(int i= 0;i <  meanMFCCValues.length; i++){
         float[] valArray= meanMFCCValues[i];
@@ -539,7 +535,6 @@ public class Microphone implements Device
 
     byteBuffer.rewind();
 
-    //val inpBuffer: ByteBuffer? = convertBitmapToByteBuffer(bitmp)
     TensorBuffer outputTensorBuffer =
             TensorBuffer.createFixedSize(probabilityShape, probabilityDataType);
     //run the predictions with input and output buffer tensors to get probability values across the labels
