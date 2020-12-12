@@ -269,12 +269,3 @@ model_path = model_path / 'Test_Saved_Model'
 model.save(model_path/'test_chords_classifier_model')
 
 
-# sample_file = data_dir/'a/a.wav'
-
-# sample_ds = preprocess_dataset([str(sample_file)])
-
-# for spectrogram, label in sample_ds.batch(1):
-#   prediction = model(spectrogram)
-#   plt.bar(commands, tf.nn.softmax(prediction[0]))
-#   plt.title(f'Predictions for "{commands[label[0]]}"')
-#   plt.show()

@@ -56,8 +56,6 @@ def chords_paths():
 
 def chord_files(path=chords_paths(), chord_name='a'):
 
-    # for chord_audio_path in findPattern(path, pattern=chord_name):
-    #     yield chord_audio_path
     for chord in Path.iterdir(path):
         if chord.is_file():
             yield chord
@@ -79,9 +77,6 @@ def get_label(file_path):
 
 def get_spectrogram(waveform):
 
-    # this is zero padding for files whose sample rate is less than 16kHz
-    # zero_padding = tf.zeros([16000] -  tf.shape(waveform), dtype=tf.float32)
-    # if tf.shape(waveform) > 0:
     waveform = tf.cast(waveform, tf.float32)
     spectrogram = tf.signal.stft( waveform, frame_length=255,frame_step=128)
     return spectrogram
@@ -102,12 +97,7 @@ def preprocess():
 
 def preprocess_dataset(files):
     AUTOTUNE = tf.data.experimental.AUTOTUNE
-    # files_ds = (chord_file for chord_file in files)
-    # for idx, f in enumerate(files_ds):
-    #     print(f"{idx} Type of file: {type(f)}\nFilename:{f}\n")
     files_ds = tf.data.Dataset.from_tensor_slices(files)
-    # for idx, f in enumerate(files_ds):
-    #     print(f"{idx} Type of file: {type(f)}\nFilename:{f}\n")
     waveforms_ds = files_ds.map(get_waveform_and_label, num_parallel_calls=AUTOTUNE)
     spectrogram_ds = waveforms_ds.map(get_spectrogram_and_label_id, num_parallel_calls=AUTOTUNE )
     return spectrogram_ds
@@ -137,25 +127,10 @@ def get_spectrogram_and_label_id(audio, label, num_labels=10):
 
 def divide_ds(files):
     
-    # train, val, test = [] , [] , []
-    # if len(files) %2 == 0:
-        # then even
     mid = len(files) // 2
-    # train , val, test = files[0:mid-1],files[mid:mid//2 + mid -1], files[mid//2 + mid:mid + mid -1]
     train = files[:mid-1]
     val = files[mid:mid//2 + mid -1]
     test = files[mid//2 + mid//1:mid//1 + mid//1 -1]
-        # pass
-    # else:
-    #     #odd
-    #     mid = len(files) / 2
-    #     train , val, test = files[0:mid-1],files[mid,mid//2 + mid -1], files[mid//2 + mid,mid + mid -1]
-    #     pass
-    # if len(fs) % 3 == 0:
-    #     train, val, test = fs[0:len(fs)//3 - 1],fs[len(fs)//3: 2 * len(fs)//3 -1], fs[ 2 * len(fs)//3 : len(fs) -1]
-    # else:
-    #     size = len(fs)
-    #     train, val, test = fs[0: size//3 - 1],fs[size//3: 2 * size//3 -1], fs[ 2 * size //3 ::]
     
     return train, val, test
 

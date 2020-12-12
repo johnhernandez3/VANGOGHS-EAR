@@ -173,7 +173,7 @@ def prepare_ds(debug=False):
 
 def create_model():
     batch_size = BATCHES
-    train_ds, val_ds, test_ds =  prepare_ds()#prepare_ds(debug=True)
+    train_ds, val_ds, test_ds =  prepare_ds()
 
     train_ds = train_ds.batch(BATCHES).cache().prefetch(AUTOTUNE)
     val_ds = val_ds.batch(BATCHES).cache().prefetch(AUTOTUNE)
