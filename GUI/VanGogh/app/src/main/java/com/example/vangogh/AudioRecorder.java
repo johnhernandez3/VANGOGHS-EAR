@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentManager;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -284,6 +285,28 @@ public class AudioRecorder extends Fragment
                 setText = true;
                 mic.stop_recording_wav(context);
                 microphone_button.setText("Start");
+                FragmentManager frag_man = getParentFragmentManager();
+                Fragment frag = frag_man.findFragmentById(R.id.fragment_container_view);
+                Intent intent = new Intent();
+                if(frag != null)
+                {
+                    //TODO: Fix this so we can see the first label inside the ChordFragment view
+                    //Chords is present then
+                    //Open file and feed it
+                    FileManager fm = new FileManager(getActivity());
+                    Uri uri = Uri.fromFile(new File(mic.getLabelsFilePath()));
+                    ArrayList<String> labels = null;
+                    try {
+                        labels = fm.readFromLabelsFile(uri);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+//                                Scanner fr = new Scanner();
+//                                String first_chord = fr.nextLine();
+                    Log.e(TAG, "Current Read Label:"+ Arrays.toString(new String[labels.size()]));
+                    frag_man.beginTransaction().add(R.id.fragment_container_view, new ChordFragment(labels.get(0)) , "CHORDS").commit();
+
+                }
             }
 
         }
