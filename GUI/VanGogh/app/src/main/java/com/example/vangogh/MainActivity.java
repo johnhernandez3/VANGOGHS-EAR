@@ -239,23 +239,15 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
         });
 
 
-        final Intent intent = new Intent(this, DatabaseView.class);
-        dbview_button = (Button) findViewById(R.id.dbview_button);
-        dbview_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(intent);
-            }
-        });
-
-        Button file_chooser_btn = (Button) findViewById(R.id.file_chooser_button);
-        file_chooser_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchForFile(false, true);
-            }
-        });
+//        final Intent intent = new Intent(this, DatabaseView.class);
+//        dbview_button = (Button) findViewById(R.id.dbview_button);
+//        dbview_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                startActivity(intent);
+//            }
+//        });
 
 
     }
@@ -392,12 +384,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
             startActivityForResult(intent,5678);
         }
 
-        if(fileRequest && !tabRequest) {
-            Intent intent = new Intent(this, FileManager.class);
-
-            startActivityForResult(intent, 3333);
-        }
-
         else {
             // Asks FileManager to be initialized and awaits the result of selected file
             Intent intent = new Intent(this, FileManager.class);
@@ -424,14 +410,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
      * @param grantResults int array with numbers if it has a 0, it is denied the result, else anything different,
      * it is granted
      */
-    /**
-     * Asks the user for IO device permissions such as accessing storage and the microphone
-     */
-    private void requestPermissions()
-    {
-        requestPermissions((String[])permissions.keySet().toArray(new String[permissions.keySet().size()]),ALL_REQ_PERMS);
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[] , int grantResults[])
     {

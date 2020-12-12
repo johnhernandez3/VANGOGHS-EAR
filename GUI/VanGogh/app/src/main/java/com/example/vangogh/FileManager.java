@@ -307,24 +307,6 @@ public class FileManager extends Activity implements IODeviceManager
 
                 break;
 
-            case 3333:
-
-                Uri fileuri = data.getData();
-                Log.d(TAG, "File URI:" +  fileuri.toString());
-                selected_file=fileuri;
-                String uripath = fileuri.getPath();
-                Log.d(TAG, "File Path: "+ uripath);
-                //process the file or pass it to data
-//                files.add(uri.toString());
-                Intent filesuri_d = new Intent();
-                filesuri_d.putExtra("file", fileuri.toString());
-                setResult(Activity.RESULT_OK, filesuri_d);
-                finish();
-
-                super.onActivityResult(REQUEST_CHOOSER, resultCode,filesuri_d);
-
-                break;
-
         }
 
     }

@@ -76,11 +76,10 @@
 
                 <ToggleButton
                     android:id="@+id/toggle_frags"
-                    android:layout_width="112dp"
-                    android:layout_height="72dp"
-                    android:layout_above="@+id/dbview_button"
-                    android:layout_marginEnd="312dp"
-                    android:layout_marginBottom="26dp"
+                    android:layout_width="118dp"
+                    android:layout_height="69dp"
+                    android:layout_above="@+id/analyze_audio_button"
+                    android:layout_marginBottom="9dp"
                     android:textOff="Tablature"
                     android:textOn="Chord Diagram" />
 
@@ -90,35 +89,16 @@
                     android:layout_height="72dp"
 
                     android:layout_above="@+id/toggle_frags"
-                    android:layout_marginEnd="73dp"
-                    android:layout_marginBottom="11dp"
+                    android:layout_marginBottom="8dp"
                     android:textOff="Record"
                     android:textOn="Hide" />
-
-                <Button
-                    android:id="@+id/analyze_audio_button"
-                    android:layout_width="112dp"
-                    android:layout_height="72dp"
-
-
-                    android:layout_alignParentEnd="true"
-                    android:text="Analyze" />
-                <Button
-                    android:id="@+id/dbview_button"
-                    android:layout_width="112dp"
-                    android:layout_height="72dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="190dp"
-                    android:layout_marginBottom="345dp"
-                    android:text="DBView" />
 
                 <Button
                     android:id="@+id/find_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/record_show_button"
-                    android:layout_marginEnd="11dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="10dp"
                     android:text="Select File" />
 
                 <RelativeLayout
@@ -132,14 +112,14 @@
                 </RelativeLayout>
 
                 <Button
-                    android:id="@+id/file_chooser_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
+                    android:id="@+id/analyze_audio_button"
+                    android:layout_width="112dp"
+                    android:layout_height="72dp"
+
+
                     android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="251dp"
-                    android:layout_marginBottom="410dp"
-                    android:text="File-Chooser" />
+                    android:layout_marginBottom="371dp"
+                    android:text="Analyze" />
 
 
         </RelativeLayout>
