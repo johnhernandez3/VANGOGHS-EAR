@@ -180,6 +180,7 @@ public class Microphone implements Device
         byte data[] = new byte[buffer_size];
         String filename = getTempFilename();
         FileOutputStream os = null;
+
         try {
             os = new  FileOutputStream(filename);
         } catch (FileNotFoundException e) {

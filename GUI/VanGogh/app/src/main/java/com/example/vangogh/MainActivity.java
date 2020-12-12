@@ -222,7 +222,18 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
             public void onClick(View v)
             {
 
-                searchForFile(true, false);//testing tablature load
+                searchForFile(true,false);//testing tablature load
+            }
+
+        });
+
+        Button analyze_file_btn = (Button) findViewById(R.id.analyze_audio_button);
+        analyze_file_btn.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+
+                searchForFile(true,true);//testing tablature load
             }
 
         });
@@ -366,9 +377,15 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
     /**
      * Generates an intent for the FileManager activity and awaits a result with code 1234 for a file URI.
      */
-    public void searchForFile(boolean tabRequest, boolean fileRequest)
+    public void searchForFile(boolean tabRequest, boolean wavFileRequest)
     {
-        if(tabRequest && !fileRequest)
+        if(wavFileRequest)
+        {
+            Intent intent = new Intent(this, FileManager.class);
+
+            startActivityForResult(intent,3333);
+        }
+        if(tabRequest)
         {
             Intent intent = new Intent(this, FileManager.class);
 
@@ -407,7 +424,14 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
      * @param grantResults int array with numbers if it has a 0, it is denied the result, else anything different,
      * it is granted
      */
-    //TODO: Fix Permissions Request for File Storage and Audio Recording
+    /**
+     * Asks the user for IO device permissions such as accessing storage and the microphone
+     */
+    private void requestPermissions()
+    {
+        requestPermissions((String[])permissions.keySet().toArray(new String[permissions.keySet().size()]),ALL_REQ_PERMS);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[] , int grantResults[])
     {
@@ -458,6 +482,24 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 3333) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("file");
+                Uri uri = Uri.parse(result);
+                selected_recording = uri;
+                Log.d(TAG, "Saved URI of selected recording:"+uri);
+                Microphone mic = new Microphone();
+                mic.classifyRecording(result, this.getApplicationContext());
+
+                Log.e(TAG, "Creating Labels txt file!");
+                Toast.makeText(this, "Processing WAV File!", Toast.LENGTH_SHORT).show();
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                // there's no result
+            }
+        }
 
         //Receives the URI of selected file from FileManager class
         if (requestCode == 1234) {
