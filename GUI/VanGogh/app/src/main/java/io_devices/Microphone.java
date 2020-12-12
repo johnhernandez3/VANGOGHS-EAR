@@ -435,7 +435,6 @@ public class Microphone implements Device
                         ArrayList<String> predictionList  = new ArrayList<String>();
                         for(int i=0; i <  splitSongs.size(); i++)
                         {
-//                           Float[] audio_obj_arr =
 
                             temp.add(splitSongs.get(i).toArray(new Float[splitSongs.get(i).size()]));
 

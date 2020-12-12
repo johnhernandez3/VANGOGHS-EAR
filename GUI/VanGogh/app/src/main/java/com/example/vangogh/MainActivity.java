@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import chords.ChordToTab;
+import io_devices.Microphone;
 import utils.FragmentFactory;
 
 
@@ -221,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
             public void onClick(View v)
             {
 
-                searchForFile(true);//testing tablature load
+                searchForFile(true, false);//testing tablature load
             }
 
         });
@@ -234,6 +235,14 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
             public void onClick(View v) {
 
                 startActivity(intent);
+            }
+        });
+
+        Button file_chooser_btn = (Button) findViewById(R.id.file_chooser_button);
+        file_chooser_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchForFile(false, true);
             }
         });
 
@@ -357,13 +366,19 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
     /**
      * Generates an intent for the FileManager activity and awaits a result with code 1234 for a file URI.
      */
-    public void searchForFile(boolean tabRequest)
+    public void searchForFile(boolean tabRequest, boolean fileRequest)
     {
-        if(tabRequest)
+        if(tabRequest && !fileRequest)
         {
             Intent intent = new Intent(this, FileManager.class);
 
             startActivityForResult(intent,5678);
+        }
+
+        if(fileRequest && !tabRequest) {
+            Intent intent = new Intent(this, FileManager.class);
+
+            startActivityForResult(intent, 3333);
         }
 
         else {
@@ -374,10 +389,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
         }
 
     }
-
-    /**
-     * Asks the user for IO device permissions such as accessing storage and the microphone
-     */
 
 
 
@@ -493,6 +504,39 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                 }catch(Exception e) {
                     e.printStackTrace();
                 }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+
+        if (requestCode == 3333) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("file");
+                Log.d(TAG, "Received Intent URI:"+ result);
+                Uri uri = Uri.parse(result);
+                selected_recording = uri;
+
+                Log.d(TAG, "Saved PATH of selected recording:"+result);
+
+                Microphone mic = new Microphone();
+                mic.classifyRecording(uri.getPath(), this);
+                FragmentManager man = this.getSupportFragmentManager();
+                FileManager fm = new FileManager(this);
+                Toast.makeText(this, "Processing File", Toast.LENGTH_SHORT).show();
+//                try {
+//                    ArrayList<String> predicted_chords =
+//                            fm.readFromLabelsFile(uri);
+////                String predicted_tablature = ChordToTab.totalTablature(ChordToTab.constructTab(predicted_chords.toArray(new String[predicted_chords.size()])));
+//                    String predicted_tablature = ChordToTab.convertStringChords(predicted_chords);
+//                    TablatureFragment tab_frag = new TablatureFragment(predicted_tablature);
+//
+//                    removeAllFragments();
+//
+//                    man.beginTransaction().add(R.id.fragment_container_view, tab_frag, "TABLATURE").commit();
+//                }catch(Exception e) {
+//                    e.printStackTrace();
+//                }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result

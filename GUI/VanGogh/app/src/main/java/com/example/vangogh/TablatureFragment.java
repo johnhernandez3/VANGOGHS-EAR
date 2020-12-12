@@ -88,7 +88,6 @@ public class TablatureFragment extends Fragment
 
     }
 
-
     private void setEmptyTablature()
     {
         tab = new Tablature();//create empty tablature
