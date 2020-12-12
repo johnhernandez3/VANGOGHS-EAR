@@ -124,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                 Log.d(TAG, "Entering On Checked Changed Listener");
                 if(isChecked)
                 {
-                    //TODO: If there is a crash by fragment here, then comment it out again!
-                    // Possible Bug here!
                     if(man.findFragmentByTag("AUDIO PLAYER")!=null) {
                         //remove this one
                         man.beginTransaction().remove(man.findFragmentByTag("AUDIO PLAYER")).commit();
@@ -216,17 +214,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
         });
 
 
-//        final Intent intent = new Intent(this, DatabaseView.class);
-//        dbview_button = (Button) findViewById(R.id.dbview_button);
-//        dbview_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                startActivity(intent);
-//            }
-//        });
-
-
     }
 
 
@@ -274,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements AppBarConfigurati
                                 "Tablature also reveals Chord Diagram to view and listen to chords\n\n" +
                                 "Chord Diagram:\nType name of chord to listen to chord\n" +
                                 "Press 'Pause' to press play to listen to the recording again\n\n" +
-                                "Analyze:\nSelect WAV files to turn into tablatures\n" +
                                 "You can also delete tablatures");
                 break;
             default:

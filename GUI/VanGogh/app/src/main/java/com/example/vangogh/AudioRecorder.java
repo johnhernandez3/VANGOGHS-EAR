@@ -41,7 +41,6 @@ public class AudioRecorder extends Fragment
     private Date todays_date;
     //used for maintaining track of how many clicks have been performed on the record button
     private static int mic_button_clicks=0;//might be problematic in multi-threaded workloads due to possible race condition
-                                    //TODO: Consider using atomic integers here
 
     // Request Codes for acknowledging the permissions requested
     private final int MAX_RECORD_BTN_CLICKS = 2;
@@ -85,8 +84,6 @@ public class AudioRecorder extends Fragment
         if(nonEmptyString(filename)) {
 
             context = this.getContext();
-            //TODO: Implement the output file path to store the Audio recordings from Mic.
-            // Alternatively, we could use streams of audio because we don't really want to store the audio.
             res = this.OutputFilePath(filename, "3gp");
         }
         else{
@@ -121,8 +118,6 @@ public class AudioRecorder extends Fragment
         if(filename != null && filename != " ") {
 
             context = this.getContext();
-            //TODO: Implement the output file path to store the Audio recordings from Mic.
-            // Alternatively, we could use streams of audio because we don't really want to store the audio.
             res = context.getExternalFilesDir(null).getAbsolutePath() + "/" + filename + "." +format;
         }
         else{
@@ -193,7 +188,6 @@ public class AudioRecorder extends Fragment
                             Intent intent = new Intent();
                             if(frag != null)
                             {
-                                //TODO: Fix this so we can see the first label inside the ChordFragment view
                                 //Chords is present then
                                 //Open file and feed it
                                 FileManager fm = new FileManager(getActivity());
@@ -292,8 +286,6 @@ public class AudioRecorder extends Fragment
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-//                                Scanner fr = new Scanner();
-//                                String first_chord = fr.nextLine();
                     Log.e(TAG, "Current Read Label:"+ Arrays.toString(new String[labels.size()]));
                     frag_man.beginTransaction().add(R.id.fragment_container_view, new ChordFragment(labels.get(0)) , "CHORDS").commit();
 
