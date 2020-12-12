@@ -154,20 +154,13 @@ public class AudioRecorder extends Fragment
                 switch(mic_button_clicks)
                 {
                     case 0:
-//                        todays_date = new Date();
-//                        SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd-hh:mm:ss");
-//                        Output_File = OutputFilePath(ft.format(todays_date));//TODO: fix this, possible race-condition
-//                        mic =  new Microphone(Output_File);
                         mic = new Microphone();
-//                        Log.d(TAG, "File:"+OutputFilePath(ft.format(todays_date)));
-
                         microphone_button.setText("Stop");
                         try {
                             Log.d(TAG, "Button clicks:"+mic_button_clicks);
                             mic.start_recording_wav();
                             Toast.makeText(getActivity(), "Starting Mic Recording", Toast.LENGTH_SHORT).show();
 
-//                            mic.stop_recording_wav(context);
                         }catch  (Exception e)
                         {
                             e.printStackTrace();
@@ -192,8 +185,6 @@ public class AudioRecorder extends Fragment
                                 FileManager fm = new FileManager(getActivity());
                                 Uri uri = Uri.fromFile(new File(mic.getLabelsFilePath()));
                                 ArrayList<String> labels = fm.readFromLabelsFile(uri);
-//                                Scanner fr = new Scanner();
-//                                String first_chord = fr.nextLine();
                                 Log.e(TAG, "Current Read Label:"+ Arrays.toString(new String[labels.size()]));
                                 frag_man.beginTransaction().add(R.id.fragment_container_view, new ChordFragment(labels.get(0)) , "CHORDS").commit();
 

@@ -84,7 +84,6 @@ public class TablatureComparator extends AppCompatActivity
                 try {
                     ArrayList<String> predicted_chords =
                             fm.readFromLabelsFile(uri);
-//                String predicted_tablature = ChordToTab.totalTablature(ChordToTab.constructTab(predicted_chords.toArray(new String[predicted_chords.size()])));
                     String predicted_tablature = ChordToTab.convertStringChords(predicted_chords);
                     TablatureFragment tab_frag = new TablatureFragment(predicted_tablature);
 

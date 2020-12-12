@@ -120,18 +120,6 @@ public class PreProcessor {
             int[] outArray = interpret.getOutputTensor(probTensorIndex).shape();
             DataType probDataType = interpret.getOutputTensor(probTensorIndex).dataType();
             ByteBuffer byteBuffer = this.createTensors(interpret, melSpec);
-            // ByteBuffer byteBuffer = ByteBuffer.allocate(4 * melSpec.length * melSpec[0].length);
-
-            // for(int i = 0; i < melSpec.length; i++) {
-            //     float[] arrVal = melSpec[i];
-            //     int[] inShapeDim = {1, 1, melSpec[0].length, 1};
-            //     TensorBuffer inTnsorBuffer = TensorBuffer.createDynamic(imgDataType);
-            //     inTnsorBuffer.loadArray(arrVal, inShapeDim);
-            //     ByteBuffer valInBuffer = inTnsorBuffer.getBuffer();
-            //     byteBuffer.put(valInBuffer);
-            // }
-
-            // byteBuffer.rewind();
             TensorBuffer outTensorBuffer = TensorBuffer.createFixedSize(outArray, probDataType);
 
             interpret.run(byteBuffer, outTensorBuffer.getBuffer());

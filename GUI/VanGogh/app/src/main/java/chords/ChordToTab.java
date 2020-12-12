@@ -10,13 +10,9 @@ import java.util.ArrayList;
  */
 public class ChordToTab {
 
-    //These are the chords we internally recognize with our model
-    private String[] internal_valid_chords = {"a", "am", "bm","c","d","dm","e","em","f","g"};
-    private ChordFactory chord_factory;
-
     public ChordToTab()
     {
-        this.chord_factory = new ChordFactory();
+        
     }
 
 
@@ -113,7 +109,7 @@ public class ChordToTab {
 
         Position[] positions = ChordLibrary.baseChords.get(cm_chord.toString());
         //we'll just use the first one and that's it
-        if(positions.length > 0)
+        if(positions != null && positions.length > 0)
         {
             //Each fret is a vertical line followed by a newline
 
